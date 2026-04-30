@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{{ titre_filter }} — Morocco secrets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&family=Playfair+Display:ital,wght@0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    
+
+    
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'fr',
+                includedLanguages: 'en,es,zh-CN,ar,ru,de,ja,pt,it,ko',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <style>
+
+        
+        /* --- CUSTOM UI TRANSLATE --- */
+        .custom-lang-selector {
+            position: relative;
+            display: inline-block;
+        }
+        .custom-lang-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            border-radius: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .custom-lang-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+        .custom-lang-list {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: var(--grona, #6b1d1d);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            list-style: none;
+            padding: 8px 0;
+            margin: 0;
+            min-width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+        .custom-lang-list.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .custom-lang-list li {
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .custom-lang-list li:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
+        }
+        #gt_nav_slot { display: none !important; }
+
+        /* --- PREMIUM GOOGLE TRANSLATE --- */
+        .goog-te-gadget { color: transparent !important; font-size: 0 !important; }
+        .goog-te-gadget span { display: none !important; }
+        .goog-te-gadget img { display: none !important; }
+        .goog-te-gadget .goog-te-combo { margin: 0 !important; }
+
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body { top: 0px !important; }
+        #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+        .goog-text-highlight { background: none !important; box-shadow: none !important; }
+        
+        .goog-te-combo {
+            background: rgba(255, 255, 255, 0.15) !important;
+            color: #FFFFFF !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            padding: 8px 12px !important;
+            font-family: inherit !important;
+            font-size: 0.75rem !important;
+            border-radius: 20px !important;
+            cursor: pointer !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            outline: none !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .goog-te-combo:hover {
+            background: rgba(255, 255, 255, 0.25) !important;
+            border-color: rgba(255, 255, 255, 0.8) !important;
+            transform: translateY(-2px);
+        }
+
+        .goog-te-combo option {
+            background: #6b1d1d;
+            color: white;
+            padding: 10px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --grona: #6b1d1d;
+            --desert-gold: #c59d5f;
+            --soft-beige: #f2e6d9;
+            --white-silk: #fdfaf7;
+            --identity: #6b1d1d;
+            --identity-dark: #4d1515;
+            --identity-light: #8b2626;
+            --arch: #f2e6d9;
+            --arch-light: #fefcf9;
+            --arch-dark: #e1caa9;
+            --terre: #7B672A;
+            --terre-dark: #5A4A1A;
+            --desert: #c59d5f;
+            --desert-light: #dbbd8e;
+            --sky: #73B3EF;
+            --sky-light: #B8D8F8;
+            --ocean: #0668D3;
+            --ocean-dark: #044A9A;
+            --text-primary: #6b1d1d;
+            --text-secondary: #5A4A1A;
+            --text-light: #FFFFFF;
+            --border: rgba(107, 29, 29, 0.15);
+            --border-light: rgba(107, 29, 29, 0.08);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--soft-beige);
+            color: var(--grona);
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ══ NAV ══ */
+        /* ── NAVIGATION UNIFIÉE (Style Details + Scroll) ── */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            padding: 18px clamp(20px, 5vw, 60px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav.scrolled {
+            background: var(--grona);
+            padding: 12px clamp(20px, 5vw, 60px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            border-bottom-color: transparent;
+        }
+
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 900;
+            color: white;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-brand em {
+            font-style: italic;
+            color: var(--desert-gold);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link,
+        .nav-btn {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-btn:hover {
+            background: var(--desert-gold);
+            color: white;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--grona);
+            min-width: 210px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 8px;
+            z-index: 3000;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 18px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding-left: 22px;
+        }
+
+
+        /* ════ HAMBURGER + SIDEBAR MOBILE ════ */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px 8px;
+            background: none;
+            border: none;
+            z-index: 1200;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-origin: center;
+        }
+
+        .hamburger span:nth-child(1) { width: 24px; }
+        .hamburger span:nth-child(2) { width: 16px; opacity: 0.65; }
+        .hamburger span:nth-child(3) { width: 24px; }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+            opacity: 1; width: 24px;
+        }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+            opacity: 1; width: 24px;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 2050;
+        }
+        .sidebar-overlay.open { display: block; }
+
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 75%;
+            max-width: 290px;
+            background: var(--grona);
+            border-left: 2px solid var(--desert-gold);
+            z-index: 2100;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .mobile-sidebar.open { transform: translateX(0); }
+
+        .sidebar-header {
+            padding: 22px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-brand-m {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.01em;
+        }
+        .sidebar-brand-m em {
+            font-style: italic;
+            color: var(--desert-gold);
+        }
+
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+        .sidebar-close:hover { color: white; }
+
+        .sidebar-links {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 15px 0;
+        }
+
+        .sidebar-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            transition: all 0.3s;
+        }
+        .sidebar-links a i { opacity: 0.6; width: 20px; }
+        .sidebar-links a:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--desert-gold);
+        }
+
+        /* ── Langue custom sidebar ── */
+        .sidebar-lang {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 16px 20px;
+        }
+
+        .sidebar-lang-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 10px;
+            padding-left: 4px;
+        }
+
+        .lang-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.85rem;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C59D5F' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+
+        .lang-select option {
+            background: var(--grona);
+            color: white;
+        }
+
+        .lang-select:focus {
+            outline: none;
+            border-color: var(--desert-gold);
+        }
+
+        /* ══ HERO ══ */
+        .page-hero {
+            position: relative;
+            padding: 180px 60px 90px;
+            text-align: center;
+            overflow: hidden;
+            z-index: 1;
+            min-height: 540px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(107, 29, 29, 0.6) 0%, rgba(107, 29, 29, 0.3) 50%, rgba(0, 0, 0, 0.7) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-eyebrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-eyebrow span {
+            width: 44px;
+            height: 1px;
+            background: #FFFFFF;
+            opacity: 0.8;
+            display: inline-block;
+        }
+
+        .page-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: -0.01em;
+            line-height: 1.08;
+            margin-bottom: 18px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-hero h1 em {
+            font-style: italic;
+            color: var(--desert-gold);
+            font-weight: 400;
+        }
+
+        .hero-sub {
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-line {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
+            margin: 28px auto 0;
+        }
+
+        /* ══ FILTER BAR ══ */
+        .filter-bar {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0;
+            background: var(--grona);
+        }
+
+        .filter-tab {
+            font-size: 0.66rem;
+            font-weight: 400;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.70);
+            text-decoration: none;
+            padding: 18px 28px;
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .filter-tab:first-child {
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .filter-tab:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .filter-tab.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        /* ══ SECTION ══ */
+        .cities-section {
+            position: relative;
+            z-index: 2;
+            padding: 80px clamp(20px, 5vw, 60px);
+            background: var(--soft-beige);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+
+        .section-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--grona);
+            white-space: nowrap;
+        }
+
+        .section-rule {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(107, 29, 29, 0.15), transparent);
+        }
+
+        .section-count {
+            font-size: 0.65rem;
+            letter-spacing: 0.14em;
+            color: var(--grona);
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+
+        /* ══ CITIES GRID ══ */
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+        }
+
+        .city-card:nth-child(1) {
+            grid-row: span 2;
+        }
+
+        /* ════════════════════════════════════════
+           CITY CARD — Style Trippy interactif
+           PC  : smiya visible, slogan+buttons au hover
+           Mobile : smiya+slogan+buttons toujours visibles
+           ════════════════════════════════════════ */
+        .city-card {
+            position: relative;
+            overflow: hidden;
+            background: var(--arch-dark);
+            cursor: pointer;
+            aspect-ratio: 1/1;
+        }
+
+        .city-card:nth-child(1) {
+            aspect-ratio: auto;
+            min-height: 600px;
+        }
+
+        .city-card img {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            display: block;
+            object-fit: cover;
+            filter: brightness(0.65) saturate(0.85);
+            transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.6s;
+        }
+
+        .city-card:nth-child(1) img {
+            min-height: 600px;
+        }
+
+        .city-card:hover img {
+            transform: scale(1.07);
+            filter: brightness(0.45) saturate(0.7);
+        }
+
+        .city-card-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.38) 52%, transparent 100%);
+            transition: background 0.5s;
+        }
+
+        .city-card:hover .city-card-overlay {
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.15) 100%);
+        }
+
+        .city-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--desert), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 2;
+        }
+
+        .city-card:hover::after {
+            opacity: 1;
+        }
+
+        .city-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 28px 26px;
+            z-index: 10;
+        }
+
+        .city-tag {
+            font-size: 0.6rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--desert);
+            margin-bottom: 8px;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* smiya — TOUJOURS visible */
+        .city-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 300;
+            color: #FFFFFF;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            margin-bottom: 0;
+            transition: color 0.3s;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .city-card:nth-child(1) .city-name {
+            font-size: 2.8rem;
+        }
+
+        .city-card:hover .city-name {
+            color: var(--desert-light);
+        }
+
+        /* règle dorée */
+        .city-rule {
+            width: 0;
+            height: 1px;
+            background: var(--desert);
+            margin: 14px 0;
+            opacity: 0.7;
+            transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .city-card:hover .city-rule {
+            width: 40px;
+        }
+
+        /* slogan — TOUJOURS visible */
+        .city-slogan {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.95);
+            max-height: 65px;
+            overflow: hidden;
+            opacity: 1;
+            margin-bottom: 14px;
+            line-height: 1.4;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        }
+
+        /* boutons — cachés sur PC, révélés au hover */
+        .city-cta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s, opacity 0.35s;
+        }
+
+        .city-card:hover .city-cta {
+            max-height: 48px;
+            opacity: 1;
+        }
+
+        .cta-primary {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: white;
+            background: var(--grona);
+            padding: 11px 26px;
+            text-decoration: none;
+            display: inline-block;
+            border: 2px solid var(--desert-gold);
+            transition: all 0.3s;
+        }
+
+        .cta-primary:hover {
+            background: var(--identity-dark);
+            letter-spacing: 0.28em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-secondary {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-secondary:hover {
+            color: var(--desert-gold);
+        }
+
+        /* ════════════════════════════════════════
+           MOBILE : boutons cachés jusqu'au touch
+           au touch : on affiche, clic photo = détail
+           ════════════════════════════════════════ */
+        @media (hover: none) {
+            .city-card img {
+                filter: brightness(0.55) saturate(0.85);
+            }
+
+            .city-card-overlay {
+                background: linear-gradient(0deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.18) 100%);
+            }
+
+            .city-card::after {
+                opacity: 1;
+            }
+
+            .city-rule {
+                width: 32px !important;
+            }
+
+            /* boutons cachés par défaut sur mobile */
+            .city-cta {
+                max-height: 0 !important;
+                opacity: 0 !important;
+                pointer-events: none;
+            }
+
+            /* revealed seulement après touch (classe .touched ajoutée en JS) */
+            .city-card.touched .city-cta {
+                max-height: 48px !important;
+                opacity: 1 !important;
+                pointer-events: auto;
+            }
+
+            .city-card.touched .city-rule {
+                width: 40px !important;
+            }
+
+            .city-card.touched img {
+                filter: brightness(0.45) saturate(0.7);
+            }
+
+            .city-card.touched .city-card-overlay {
+                background: linear-gradient(0deg, rgba(0, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.15) 100%);
+            }
+        }
+
+        /* ══ EMPTY STATE ══ */
+        .empty-state {
+            text-align: center;
+            padding: 100px 0;
+            color: var(--text-secondary);
+        }
+
+        .empty-state p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .debug-link {
+            color: var(--ocean);
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            display: inline-block;
+            border-bottom: 1px dashed var(--ocean);
+        }
+
+        /* ══ FOOTER ORNAMENT ══ */
+        .footer-ornament {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 60px 80px;
+            background: var(--arch);
+        }
+
+        .footer-ornament::before {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border));
+        }
+
+        .footer-ornament::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(270deg, transparent, var(--border));
+        }
+
+        .ornament-glyph {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--identity);
+            opacity: 0.40;
+        }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width: 1024px) {
+            .cities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .city-card:nth-child(1) {
+                grid-row: span 1;
+                min-height: 400px;
+            }
+
+            .city-card:nth-child(1) .city-name {
+                font-size: 2.1rem;
+            }
+
+            .nav {
+                padding: 15px 36px;
+            }
+
+            .nav.scrolled {
+                padding: 10px 36px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex !important;
+            }
+
+            .nav-links {
+                display: none !important;
+            }
+
+            .nav {
+                padding: 15px 20px;
+            }
+
+            .nav.scrolled {
+                padding: 10px 20px;
+            }
+
+            .nav-brand {
+                font-size: 1.2rem;
+            }
+
+            .page-hero {
+                padding: 130px 24px 70px;
+            }
+
+            .page-hero h1 {
+                font-size: 2.4rem;
+            }
+
+            .cities-section {
+                padding: 40px 24px 70px;
+            }
+
+            .cities-grid {
+                grid-template-columns: 1fr;
+                gap: 3px;
+            }
+
+            .city-card {
+                aspect-ratio: 4/3;
+            }
+
+            .city-card:nth-child(1) {
+                min-height: 320px;
+            }
+
+            .filter-tab {
+                padding: 14px 16px;
+                font-size: 0.6rem;
+            }
+
+            .footer-ornament {
+                padding: 0 24px 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR MOBILE -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <!-- SIDEBAR PANNEAU -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-brand-m">Morocco <em>Secrets</em></div>
+            <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sidebar-links">
+            <a href="/" onclick="closeSidebar()"><i class="fa-solid fa-house"></i>Accueil</a>
+            <a href="/villes" onclick="closeSidebar()"><i class="fa-solid fa-map"></i>Villes</a>
+            <a href="/pricing" onclick="closeSidebar()"><i class="fa-solid fa-tag"></i>Offres</a>
+        </div>
+        <div class="sidebar-lang">
+            <div class="sidebar-lang-label">Langue</div>
+            <select class="lang-select" onchange="changeLang(this.value)">
+                <option value="">-- Choisir une langue --</option>
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="zh-CN">中文</option>
+                <option value="ru">Русский</option>
+                <option value="it">Italiano</option>
+                <option value="pt">Português</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="nav" id="mainNav">
+        <a href="/" class="nav-brand">Morocco <em>Secrets</em></a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Accueil</a>
+            <div class="nav-item">
+                <a href="/villes" class="nav-link">Villes <i class="fa-solid fa-chevron-down"
+                        style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i></a>
+                <div class="dropdown-menu">
+                    <a href="/villes">Toutes les villes</a>
+                    <a href="/filter/Villes côtières">Côtières</a>
+                    <a href="/filter/Villes sahariennes">Sahariennes</a>
+                    <a href="/filter/Villes de montagne">Montagne</a>
+                    <a href="/filter/Villes culturelles">Culturelles</a>
+                    <a href="/filter/Villes agricoles">Agricoles</a>
+                </div>
+            </div>
+            <a href="/pricing" class="nav-link">Offres</a>
+            
+            <div id="gt_nav_slot"><div id="google_translate_element"></div></div>
+            <div class="custom-lang-selector" id="customLangDropdown">
+                <div class="custom-lang-btn">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="currentLangText">FR</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.7em;"></i>
+                </div>
+                <ul class="custom-lang-list">
+                    <li onclick="changeLanguage('fr', 'FR')">🇫🇷 Français</li>
+                    <li onclick="changeLanguage('en', 'EN')">🇬🇧 Anglais</li>
+                    <li onclick="changeLanguage('es', 'ES')">🇪🇸 Espagnol</li>
+                    <li onclick="changeLanguage('ar', 'AR')">🇲🇦 Arabe</li>
+                    <li onclick="changeLanguage('de', 'DE')">🇩🇪 Allemand</li>
+                    <li onclick="changeLanguage('it', 'IT')">🇮🇹 Italien</li>
+                    <li onclick="changeLanguage('pt', 'PT')">🇵🇹 Portugais</li>
+                    <li onclick="changeLanguage('ru', 'RU')">🇷🇺 Russe</li>
+                    <li onclick="changeLanguage('zh-CN', 'ZH')">🇨🇳 Chinois</li>
+                    <li onclick="changeLanguage('ja', 'JA')">🇯🇵 Japonais</li>
+                    <li onclick="changeLanguage('ko', 'KO')">🇰🇷 Coréen</li>
+                </ul>
+            </div>
+
+            
+        </div>
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- HERO -->
+    <div class="page-hero" style="background-image: url('
+        {%- if titre_filter == 'Toutes les villes du Maroc' -%}
+            {{ url_for("static", filename="images/maroc-bg.png" ) }} {%- elif "côtières" in titre_filter -%} {{
+        url_for("static", filename="images/coast.jpg" ) }} {%- elif "sahariennes" in titre_filter -%} {{
+        url_for("static", filename="images/sahara.jpg" ) }} {%- elif "montagne" in titre_filter -%} {{ url_for("static",
+        filename="images/mountain.jpg" ) }} {%- elif "culturelles" in titre_filter -%} {{ url_for("static",
+        filename="images/culture.jpg" ) }} {%- else -%} {{ url_for("static", filename="images/maroc-bg.png" ) }} {%-
+        endif -%} ');">
+        <div class="hero-content">
+            <div class="hero-eyebrow">
+                <span></span>
+                Découvrez le Maroc
+                <span></span>
+            </div>
+            <h1>
+                {% if titre_filter == 'Toutes les villes du Maroc' %} Toutes les <em>Villes</em>
+        {% elif 'côtières' in titre_filter %}
+        Villes <em>Côtières</em>
+        {% elif 'sahariennes' in titre_filter %}
+        Villes <em>Sahariennes</em>
+        {% elif 'montagne' in titre_filter %}
+        Villes de <em>Montagne</em>
+        {% elif 'culturelles' in titre_filter %}
+        Villes <em>Culturelles</em>
+        {% elif 'agricoles' in titre_filter %}
+        Villes <em>Agricoles</em>
+        {% else %}
+        {{ titre_filter }}
+        {% endif %}
+        </h1>
+        <p class="hero-sub">
+            {% if villes %}
+            {{ villes | length }} destination{% if villes | length > 1 %}s{% endif %} à découvrir
+            {% else %}
+            Aucune destination trouvée
+            {% endif %}
+        </p>
+        <div class="hero-line"></div>
+    </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+        <a href="/villes"
+            class="filter-tab {% if titre_filter == 'Toutes les villes du Maroc' %}active{% endif %}">Toutes</a>
+        <a href="/filter/Villes côtières"
+            class="filter-tab {% if 'côtières' in titre_filter %}active{% endif %}">Côtières</a>
+        <a href="/filter/Villes sahariennes"
+            class="filter-tab {% if 'sahariennes' in titre_filter %}active{% endif %}">Sahariennes</a>
+        <a href="/filter/Villes de montagne"
+            class="filter-tab {% if 'montagne' in titre_filter %}active{% endif %}">Montagne</a>
+        <a href="/filter/Villes culturelles"
+            class="filter-tab {% if 'culturelles' in titre_filter %}active{% endif %}">Culturelles</a>
+        <a href="/filter/Villes agricoles"
+            class="filter-tab {% if 'agricoles' in titre_filter %}active{% endif %}">Agricoles</a>
+    </div>
+
+    <!-- CITIES GRID -->
+    <section class="cities-section">
+        <div class="section-header">
+            <span class="section-label">Nos destinations</span>
+            <div class="section-rule"></div>
+            <span class="section-count">
+                {% if villes %}
+                {{ villes | length }} ville{% if villes | length > 1 %}s{% endif %}
+                {% else %}
+                0 ville
+                {% endif %}
+            </span>
+        </div>
+
+        {% if villes and villes|length > 0 %}
+        <div class="cities-grid">
+            {% for ville in villes %}
+
+            <div class="city-card">
+
+                <img src="{{ url_for('static', filename='images/' + (ville['image_path'] if ville['image_path'] else 'default.jpg')) }}"
+                    alt="{{ ville['nom_ville'] }}" loading="lazy"
+                    onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/852E1E/FFFFFF?text={{ ville['nom_ville']|urlencode }}'">
+
+                <div class="city-card-overlay"></div>
+
+                <div class="city-body">
+                    <p class="city-tag">{{ ville['type_ville'] if ville['type_ville'] else 'Ville marocaine' }}</p>
+                    <h2 class="city-name">{{ ville['nom_ville'] }}</h2>
+                    <div class="city-rule"></div>
+
+                    <p class="city-slogan">
+                        {% if ville['slogan'] and ville['slogan']|length > 0 %}
+                        "{{ ville['slogan'] }}"
+                        {% else %}
+                        "Bienvenue à {{ ville['nom_ville'] }}"
+                        {% endif %}
+                    </p>
+
+                    <div class="city-cta">
+                        <a href="{{ url_for('details_ville', nom=ville['nom_ville']) }}"
+                            class="cta-primary">Découvrir</a>
+                        <a href="https://www.google.com/maps/search/{{ ville['nom_ville'] }}+Maroc" target="_blank"
+                            rel="noopener noreferrer" class="cta-secondary">↗ Carte</a>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="empty-state">
+            <p>🌙 Aucune ville trouvée</p>
+            <p style="font-size: 0.9rem; margin-top: 20px; color: var(--text-secondary);">
+                Vérifiez que la base de données est bien connectée
+            </p>
+            <p style="margin-top: 30px;">
+                <a href="/test-db" target="_blank" class="debug-link">🔍 Tester la connexion à la base de données</a>
+            </p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- ORNAMENT -->
+    <div class="footer-ornament">
+        <span class="ornament-glyph">✦</span>
+    </div>
+
+    <script>
+        /* ── Nav scroll ── */
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        /* ── Sidebar ── */
+        function toggleSidebar() {
+            var s = document.getElementById('mobileSidebar');
+            var o = document.getElementById('sidebarOverlay');
+            var b = document.getElementById('hamburgerBtn');
+            var isOpen = s.classList.contains('open');
+            s.classList.toggle('open');
+            o.classList.toggle('open');
+            b.classList.toggle('open');
+            document.body.style.overflow = !isOpen ? 'hidden' : '';
+        }
+        function closeSidebar() {
+            document.getElementById('mobileSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('open');
+            document.getElementById('hamburgerBtn').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSidebar(); });
+
+        /* ── Langue ── */
+        function changeLang(lang) {
+            if (!lang) return;
+            var sel = document.querySelector('.goog-te-combo');
+            if (sel) {
+                sel.value = lang;
+                sel.dispatchEvent(new Event('change'));
+                setTimeout(closeSidebar, 400);
+                return;
+            }
+            var d = window.location.hostname;
+            document.cookie = 'googtrans=/fr/' + lang + '; path=/; domain=' + d;
+            document.cookie = 'googtrans=/fr/' + lang + '; path=/';
+            closeSidebar();
+            window.location.reload();
+        }
+
+        /* ── Mobile touch : reveal buttons on first touch, navigate on second touch or photo tap ── */
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.matchMedia('(hover: none)').matches) {
+                document.querySelectorAll('.city-card').forEach(function (card) {
+                    var detailUrl = card.querySelector('.cta-primary') ? card.querySelector('.cta-primary').href : null;
+
+                    /* Clic sur la photo (img) => naviguer directement vers le détail */
+                    var img = card.querySelector('img');
+                    if (img && detailUrl) {
+                        img.addEventListener('click', function (e) {
+                            e.stopPropagation();
+                            window.location.href = detailUrl;
+                        });
+                    }
+
+                    /* Touch sur la carte (hors boutons) => révéler les boutons */
+                    card.addEventListener('touchstart', function () {
+                        if (!card.classList.contains('touched')) {
+                            /* Fermer les autres cartes */
+                            document.querySelectorAll('.city-card.touched').forEach(function (c) {
+                                if (c !== card) c.classList.remove('touched');
+                            });
+                            card.classList.add('touched');
+                        }
+                    }, { passive: true });
+                });
+
+                /* Tap en dehors d'une carte → ferme tout */
+                document.addEventListener('touchstart', function (e) {
+                    if (!e.target.closest('.city-card')) {
+                        document.querySelectorAll('.city-card.touched').forEach(function (c) { c.classList.remove('touched'); });
+                    }
+                }, { passive: true });
+            }
+        });
+
+        /* ── Debug console ── */
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('🏙️ Villes chargées :', {{ villes| length }});
+        {% if villes and villes | length > 0 %}
+        console.log('📋 Première ville :', {{ villes[0]| tojson }});
+        {% else %}
+        console.warn('⚠️ Aucune ville trouvée dans la base de données');
+        {% endif %}
+        });
+
+        // ── Sidebar mobile ──
+        function toggleSidebar() {
+            var s = document.getElementById('mobileSidebar');
+            var o = document.getElementById('sidebarOverlay');
+            var b = document.getElementById('hamburgerBtn');
+            var isOpen = s.classList.contains('open');
+            s.classList.toggle('open');
+            o.classList.toggle('open');
+            b.classList.toggle('open');
+            document.body.style.overflow = !isOpen ? 'hidden' : '';
+        }
+        function closeSidebar() {
+            document.getElementById('mobileSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('open');
+            document.getElementById('hamburgerBtn').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSidebar(); });
+
+        window.addEventListener('scroll', function () {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        function changeLang(lang) {
+            var sel = document.querySelector('.goog-te-combo');
+            if (sel && sel.value !== lang) {
+                sel.value = lang;
+                sel.dispatchEvent(new Event('change'));
+                setTimeout(function () { closeSidebar(); }, 400);
+                return;
+            }
+            var d = window.location.hostname;
+            document.cookie = 'googtrans=/fr/' + lang + '; path=/; domain=' + d;
+            document.cookie = 'googtrans=/fr/' + lang + '; path=/';
+            closeSidebar();
+            window.location.reload();
+        }
+    </script>
+
+    <!-- CHATBOT -->
+    {% include 'chatbot_carre.html' %}
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var btn = document.querySelector('.custom-lang-btn');
+            var list = document.querySelector('.custom-lang-list');
+            if(btn && list) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    list.classList.toggle('show');
+                });
+                document.addEventListener('click', function(e) {
+                    if(!list.contains(e.target) && !btn.contains(e.target)) {
+                        list.classList.remove('show');
+                    }
+                });
+            }
+        });
+
+        function changeLanguage(langCode, langName) {
+            document.getElementById('currentLangText').innerText = langName;
+            document.querySelector('.custom-lang-list').classList.remove('show');
+            
+            var select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = langCode === 'fr' ? '' : langCode;
+                select.dispatchEvent(new Event('change'));
+            } else {
+                // S'il ne le trouve pas immédiatement, essayer encore dans un délai
+                setTimeout(() => {
+                    var select = document.querySelector('.goog-te-combo');
+                    if (select) {
+                        select.value = langCode === 'fr' ? '' : langCode;
+                        select.dispatchEvent(new Event('change'));
+                    }
+                }, 500);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
