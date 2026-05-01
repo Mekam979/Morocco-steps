@@ -1,0 +1,134 @@
+<style>
+    /* Ajustements pour l'arabe */
+    body.lang-ar {
+        font-family: 'Montserrat', sans-serif !important;
+    }
+    body.lang-ar * {
+        letter-spacing: 0 !important;
+        word-spacing: 0 !important;
+    }
+    body.lang-ar h1, body.lang-ar h2, body.lang-ar h3 {
+        line-height: 1.4 !important;
+    }
+    /* Fix pour le hero home */
+    body.lang-ar .hero-eyebrow {
+        gap: 10px !important;
+        letter-spacing: 0 !important;
+    }
+    body.lang-ar .hero h1 {
+        font-family: 'Playfair Display', serif !important; /* Playfair supporte mieux l'arabe que Cormorant */
+        font-size: clamp(2.2rem, 6vw, 4.5rem) !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0 !important;
+        margin-bottom: 25px !important;
+    }
+    body.lang-ar .hero h1 em {
+        font-style: normal !important; /* L'italique en arabe est souvent peu lisible */
+    }
+    body.lang-ar .hero-sub {
+        font-size: 1.1rem !important;
+        letter-spacing: 0 !important;
+        margin-bottom: 35px !important;
+    }
+    body.lang-ar .btn-gold, body.lang-ar .btn-ghost {
+        letter-spacing: 0 !important;
+    }
+    body.lang-ar .scroll-down span {
+        font-size: 0.8rem !important;
+        font-weight: 700 !important;
+    }
+    /* S'assurer que le texte arabe est centré dans les conteneurs flex */
+    body.lang-ar .hero-content, body.lang-ar .hero-eyebrow, body.lang-ar .scroll-down {
+        text-align: center !important;
+    }
+</style>
+
+<script>
+    function changeLanguage(langCode, langName) {
+        if (document.getElementById('currentLangText')) {
+            document.getElementById('currentLangText').innerText = langName;
+        }
+        const dropdown = document.querySelector('.custom-lang-list');
+        if (dropdown) dropdown.classList.remove('show');
+
+        var select = document.querySelector('.goog-te-combo');
+        if (select) {
+            select.value = langCode === 'fr' ? '' : langCode;
+            select.dispatchEvent(new Event('change'));
+        } else {
+            setTimeout(() => {
+                var select = document.querySelector('.goog-te-combo');
+                if (select) {
+                    select.value = langCode === 'fr' ? '' : langCode;
+                    select.dispatchEvent(new Event('change'));
+                }
+            }, 500);
+        }
+        setTimeout(applyManualTranslation, 100);
+    }
+
+    function applyManualTranslation() {
+        function getCookie(name) {
+            let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+            return v ? v[2] : null;
+        }
+        
+        let googtrans = getCookie('googtrans');
+        let lang = 'fr';
+        if (googtrans) {
+            let parts = googtrans.split('/');
+            lang = parts[parts.length - 1];
+        }
+
+        const isAr = (lang === 'ar');
+        
+        document.querySelectorAll('[data-ar]').forEach(el => {
+            if (!el.hasAttribute('data-fr')) {
+                el.setAttribute('data-fr', el.innerHTML);
+            }
+            
+            if (isAr) {
+                el.innerHTML = el.getAttribute('data-ar');
+                el.classList.add('notranslate');
+                el.setAttribute('dir', 'rtl');
+            } else {
+                el.innerHTML = el.getAttribute('data-fr');
+                el.classList.remove('notranslate');
+                el.removeAttribute('dir');
+            }
+        });
+        
+        if (isAr) {
+            document.body.classList.add('lang-ar');
+            document.documentElement.setAttribute('dir', 'rtl');
+            document.body.setAttribute('dir', 'rtl');
+        } else {
+            document.body.classList.remove('lang-ar');
+            document.documentElement.removeAttribute('dir');
+            document.body.removeAttribute('dir');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applyManualTranslation();
+        const observer = new MutationObserver((mutations) => {
+            applyManualTranslation();
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'lang'] });
+        
+        // Custom lang selector toggle
+        var btn = document.querySelector('.custom-lang-btn');
+        var list = document.querySelector('.custom-lang-list');
+        if (btn && list) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                list.classList.toggle('show');
+            });
+            document.addEventListener('click', function (e) {
+                if (list && !list.contains(e.target) && btn && !btn.contains(e.target)) {
+                    list.classList.remove('show');
+                }
+            });
+        }
+    });
+</script>

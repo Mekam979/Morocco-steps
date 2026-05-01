@@ -11,9 +11,9 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    
 
-    
+
+
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -23,16 +23,16 @@
             }, 'google_translate_element');
         }
     </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <style>
-
-        
         /* --- CUSTOM UI TRANSLATE --- */
         .custom-lang-selector {
             position: relative;
             display: inline-block;
         }
+
         .custom-lang-btn {
             background: rgba(255, 255, 255, 0.15);
             color: #FFFFFF;
@@ -50,11 +50,13 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
+
         .custom-lang-btn:hover {
             background: rgba(255, 255, 255, 0.25);
             border-color: rgba(255, 255, 255, 0.8);
             transform: translateY(-2px);
         }
+
         .custom-lang-list {
             position: absolute;
             top: calc(100% + 10px);
@@ -73,11 +75,13 @@
             transition: all 0.3s ease;
             z-index: 9999;
         }
+
         .custom-lang-list.show {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
+
         .custom-lang-list li {
             padding: 10px 20px;
             color: rgba(255, 255, 255, 0.85);
@@ -88,23 +92,52 @@
             align-items: center;
             gap: 10px;
         }
+
         .custom-lang-list li:hover {
             background: rgba(255, 255, 255, 0.15);
             color: #FFFFFF;
         }
-        #gt_nav_slot { display: none !important; }
+
+        #gt_nav_slot {
+            display: none !important;
+        }
 
         /* --- PREMIUM GOOGLE TRANSLATE --- */
-        .goog-te-gadget { color: transparent !important; font-size: 0 !important; }
-        .goog-te-gadget span { display: none !important; }
-        .goog-te-gadget img { display: none !important; }
-        .goog-te-gadget .goog-te-combo { margin: 0 !important; }
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0 !important;
+        }
 
-        .goog-te-banner-frame.skiptranslate { display: none !important; }
-        body { top: 0px !important; }
-        #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
-        .goog-text-highlight { background: none !important; box-shadow: none !important; }
-        
+        .goog-te-gadget span {
+            display: none !important;
+        }
+
+        .goog-te-gadget img {
+            display: none !important;
+        }
+
+        .goog-te-gadget .goog-te-combo {
+            margin: 0 !important;
+        }
+
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0px !important;
+        }
+
+        #goog-gt-tt,
+        .goog-te-balloon-frame {
+            display: none !important;
+        }
+
+        .goog-text-highlight {
+            background: none !important;
+            box-shadow: none !important;
+        }
+
         .goog-te-combo {
             background: rgba(255, 255, 255, 0.15) !important;
             color: #FFFFFF !important;
@@ -120,7 +153,7 @@
             transition: all 0.3s ease !important;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .goog-te-combo:hover {
             background: rgba(255, 255, 255, 0.25) !important;
             border-color: rgba(255, 255, 255, 0.8) !important;
@@ -379,22 +412,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
-            font-size: 0.65rem;
-            font-weight: 400;
-            letter-spacing: 0.32em;
+            gap: 12px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
             color: #FFFFFF;
-            margin-bottom: 22px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 25px;
+            white-space: nowrap;
         }
 
-        .hero-eyebrow span {
-            width: 40px;
-            height: 1px;
-            background: #FFFFFF;
-            opacity: 0.8;
-            display: inline-block;
+        .hero-eyebrow span:empty {
+            display: none;
         }
 
         .hero h1 {
@@ -1364,9 +1393,12 @@
             <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="sidebar-links">
-            <a href="/" onclick="closeSidebar()"><i class="fa-solid fa-house"></i>Accueil</a>
-            <a href="/villes" onclick="closeSidebar()"><i class="fa-solid fa-map"></i>Villes</a>
-            <a href="/pricing" onclick="closeSidebar()"><i class="fa-solid fa-tag"></i>Offres</a>
+            <a href="/" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-house'></i>الرئيسية"><i
+                    class="fa-solid fa-house"></i>Accueil</a>
+            <a href="/villes" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-map'></i>المدن"><i
+                    class="fa-solid fa-map"></i>Villes</a>
+            <a href="/pricing" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-tag'></i>العروض"><i
+                    class="fa-solid fa-tag"></i>Offres</a>
         </div>
         <div class="sidebar-lang">
             <div class="sidebar-lang-label">Langue</div>
@@ -1391,22 +1423,26 @@
     <nav class="nav" id="mainNav">
         <a href="/" class="nav-brand">Morocco <em>Secrets</em></a>
         <div class="nav-links">
-            <a href="/" class="nav-link">Accueil</a>
+            <a href="/" class="nav-link" data-ar="الرئيسية">Accueil</a>
             <div class="nav-item">
-                <a href="/villes" class="nav-link">Villes <i class="fa-solid fa-chevron-down"
+                <a href="/villes" class="nav-link"
+                    data-ar="المدن <i class='fa-solid fa-chevron-down' style='font-size: 0.75em; margin-left: 4px; opacity: 0.8;'></i>">Villes
+                    <i class="fa-solid fa-chevron-down"
                         style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i></a>
                 <div class="dropdown-menu">
-                    <a href="/villes">Toutes les villes</a>
-                    <a href="/filter/Villes côtières">Côtières</a>
-                    <a href="/filter/Villes sahariennes">Sahariennes</a>
-                    <a href="/filter/Villes de montagne">Montagne</a>
-                    <a href="/filter/Villes culturelles">Culturelles</a>
-                    <a href="/filter/Villes agricoles">Agricoles</a>
+                    <a href="/villes" data-ar="كل المدن">Toutes les villes</a>
+                    <a href="/filter/Villes côtières" data-ar="ساحلية">Côtières</a>
+                    <a href="/filter/Villes sahariennes" data-ar="صحراوية">Sahariennes</a>
+                    <a href="/filter/Villes de montagne" data-ar="جبلية">Montagne</a>
+                    <a href="/filter/Villes culturelles" data-ar="ثقافية">Culturelles</a>
+                    <a href="/filter/Villes agricoles" data-ar="فلاحية">Agricoles</a>
                 </div>
             </div>
-            <a href="/pricing" class="nav-link">Offres</a>
-            
-            <div id="gt_nav_slot"><div id="google_translate_element"></div></div>
+            <a href="/pricing" class="nav-link" data-ar="العروض">Offres</a>
+
+            <div id="gt_nav_slot">
+                <div id="google_translate_element"></div>
+            </div>
             <div class="custom-lang-selector" id="customLangDropdown">
                 <div class="custom-lang-btn">
                     <i class="fa-solid fa-globe"></i>
@@ -1428,7 +1464,7 @@
                 </ul>
             </div>
 
-            
+
         </div>
         <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menu">
             <span></span><span></span><span></span>
@@ -1439,7 +1475,7 @@
     <div class="hero" id="heroSection">
         <video class="hero-video" autoplay muted loop playsinline id="heroVideo"
             onerror="document.getElementById('heroSection').classList.add('hero-video-error')">
-            <source src="{{ url_for('static', filename='videos/ved_test.mp4') }}" media="(max-width: 768px)"
+            <source src="{{ url_for('static', filename='videos/maroc-hero.mp4') }}" media="(max-width: 768px)"
                 type="video/mp4">
             <source src="{{ url_for('static', filename='videos/maroc-hero.mp4') }}" type="video/mp4">
         </video>
@@ -1453,19 +1489,19 @@
         <div class="hero-content">
             <div class="hero-eyebrow">
                 <span></span>
-                Bienvenue au Maroc
+                <span data-ar="مرحباً بكم في المغرب">Bienvenue au Maroc</span>
                 <span></span>
             </div>
-            <h1>Découvrez le <em>Maroc</em></h1>
-            <p class="hero-sub">Explorez la magie du Royaume</p>
+            <h1 data-ar="اكتشف المغرب">Découvrez le <em>Maroc</em></h1>
+            <p class="hero-sub" data-ar="استكشف سحر المملكة">Explorez la magie du Royaume</p>
             <div class="hero-cta">
-                <a href="/villes" class="btn-gold">Explorer les villes</a>
-                <a href="#categories" class="btn-ghost">Par catégorie ↓</a>
+                <a href="/villes" class="btn-gold" data-ar="استكشف المدن">Explorer les villes</a>
+                <a href="#categories" class="btn-ghost" data-ar="حسب الفئة ↓">Par catégorie ↓</a>
             </div>
         </div>
 
         <div class="scroll-down">
-            <span>Découvrir</span>
+            <span data-ar="اكتشف">Découvrir</span>
         </div>
     </div>
 
@@ -1473,9 +1509,9 @@
     <section class="categories-section" id="categories">
         <div class="cat-inner">
             <div class="cat-header">
-                <span class="cat-eyebrow">Destinations</span>
+                <span class="cat-eyebrow" data-ar="الوجهات">Destinations</span>
                 <div class="cat-rule"></div>
-                <h2 class="cat-title">Par <em>catégorie</em></h2>
+                <h2 class="cat-title" data-ar="حسب <em>الفئة</em>">Par <em>catégorie</em></h2>
             </div>
 
             <div class="cat-grid">
@@ -1483,40 +1519,40 @@
                     <div class="cat-card-bg" style="background-image:url('/static/images/coast.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
-                        <span class="cat-name">Côtières</span>
-                        <span class="cat-arrow">Explorer →</span>
+                        <span class="cat-name" data-ar="ساحلية">Côtières</span>
+                        <span class="cat-arrow" data-ar="استكشف ←">Explorer →</span>
                     </div>
                 </a>
                 <a href="/filter/Villes sahariennes" class="cat-card">
                     <div class="cat-card-bg" style="background-image:url('/static/images/sahara.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
-                        <span class="cat-name">Sahariennes</span>
-                        <span class="cat-arrow">Explorer →</span>
+                        <span class="cat-name" data-ar="صحراوية">Sahariennes</span>
+                        <span class="cat-arrow" data-ar="استكشف ←">Explorer →</span>
                     </div>
                 </a>
                 <a href="/filter/Villes de montagne" class="cat-card">
                     <div class="cat-card-bg" style="background-image:url('/static/images/mountain.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
-                        <span class="cat-name">Montagne</span>
-                        <span class="cat-arrow">Explorer →</span>
+                        <span class="cat-name" data-ar="جبلية">Montagne</span>
+                        <span class="cat-arrow" data-ar="استكشف ←">Explorer →</span>
                     </div>
                 </a>
                 <a href="/filter/Villes culturelles" class="cat-card">
                     <div class="cat-card-bg" style="background-image:url('/static/images/culture.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
-                        <span class="cat-name">Culturelles</span>
-                        <span class="cat-arrow">Explorer →</span>
+                        <span class="cat-name" data-ar="ثقافية">Culturelles</span>
+                        <span class="cat-arrow" data-ar="استكشف ←">Explorer →</span>
                     </div>
                 </a>
                 <a href="/filter/Villes agricoles" class="cat-card">
                     <div class="cat-card-bg" style="background-image:url('/static/images/agricole.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
-                        <span class="cat-name">Agricoles</span>
-                        <span class="cat-arrow">Explorer →</span>
+                        <span class="cat-name" data-ar="فلاحية">Agricoles</span>
+                        <span class="cat-arrow" data-ar="استكشف ←">Explorer →</span>
                     </div>
                 </a>
             </div>
@@ -1538,7 +1574,8 @@
             text-align: center;
             margin-bottom: 40px;
             color: var(--identity);
-        ">
+        "
+            data-ar="<i class='fa-solid fa-feather-pointed' style='color: var(--desert); margin-right: 12px;'></i> مهمتنا">
             <i class="fa-solid fa-feather-pointed" style="color: var(--desert); margin-right: 12px;"></i>
             Notre <span style="font-style: italic; color: var(--desert);">Mission</span>
         </h2>
@@ -1561,13 +1598,14 @@
             </div>
 
             <div class="explore-text">
-                <div class="explore-eyebrow">Notre mission</div>
-                <h2
-                    style="font-family:'Playfair Display',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:300; color:var(--identity); line-height:1.15; margin-bottom:24px;">
+                <div class="explore-eyebrow" data-ar="مهمتنا">Notre mission</div>
+                <h2 style="font-family:'Playfair Display',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:300; color:var(--identity); line-height:1.15; margin-bottom:24px;"
+                    data-ar="دليلك <em style='font-style:italic; color:var(--identity-light);'>السياحي</em> الذكي">
                     Votre guide <em style="font-style:italic; color:var(--identity-light);">touristique</em> intelligent
                 </h2>
                 <div style="width:48px; height:1px; background:var(--identity); margin-bottom:24px; opacity:0.5;"></div>
-                <p style="font-size:0.93rem; line-height:1.85; color:var(--text-secondary); margin-bottom:36px;">
+                <p style="font-size:0.93rem; line-height:1.85; color:var(--text-secondary); margin-bottom:36px;"
+                    data-ar="ترافقكم تريبي عبر عجائب المغرب — من المدن العتيقة التاريخية إلى كثبان الصحراء اللامتناهية، مروراً بقمم الأطلس الثلجية.">
                     Trippy vous accompagne à travers les merveilles du Maroc — des médinas historiques aux dunes
                     infinies du Sahara, en passant par les sommets enneigés de l'Atlas.
                 </p>
@@ -1577,29 +1615,30 @@
                         <div
                             style="font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:300; color:var(--identity); line-height:1;">
                             30+</div>
-                        <div
-                            style="font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-dim); margin-top:4px;">
+                        <div style="font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-dim); margin-top:4px;"
+                            data-ar="مدن">
                             Villes</div>
                     </div>
                     <div>
                         <div
                             style="font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:300; color:var(--identity); line-height:1;">
                             6</div>
-                        <div
-                            style="font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-dim); margin-top:4px;">
+                        <div style="font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-dim); margin-top:4px;"
+                            data-ar="فئات">
                             Catégories</div>
                     </div>
                     <div>
                         <div
                             style="font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:300; color:var(--identity); line-height:1;">
                             ∞</div>
-                        <div
-                            style="font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-dim); margin-top:4px;">
+                        <div style="font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-dim); margin-top:4px;"
+                            data-ar="اكتشافات">
                             Découvertes</div>
                     </div>
                 </div>
                 <a href="/villes"
-                    style="background: var(--desert); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.78rem; display: inline-block; letter-spacing: 0.08em; transition: background 0.3s;">
+                    style="background: var(--desert); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.78rem; display: inline-block; letter-spacing: 0.08em; transition: background 0.3s;"
+                    data-ar="<i class='fa-solid fa-map-pin' style='margin-right:8px;'></i>عرض جميع المدن">
                     <i class="fa-solid fa-map-pin" style="margin-right:8px;"></i>Voir toutes les villes
                 </a>
             </div>
@@ -1682,7 +1721,7 @@
     </script>
 
     <!-- Google Translate -->
-    
+
 
     <!-- CHATBOT -->
     {% include 'chatbot_carre.html' %}
@@ -1945,43 +1984,7 @@
         });
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var btn = document.querySelector('.custom-lang-btn');
-            var list = document.querySelector('.custom-lang-list');
-            if(btn && list) {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    list.classList.toggle('show');
-                });
-                document.addEventListener('click', function(e) {
-                    if(!list.contains(e.target) && !btn.contains(e.target)) {
-                        list.classList.remove('show');
-                    }
-                });
-            }
-        });
-
-        function changeLanguage(langCode, langName) {
-            document.getElementById('currentLangText').innerText = langName;
-            document.querySelector('.custom-lang-list').classList.remove('show');
-            
-            var select = document.querySelector('.goog-te-combo');
-            if (select) {
-                select.value = langCode === 'fr' ? '' : langCode;
-                select.dispatchEvent(new Event('change'));
-            } else {
-                // S'il ne le trouve pas immédiatement, essayer encore dans un délai
-                setTimeout(() => {
-                    var select = document.querySelector('.goog-te-combo');
-                    if (select) {
-                        select.value = langCode === 'fr' ? '' : langCode;
-                        select.dispatchEvent(new Event('change'));
-                    }
-                }, 500);
-            }
-        }
-    </script>
+    {% include 'manual_lang.html' %}
 
 </body>
 

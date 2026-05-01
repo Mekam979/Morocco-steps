@@ -10,6 +10,7 @@ Fonctionnement :
 
 import pymysql
 import re
+import os
 from difflib import SequenceMatcher
 
 
@@ -19,12 +20,14 @@ from difflib import SequenceMatcher
 
 def get_db_connection():
     return pymysql.connect(
-        host='localhost',
-        user='root',
-        password='123456789',
-        db='tourisme_maroc',
+        host=os.getenv('DB_HOST', 'localhost'),
+        port=int(os.getenv('DB_PORT', 3306)),
+        user=os.getenv('DB_USER', 'root'),
+        password=os.getenv('DB_PASSWORD', ''),
+        db=os.getenv('DB_NAME', 'tourisme_maroc'),
         cursorclass=pymysql.cursors.DictCursor,
-        charset='utf8mb4'
+        charset='utf8mb4',
+        ssl={'verify_cert': False}
     )
 
 

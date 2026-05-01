@@ -11,9 +11,9 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    
 
-    
+
+
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -23,16 +23,16 @@
             }, 'google_translate_element');
         }
     </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <style>
-
-        
         /* --- CUSTOM UI TRANSLATE --- */
         .custom-lang-selector {
             position: relative;
             display: inline-block;
         }
+
         .custom-lang-btn {
             background: rgba(255, 255, 255, 0.15);
             color: #FFFFFF;
@@ -50,11 +50,13 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
+
         .custom-lang-btn:hover {
             background: rgba(255, 255, 255, 0.25);
             border-color: rgba(255, 255, 255, 0.8);
             transform: translateY(-2px);
         }
+
         .custom-lang-list {
             position: absolute;
             top: calc(100% + 10px);
@@ -73,11 +75,13 @@
             transition: all 0.3s ease;
             z-index: 9999;
         }
+
         .custom-lang-list.show {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
+
         .custom-lang-list li {
             padding: 10px 20px;
             color: rgba(255, 255, 255, 0.85);
@@ -88,23 +92,52 @@
             align-items: center;
             gap: 10px;
         }
+
         .custom-lang-list li:hover {
             background: rgba(255, 255, 255, 0.15);
             color: #FFFFFF;
         }
-        #gt_nav_slot { display: none !important; }
+
+        #gt_nav_slot {
+            display: none !important;
+        }
 
         /* --- PREMIUM GOOGLE TRANSLATE --- */
-        .goog-te-gadget { color: transparent !important; font-size: 0 !important; }
-        .goog-te-gadget span { display: none !important; }
-        .goog-te-gadget img { display: none !important; }
-        .goog-te-gadget .goog-te-combo { margin: 0 !important; }
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0 !important;
+        }
 
-        .goog-te-banner-frame.skiptranslate { display: none !important; }
-        body { top: 0px !important; }
-        #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
-        .goog-text-highlight { background: none !important; box-shadow: none !important; }
-        
+        .goog-te-gadget span {
+            display: none !important;
+        }
+
+        .goog-te-gadget img {
+            display: none !important;
+        }
+
+        .goog-te-gadget .goog-te-combo {
+            margin: 0 !important;
+        }
+
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0px !important;
+        }
+
+        #goog-gt-tt,
+        .goog-te-balloon-frame {
+            display: none !important;
+        }
+
+        .goog-text-highlight {
+            background: none !important;
+            box-shadow: none !important;
+        }
+
         .goog-te-combo {
             background: rgba(255, 255, 255, 0.15) !important;
             color: #FFFFFF !important;
@@ -120,7 +153,7 @@
             transition: all 0.3s ease !important;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .goog-te-combo:hover {
             background: rgba(255, 255, 255, 0.25) !important;
             border-color: rgba(255, 255, 255, 0.8) !important;
@@ -324,18 +357,34 @@
             transform-origin: center;
         }
 
-        .hamburger span:nth-child(1) { width: 24px; }
-        .hamburger span:nth-child(2) { width: 16px; opacity: 0.65; }
-        .hamburger span:nth-child(3) { width: 24px; }
+        .hamburger span:nth-child(1) {
+            width: 24px;
+        }
+
+        .hamburger span:nth-child(2) {
+            width: 16px;
+            opacity: 0.65;
+        }
+
+        .hamburger span:nth-child(3) {
+            width: 24px;
+        }
 
         .hamburger.open span:nth-child(1) {
             transform: translateY(7px) rotate(45deg);
-            opacity: 1; width: 24px;
+            opacity: 1;
+            width: 24px;
         }
-        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
         .hamburger.open span:nth-child(3) {
             transform: translateY(-7px) rotate(-45deg);
-            opacity: 1; width: 24px;
+            opacity: 1;
+            width: 24px;
         }
 
         .sidebar-overlay {
@@ -345,7 +394,10 @@
             background: rgba(0, 0, 0, 0.45);
             z-index: 2050;
         }
-        .sidebar-overlay.open { display: block; }
+
+        .sidebar-overlay.open {
+            display: block;
+        }
 
         .mobile-sidebar {
             position: fixed;
@@ -362,7 +414,10 @@
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .mobile-sidebar.open { transform: translateX(0); }
+
+        .mobile-sidebar.open {
+            transform: translateX(0);
+        }
 
         .sidebar-header {
             padding: 22px 24px;
@@ -379,6 +434,7 @@
             color: white;
             letter-spacing: -0.01em;
         }
+
         .sidebar-brand-m em {
             font-style: italic;
             color: var(--desert-gold);
@@ -393,7 +449,10 @@
             padding: 5px;
             transition: color 0.2s;
         }
-        .sidebar-close:hover { color: white; }
+
+        .sidebar-close:hover {
+            color: white;
+        }
 
         .sidebar-links {
             flex: 1;
@@ -417,7 +476,12 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.07);
             transition: all 0.3s;
         }
-        .sidebar-links a i { opacity: 0.6; width: 20px; }
+
+        .sidebar-links a i {
+            opacity: 0.6;
+            width: 20px;
+        }
+
         .sidebar-links a:hover {
             background: rgba(255, 255, 255, 0.08);
             color: var(--desert-gold);
@@ -1023,9 +1087,12 @@
             <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="sidebar-links">
-            <a href="/" onclick="closeSidebar()"><i class="fa-solid fa-house"></i>Accueil</a>
-            <a href="/villes" onclick="closeSidebar()"><i class="fa-solid fa-map"></i>Villes</a>
-            <a href="/pricing" onclick="closeSidebar()"><i class="fa-solid fa-tag"></i>Offres</a>
+            <a href="/" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-house'></i>الرئيسية"><i
+                    class="fa-solid fa-house"></i>Accueil</a>
+            <a href="/villes" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-map'></i>المدن"><i
+                    class="fa-solid fa-map"></i>Villes</a>
+            <a href="/pricing" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-tag'></i>العروض"><i
+                    class="fa-solid fa-tag"></i>Offres</a>
         </div>
         <div class="sidebar-lang">
             <div class="sidebar-lang-label">Langue</div>
@@ -1050,22 +1117,26 @@
     <nav class="nav" id="mainNav">
         <a href="/" class="nav-brand">Morocco <em>Secrets</em></a>
         <div class="nav-links">
-            <a href="/" class="nav-link">Accueil</a>
+            <a href="/" class="nav-link" data-ar="الرئيسية">Accueil</a>
             <div class="nav-item">
-                <a href="/villes" class="nav-link">Villes <i class="fa-solid fa-chevron-down"
+                <a href="/villes" class="nav-link"
+                    data-ar="المدن <i class='fa-solid fa-chevron-down' style='font-size: 0.75em; margin-left: 4px; opacity: 0.8;'></i>">Villes
+                    <i class="fa-solid fa-chevron-down"
                         style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i></a>
                 <div class="dropdown-menu">
-                    <a href="/villes">Toutes les villes</a>
-                    <a href="/filter/Villes côtières">Côtières</a>
-                    <a href="/filter/Villes sahariennes">Sahariennes</a>
-                    <a href="/filter/Villes de montagne">Montagne</a>
-                    <a href="/filter/Villes culturelles">Culturelles</a>
-                    <a href="/filter/Villes agricoles">Agricoles</a>
+                    <a href="/villes" data-ar="كل المدن">Toutes les villes</a>
+                    <a href="/filter/Villes côtières" data-ar="ساحلية">Côtières</a>
+                    <a href="/filter/Villes sahariennes" data-ar="صحراوية">Sahariennes</a>
+                    <a href="/filter/Villes de montagne" data-ar="جبلية">Montagne</a>
+                    <a href="/filter/Villes culturelles" data-ar="ثقافية">Culturelles</a>
+                    <a href="/filter/Villes agricoles" data-ar="فلاحية">Agricoles</a>
                 </div>
             </div>
-            <a href="/pricing" class="nav-link">Offres</a>
-            
-            <div id="gt_nav_slot"><div id="google_translate_element"></div></div>
+            <a href="/pricing" class="nav-link" data-ar="العروض">Offres</a>
+
+            <div id="gt_nav_slot">
+                <div id="google_translate_element"></div>
+            </div>
             <div class="custom-lang-selector" id="customLangDropdown">
                 <div class="custom-lang-btn">
                     <i class="fa-solid fa-globe"></i>
@@ -1087,7 +1158,7 @@
                 </ul>
             </div>
 
-            
+
         </div>
         <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menu">
             <span></span><span></span><span></span>
@@ -1097,7 +1168,7 @@
     <!-- HERO -->
     <div class="page-hero" style="background-image: url('
         {%- if titre_filter == 'Toutes les villes du Maroc' -%}
-            {{ url_for("static", filename="images/maroc-bg.png" ) }} {%- elif "côtières" in titre_filter -%} {{
+            {{ url_for(" static", filename="images/maroc-bg.png" ) }} {%- elif "côtières" in titre_filter -%} {{
         url_for("static", filename="images/coast.jpg" ) }} {%- elif "sahariennes" in titre_filter -%} {{
         url_for("static", filename="images/sahara.jpg" ) }} {%- elif "montagne" in titre_filter -%} {{ url_for("static",
         filename="images/mountain.jpg" ) }} {%- elif "culturelles" in titre_filter -%} {{ url_for("static",
@@ -1110,22 +1181,23 @@
                 <span></span>
             </div>
             <h1>
-                {% if titre_filter == 'Toutes les villes du Maroc' %} Toutes les <em>Villes</em>
+                {% if titre_filter == ' Toutes les villes du Maroc' %} <span data-ar="كل المدن">Toutes les
+        <em>Villes</em></span>
         {% elif 'côtières' in titre_filter %}
-        Villes <em>Côtières</em>
+        <span data-ar="المدن الساحلية">Villes <em>Côtières</em></span>
         {% elif 'sahariennes' in titre_filter %}
-        Villes <em>Sahariennes</em>
+        <span data-ar="المدن الصحراوية">Villes <em>Sahariennes</em></span>
         {% elif 'montagne' in titre_filter %}
-        Villes de <em>Montagne</em>
+        <span data-ar="مدن الجبل">Villes de <em>Montagne</em></span>
         {% elif 'culturelles' in titre_filter %}
-        Villes <em>Culturelles</em>
+        <span data-ar="مدن ثقافية">Villes <em>Culturelles</em></span>
         {% elif 'agricoles' in titre_filter %}
-        Villes <em>Agricoles</em>
+        <span data-ar="مدن فلاحية">Villes <em>Agricoles</em></span>
         {% else %}
         {{ titre_filter }}
         {% endif %}
         </h1>
-        <p class="hero-sub">
+        <p class="hero-sub" data-ar="{{ villes | length }} وجهة للاكتشاف">
             {% if villes %}
             {{ villes | length }} destination{% if villes | length > 1 %}s{% endif %} à découvrir
             {% else %}
@@ -1137,25 +1209,38 @@
     </div>
 
     <!-- FILTER BAR -->
+    {% set city_map = {
+    "Agadir": "أكادير", "Al Hoceima": "الحسيمة", "Asilah": "أصيلة", "Azrou": "أزرو",
+    "Berkane": "بركان", "Casablanca": "الدار البيضاء", "Chefchaouen": "شفشاون",
+    "Dakhla": "الداخلة", "El Jadida": "الجديدة", "Essaouira": "الصويرة", "Fès": "فاس",
+    "Haut Atlas": "الأطلس الكبير", "Ifrane": "إفران", "Imlil": "إمليل",
+    "Kelaat M'Gouna": "قلعة مكونة ", "Kénitra": "القنيطرة", "Laâyoune": "العيون",
+    "Marrakech": "مراكش", "Meknès": "مكناس", "Merzouga": "مرزوكة",
+    "Moyen Atlas": "الأطلس المتوسط", "Nador": "الناظور", "Oualidia": "الوليدية",
+    "Ouarzazate": "ورزازات", "Oujda": "وجدة", "Oukaïmeden": "أوكايمدن",
+    "Rabat": "الرباط", "Safi": "آسفي", "Saïdia": "السعيدية", "Tanger": "طنجة",
+    "Taourirt": "تاوريرت", "Taroudant": "تارودانت", "Taza": "تازة",
+    "Tétouan": "تطوان", "Zagora": "زاكورة"
+    } %}
     <div class="filter-bar">
-        <a href="/villes"
-            class="filter-tab {% if titre_filter == 'Toutes les villes du Maroc' %}active{% endif %}">Toutes</a>
-        <a href="/filter/Villes côtières"
-            class="filter-tab {% if 'côtières' in titre_filter %}active{% endif %}">Côtières</a>
-        <a href="/filter/Villes sahariennes"
-            class="filter-tab {% if 'sahariennes' in titre_filter %}active{% endif %}">Sahariennes</a>
-        <a href="/filter/Villes de montagne"
-            class="filter-tab {% if 'montagne' in titre_filter %}active{% endif %}">Montagne</a>
-        <a href="/filter/Villes culturelles"
-            class="filter-tab {% if 'culturelles' in titre_filter %}active{% endif %}">Culturelles</a>
-        <a href="/filter/Villes agricoles"
-            class="filter-tab {% if 'agricoles' in titre_filter %}active{% endif %}">Agricoles</a>
+        <a href="/villes" class="filter-tab {% if titre_filter == 'Toutes les villes du Maroc' %}active{% endif %}"
+            data-ar="الكل">Toutes</a>
+        <a href="/filter/Villes côtières" class="filter-tab {% if 'côtières' in titre_filter %}active{% endif %}"
+            data-ar="ساحلية">Côtières</a>
+        <a href="/filter/Villes sahariennes" class="filter-tab {% if 'sahariennes' in titre_filter %}active{% endif %}"
+            data-ar="صحراوية">Sahariennes</a>
+        <a href="/filter/Villes de montagne" class="filter-tab {% if 'montagne' in titre_filter %}active{% endif %}"
+            data-ar="جبلية">Montagne</a>
+        <a href="/filter/Villes culturelles" class="filter-tab {% if 'culturelles' in titre_filter %}active{% endif %}"
+            data-ar="ثقافية">Culturelles</a>
+        <a href="/filter/Villes agricoles" class="filter-tab {% if 'agricoles' in titre_filter %}active{% endif %}"
+            data-ar="فلاحية">Agricoles</a>
     </div>
 
     <!-- CITIES GRID -->
     <section class="cities-section">
         <div class="section-header">
-            <span class="section-label">Nos destinations</span>
+            <span class="section-label" data-ar="وجهاتنا">Nos destinations</span>
             <div class="section-rule"></div>
             <span class="section-count">
                 {% if villes %}
@@ -1179,11 +1264,15 @@
                 <div class="city-card-overlay"></div>
 
                 <div class="city-body">
-                    <p class="city-tag">{{ ville['type_ville'] if ville['type_ville'] else 'Ville marocaine' }}</p>
-                    <h2 class="city-name">{{ ville['nom_ville'] }}</h2>
+                    <p class="city-tag" data-ar="مدينة مغربية">{{ ville['type_ville'] if ville['type_ville'] else 'Ville
+                        marocaine' }}</p>
+                    <h2 class="city-name"
+                        data-ar="{{ city_map[ville['nom_ville']] if ville['nom_ville'] in city_map else ville['nom_ville'] }}">
+                        {{ ville['nom_ville'] }}</h2>
                     <div class="city-rule"></div>
 
-                    <p class="city-slogan">
+                    <p class="city-slogan"
+                        data-ar="مرحباً بكم في {{ city_map[ville['nom_ville']] if ville['nom_ville'] in city_map else ville['nom_ville'] }}">
                         {% if ville['slogan'] and ville['slogan']|length > 0 %}
                         "{{ ville['slogan'] }}"
                         {% else %}
@@ -1192,10 +1281,10 @@
                     </p>
 
                     <div class="city-cta">
-                        <a href="{{ url_for('details_ville', nom=ville['nom_ville']) }}"
-                            class="cta-primary">Découvrir</a>
+                        <a href="{{ url_for('details_ville', nom=ville['nom_ville']) }}" class="cta-primary"
+                            data-ar="اكتشف">Découvrir</a>
                         <a href="https://www.google.com/maps/search/{{ ville['nom_ville'] }}+Maroc" target="_blank"
-                            rel="noopener noreferrer" class="cta-secondary">↗ Carte</a>
+                            rel="noopener noreferrer" class="cta-secondary" data-ar="↗ الخريطة">↗ Carte</a>
                     </div>
                 </div>
             </div>
@@ -1352,43 +1441,7 @@
     {% include 'chatbot_carre.html' %}
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var btn = document.querySelector('.custom-lang-btn');
-            var list = document.querySelector('.custom-lang-list');
-            if(btn && list) {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    list.classList.toggle('show');
-                });
-                document.addEventListener('click', function(e) {
-                    if(!list.contains(e.target) && !btn.contains(e.target)) {
-                        list.classList.remove('show');
-                    }
-                });
-            }
-        });
-
-        function changeLanguage(langCode, langName) {
-            document.getElementById('currentLangText').innerText = langName;
-            document.querySelector('.custom-lang-list').classList.remove('show');
-            
-            var select = document.querySelector('.goog-te-combo');
-            if (select) {
-                select.value = langCode === 'fr' ? '' : langCode;
-                select.dispatchEvent(new Event('change'));
-            } else {
-                // S'il ne le trouve pas immédiatement, essayer encore dans un délai
-                setTimeout(() => {
-                    var select = document.querySelector('.goog-te-combo');
-                    if (select) {
-                        select.value = langCode === 'fr' ? '' : langCode;
-                        select.dispatchEvent(new Event('change'));
-                    }
-                }, 500);
-            }
-        }
-    </script>
+    {% include 'manual_lang.html' %}
 
 </body>
 

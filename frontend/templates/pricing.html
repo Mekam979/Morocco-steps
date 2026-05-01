@@ -10,8 +10,8 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&family=Playfair+Display:ital,wght@0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    
+
+
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -21,16 +21,16 @@
             }, 'google_translate_element');
         }
     </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <style>
-
-        
         /* --- CUSTOM UI TRANSLATE --- */
         .custom-lang-selector {
             position: relative;
             display: inline-block;
         }
+
         .custom-lang-btn {
             background: rgba(255, 255, 255, 0.15);
             color: #FFFFFF;
@@ -48,11 +48,13 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
+
         .custom-lang-btn:hover {
             background: rgba(255, 255, 255, 0.25);
             border-color: rgba(255, 255, 255, 0.8);
             transform: translateY(-2px);
         }
+
         .custom-lang-list {
             position: absolute;
             top: calc(100% + 10px);
@@ -71,11 +73,13 @@
             transition: all 0.3s ease;
             z-index: 9999;
         }
+
         .custom-lang-list.show {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
+
         .custom-lang-list li {
             padding: 10px 20px;
             color: rgba(255, 255, 255, 0.85);
@@ -86,23 +90,52 @@
             align-items: center;
             gap: 10px;
         }
+
         .custom-lang-list li:hover {
             background: rgba(255, 255, 255, 0.15);
             color: #FFFFFF;
         }
-        #gt_nav_slot { display: none !important; }
+
+        #gt_nav_slot {
+            display: none !important;
+        }
 
         /* --- PREMIUM GOOGLE TRANSLATE --- */
-        .goog-te-gadget { color: transparent !important; font-size: 0 !important; }
-        .goog-te-gadget span { display: none !important; }
-        .goog-te-gadget img { display: none !important; }
-        .goog-te-gadget .goog-te-combo { margin: 0 !important; }
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0 !important;
+        }
 
-        .goog-te-banner-frame.skiptranslate { display: none !important; }
-        body { top: 0px !important; }
-        #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
-        .goog-text-highlight { background: none !important; box-shadow: none !important; }
-        
+        .goog-te-gadget span {
+            display: none !important;
+        }
+
+        .goog-te-gadget img {
+            display: none !important;
+        }
+
+        .goog-te-gadget .goog-te-combo {
+            margin: 0 !important;
+        }
+
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0px !important;
+        }
+
+        #goog-gt-tt,
+        .goog-te-balloon-frame {
+            display: none !important;
+        }
+
+        .goog-text-highlight {
+            background: none !important;
+            box-shadow: none !important;
+        }
+
         .goog-te-combo {
             background: rgba(255, 255, 255, 0.15) !important;
             color: #FFFFFF !important;
@@ -118,7 +151,7 @@
             transition: all 0.3s ease !important;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .goog-te-combo:hover {
             background: rgba(255, 255, 255, 0.25) !important;
             border-color: rgba(255, 255, 255, 0.8) !important;
@@ -359,18 +392,34 @@
             transform-origin: center;
         }
 
-        .hamburger span:nth-child(1) { width: 24px; }
-        .hamburger span:nth-child(2) { width: 16px; opacity: 0.65; }
-        .hamburger span:nth-child(3) { width: 24px; }
+        .hamburger span:nth-child(1) {
+            width: 24px;
+        }
+
+        .hamburger span:nth-child(2) {
+            width: 16px;
+            opacity: 0.65;
+        }
+
+        .hamburger span:nth-child(3) {
+            width: 24px;
+        }
 
         .hamburger.open span:nth-child(1) {
             transform: translateY(7px) rotate(45deg);
-            opacity: 1; width: 24px;
+            opacity: 1;
+            width: 24px;
         }
-        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
         .hamburger.open span:nth-child(3) {
             transform: translateY(-7px) rotate(-45deg);
-            opacity: 1; width: 24px;
+            opacity: 1;
+            width: 24px;
         }
 
         .sidebar-overlay {
@@ -380,7 +429,10 @@
             background: rgba(0, 0, 0, 0.45);
             z-index: 2050;
         }
-        .sidebar-overlay.open { display: block; }
+
+        .sidebar-overlay.open {
+            display: block;
+        }
 
         .mobile-sidebar {
             position: fixed;
@@ -397,7 +449,10 @@
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .mobile-sidebar.open { transform: translateX(0); }
+
+        .mobile-sidebar.open {
+            transform: translateX(0);
+        }
 
         .sidebar-header {
             padding: 22px 24px;
@@ -414,6 +469,7 @@
             color: white;
             letter-spacing: -0.01em;
         }
+
         .sidebar-brand-m em {
             font-style: italic;
             color: var(--desert-gold);
@@ -428,7 +484,10 @@
             padding: 5px;
             transition: color 0.2s;
         }
-        .sidebar-close:hover { color: white; }
+
+        .sidebar-close:hover {
+            color: white;
+        }
 
         .sidebar-links {
             flex: 1;
@@ -452,7 +511,12 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.07);
             transition: all 0.3s;
         }
-        .sidebar-links a i { opacity: 0.6; width: 20px; }
+
+        .sidebar-links a i {
+            opacity: 0.6;
+            width: 20px;
+        }
+
         .sidebar-links a:hover {
             background: rgba(255, 255, 255, 0.08);
             color: var(--desert-gold);
@@ -1324,9 +1388,12 @@
             <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="sidebar-links">
-            <a href="/" onclick="closeSidebar()"><i class="fa-solid fa-house"></i>Accueil</a>
-            <a href="/villes" onclick="closeSidebar()"><i class="fa-solid fa-map"></i>Villes</a>
-            <a href="/pricing" onclick="closeSidebar()"><i class="fa-solid fa-tag"></i>Offres</a>
+            <a href="/" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-house'></i>الرئيسية"><i
+                    class="fa-solid fa-house"></i>Accueil</a>
+            <a href="/villes" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-map'></i>المدن"><i
+                    class="fa-solid fa-map"></i>Villes</a>
+            <a href="/pricing" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-tag'></i>العروض"><i
+                    class="fa-solid fa-tag"></i>Offres</a>
         </div>
         <div class="sidebar-lang">
             <div class="sidebar-lang-label">Langue</div>
@@ -1350,22 +1417,26 @@
     <nav class="nav" id="mainNav">
         <a href="/" class="nav-brand">Morocco <em>Secrets</em></a>
         <div class="nav-links">
-            <a href="/" class="nav-link">Accueil</a>
+            <a href="/" class="nav-link" data-ar="الرئيسية">Accueil</a>
             <div class="nav-item">
-                <a href="/villes" class="nav-link">Villes <i class="fa-solid fa-chevron-down"
+                <a href="/villes" class="nav-link"
+                    data-ar="المدن <i class='fa-solid fa-chevron-down' style='font-size: 0.75em; margin-left: 4px; opacity: 0.8;'></i>">Villes
+                    <i class="fa-solid fa-chevron-down"
                         style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i></a>
                 <div class="dropdown-menu">
-                    <a href="/villes">Toutes les villes</a>
-                    <a href="/filter/Villes côtières">Côtières</a>
-                    <a href="/filter/Villes sahariennes">Sahariennes</a>
-                    <a href="/filter/Villes de montagne">Montagne</a>
-                    <a href="/filter/Villes culturelles">Culturelles</a>
-                    <a href="/filter/Villes agricoles">Agricoles</a>
+                    <a href="/villes" data-ar="كل المدن">Toutes les villes</a>
+                    <a href="/filter/Villes côtières" data-ar="ساحلية">Côtières</a>
+                    <a href="/filter/Villes sahariennes" data-ar="صحراوية">Sahariennes</a>
+                    <a href="/filter/Villes de montagne" data-ar="جبلية">Montagne</a>
+                    <a href="/filter/Villes culturelles" data-ar="ثقافية">Culturelles</a>
+                    <a href="/filter/Villes agricoles" data-ar="فلاحية">Agricoles</a>
                 </div>
             </div>
-            <a href="/pricing" class="nav-link">Offres</a>
-            
-            <div id="gt_nav_slot"><div id="google_translate_element"></div></div>
+            <a href="/pricing" class="nav-link" data-ar="العروض">Offres</a>
+
+            <div id="gt_nav_slot">
+                <div id="google_translate_element"></div>
+            </div>
             <div class="custom-lang-selector" id="customLangDropdown">
                 <div class="custom-lang-btn">
                     <i class="fa-solid fa-globe"></i>
@@ -1387,7 +1458,7 @@
                 </ul>
             </div>
 
-            
+
         </div>
         <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menu">
             <span></span><span></span><span></span>
@@ -1400,14 +1471,15 @@
         <div class="pricing-hero-bg"></div>
 
         <div class="hero-inner">
-            <div class="hero-eyebrow">Nos formules</div>
-            <h1 class="hero-title">Choisissez votre <em>aventure</em></h1>
-            <p class="hero-sub">Des formules adaptées à chaque voyageur du Maroc</p>
+            <div class="hero-eyebrow" data-ar="خططنا">Nos formules</div>
+            <h1 class="hero-title" data-ar="اختر <em>مغامرتك</em>">Choisissez votre <em>aventure</em></h1>
+            <p class="hero-sub" data-ar="خطط مصممة لتناسب كل مسافر في المغرب">Des formules adaptées à chaque voyageur du
+                Maroc</p>
             <div class="billing-toggle">
-                <span class="billing-label active" id="labelMonthly">Mensuel</span>
+                <span class="billing-label active" id="labelMonthly" data-ar="شهري">Mensuel</span>
                 <div class="toggle-switch" id="toggleSwitch" onclick="toggleBilling()"></div>
-                <span class="billing-label" id="labelAnnual">Annuel</span>
-                <span class="save-badge">−20%</span>
+                <span class="billing-label" id="idlabelAnnual" data-ar="سنوي">Annuel</span>
+                <span class="save-badge" data-ar="وفر 20%">−20%</span>
             </div>
         </div>
     </div>
@@ -1419,44 +1491,48 @@
             <!-- ── EXPLORATEUR : Médina de Fès / Marrakech ── -->
             <div class="plan-card explorer" id="card0">
                 <div class="plan-hero">
-                    <img class="plan-hero-img"
-                        src="{{ url_for('static', filename='images/Chefchaouen.jpg') }}"
+                    <img class="plan-hero-img" src="{{ url_for('static', filename='images/Chefchaouen.jpg') }}"
                         alt="Chefchaouen — La perle bleue du Maroc" onerror="this.style.display='none'">
                     <div class="plan-hero-overlay">
-                        <div class="plan-hero-label">Pack Découverte</div>
-                        <div class="plan-hero-title">Explorateur</div>
+                        <div class="plan-hero-label" data-ar="باقة الاكتشاف">Pack Découverte</div>
+                        <div class="plan-hero-title" data-ar="مكتشف">Explorateur</div>
                     </div>
                 </div>
                 <div class="plan-price-block">
                     <div class="plan-price">
                         <span class="price-amount" data-monthly="0" data-annual="0">0</span>
-                        <span class="price-currency"> MAD</span>
-                        <span class="price-period">/mois</span>
+                        <span class="price-currency" data-ar=" درهم"> MAD</span>
+                        <span class="price-period" data-ar="/شهرياً">/mois</span>
                     </div>
-                    <div class="plan-tagline-small">Pour découvrir le Maroc</div>
+                    <div class="plan-tagline-small" data-ar="لاكتشاف المغرب">Pour découvrir le Maroc</div>
                 </div>
                 <ul class="plan-features">
                     <li>
-                        <div class="feat-icon">✓</div>Accès à toutes les villes
+                        <div class="feat-icon">✓</div><span data-ar="الوصول إلى جميع المدن">Accès à toutes les
+                            villes</span>
                     </li>
                     <li>
-                        <div class="feat-icon">✓</div>Chatbot IA (10 questions)
+                        <div class="feat-icon">✓</div><span data-ar="روبوت محادثة (10 أسئلة)">Chatbot IA (10
+                            questions)</span>
                     </li>
                     <li>
-                        <div class="feat-icon">✓</div>Hôtels &amp; restaurants
+                        <div class="feat-icon">✓</div><span data-ar="الفنادق والمطاعم">Hôtels &amp; restaurants</span>
                     </li>
                     <li>
-                        <div class="feat-icon">✓</div>Carte interactive
+                        <div class="feat-icon">✓</div><span data-ar="خريطة تفاعلية">Carte interactive</span>
                     </li>
                     <li>
-                        <div class="feat-icon">✓</div>Multilingue (10 langues)
+                        <div class="feat-icon">✓</div><span data-ar="متعدد اللغات (10 لغات)">Multilingue (10
+                            langues)</span>
                     </li>
                     <li>
-                        <div class="feat-icon">✓</div>Artisanat &amp; événements
+                        <div class="feat-icon">✓</div><span data-ar="الصناعة التقليدية والفعاليات">Artisanat &amp;
+                            événements</span>
                     </li>
                 </ul>
                 <div class="plan-cta">
-                    <button class="btn-plan" onclick="startFreeExplorer()">Commencer gratuitement</button>
+                    <button class="btn-plan" onclick="startFreeExplorer()" data-ar="ابدأ مجاناً">Commencer
+                        gratuitement</button>
                 </div>
             </div>
 
@@ -1464,66 +1540,71 @@
             <div class="plan-card standard">
                 <div class="popular-ribbon">✦ Populaire</div>
                 <div class="plan-hero">
-                    <img class="plan-hero-img"
-                        src="{{ url_for('static', filename='images/Aventure.jpg') }}"
+                    <img class="plan-hero-img" src="{{ url_for('static', filename='images/Aventure.jpg') }}"
                         alt="Dunes du Sahara marocain — Aventure" onerror="this.style.display='none'">
                     <div class="plan-hero-overlay">
-                        <div class="plan-hero-label">Pack Standard</div>
-                        <div class="plan-hero-title">Voyageur Pro</div>
+                        <div class="plan-hero-label" data-ar="الباقة القياسية">Pack Standard</div>
+                        <div class="plan-hero-title" data-ar="المسافر المحترف">Voyageur Pro</div>
                     </div>
                 </div>
                 <div class="plan-price-block">
                     <div class="plan-price">
                         <span class="price-amount" data-monthly="87" data-annual="70">87</span>
-                        <span class="price-currency"> MAD</span>
-                        <span class="price-period">/mois</span>
+                        <span class="price-currency" data-ar=" درهم"> MAD</span>
+                        <span class="price-period" data-ar="/شهرياً">/mois</span>
                     </div>
-                    <div class="plan-tagline-small">Pour les vrais explorateurs</div>
+                    <div class="plan-tagline-small" data-ar="للمسافرين الحقيقيين">Pour les vrais explorateurs</div>
                 </div>
                 <ul class="plan-features">
                     <li>
-                        <div class="feat-icon">✓</div>Tout Explorateur inclus
+                        <div class="feat-icon">✓</div><span data-ar="كل ما في باقة المكتشف">Tout Explorateur
+                            inclus</span>
                     </li>
                     <li>
-                        <div class="feat-icon feat-star">★</div>Chatbot IA illimité &amp; prioritaire
+                        <div class="feat-icon feat-star">★</div><span
+                            data-ar="روبوت محادثة غير محدود وذو أولوية">Chatbot IA illimité &amp; prioritaire</span>
                     </li>
                     <li>
-                        <div class="feat-icon feat-star">★</div>Recommandations IA avancées
+                        <div class="feat-icon feat-star">★</div><span
+                            data-ar="توصيات متقدمة بالذكاء الاصطناعي">Recommandations IA avancées</span>
                     </li>
                     <li>
-                        <div class="feat-icon feat-star">★</div>Circuits touristiques par IA
+                        <div class="feat-icon feat-star">★</div><span data-ar="مسارات سياحية بالذكاء الاصطناعي">Circuits
+                            touristiques par IA</span>
                     </li>
                     <li>
-                        <div class="feat-icon feat-star">★</div>Alertes événements &amp; festivals
+                        <div class="feat-icon feat-star">★</div><span data-ar="تنبيهات الفعاليات والمهرجانات">Alertes
+                            événements &amp; festivals</span>
                     </li>
                     <li>
-                        <div class="feat-icon feat-star">★</div>Favoris &amp; itinéraires sauvegardés
+                        <div class="feat-icon feat-star">★</div><span data-ar="المفضلة والمسارات المحفوظة">Favoris &amp;
+                            itinéraires sauvegardés</span>
                     </li>
                 </ul>
                 <div class="plan-cta">
-                    <button class="btn-plan" onclick="setTier('standard')">💬 S'abonner via WhatsApp</button>
-                    <p class="wa-hint">Paiement par virement · Réponse rapide</p>
+                    <button class="btn-plan" onclick="setTier('standard')" data-ar="💬 اشترك عبر واتساب">💬 S'abonner
+                        via WhatsApp</button>
+                    <p class="wa-hint" data-ar="الدفع بالتحويل · رد سريع">Paiement par virement · Réponse rapide</p>
                 </div>
             </div>
 
             <!-- ── PARTENAIRE : Riad de luxe / Marrakech ── -->
             <div class="plan-card premium">
                 <div class="plan-hero">
-                    <img class="plan-hero-img"
-                        src="{{ url_for('static', filename='images/Casablanca.webp') }}"
+                    <img class="plan-hero-img" src="{{ url_for('static', filename='images/Casablanca.webp') }}"
                         alt="Casablanca — Hub économique du Maroc" onerror="this.style.display='none'">
                     <div class="plan-hero-overlay">
-                        <div class="plan-hero-label">Pack Premium</div>
-                        <div class="plan-hero-title">Partenaire</div>
+                        <div class="plan-hero-label" data-ar="الباقة المميزة">Pack Premium</div>
+                        <div class="plan-hero-title" data-ar="شريك">Partenaire</div>
                     </div>
                 </div>
                 <div class="plan-price-block">
                     <div class="plan-price">
                         <span class="price-amount" data-monthly="495" data-annual="396">495</span>
-                        <span class="price-currency"> MAD</span>
-                        <span class="price-period">/mois</span>
+                        <span class="price-currency" data-ar=" درهم"> MAD</span>
+                        <span class="price-period" data-ar="/شهرياً">/mois</span>
                     </div>
-                    <div class="plan-tagline-small">Pour les professionnels</div>
+                    <div class="plan-tagline-small" data-ar="للمحترفين">Pour les professionnels</div>
                 </div>
                 <ul class="plan-features">
                     <li>
@@ -1546,8 +1627,9 @@
                     </li>
                 </ul>
                 <div class="plan-cta">
-                    <button class="btn-plan" onclick="setTier('premium')">💬 Devenir partenaire</button>
-                    <p class="wa-hint">Paiement par virement · Réponse rapide</p>
+                    <button class="btn-plan" onclick="setTier('premium')" data-ar="💬 كن شريكاً">💬 Devenir
+                        partenaire</button>
+                    <p class="wa-hint" data-ar="الدفع بالتحويل · رد سريع">Paiement par virement · Réponse rapide</p>
                 </div>
             </div>
 
@@ -1557,7 +1639,7 @@
     <!-- ══ COMPARAISON ══ -->
     <div class="comparison-section">
         <div class="section-heading">
-            <h2>Comparaison <em>détaillée</em></h2>
+            <h2 data-ar="مقارنة <em>مفصلة</em>">Comparaison <em>détaillée</em></h2>
             <div class="section-rule"></div>
         </div>
         <div class="table-wrapper">
@@ -1631,8 +1713,10 @@
     </div>
 
     <div class="pricing-footer">
-        <p>Tous les prix en <strong>MAD</strong> · Sans engagement · Paiement sécurisé par virement</p>
-        <p style="margin-top:8px;">© 2026 Morocco Secrets — Guide touristique intelligent</p>
+        <p data-ar="جميع الأسعار بالدرهم · بدون التزام · دفع آمن عن طريق التحويل">Tous les prix en <strong>MAD</strong>
+            · Sans engagement · Paiement sécurisé par virement</p>
+        <p style="margin-top:8px;" data-ar="© 2026 Morocco Secrets — دليل سياحي ذكي">© 2026 Morocco Secrets — Guide
+            touristique intelligent</p>
     </div>
 
     <script>
@@ -1712,31 +1796,11 @@
         window.addEventListener('scroll', revealCards);
         window.addEventListener('load', function () { setTimeout(revealCards, 100); });
         revealCards();
-    </script>
-
-    {% include 'chatbot_carre.html' %}
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var btn = document.querySelector('.custom-lang-btn');
-            var list = document.querySelector('.custom-lang-list');
-            if(btn && list) {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    list.classList.toggle('show');
-                });
-                document.addEventListener('click', function(e) {
-                    if(!list.contains(e.target) && !btn.contains(e.target)) {
-                        list.classList.remove('show');
-                    }
-                });
-            }
-        });
 
         function changeLanguage(langCode, langName) {
             document.getElementById('currentLangText').innerText = langName;
             document.querySelector('.custom-lang-list').classList.remove('show');
-            
+
             var select = document.querySelector('.goog-te-combo');
             if (select) {
                 select.value = langCode === 'fr' ? '' : langCode;
@@ -1751,8 +1815,77 @@
                     }
                 }, 500);
             }
+            setTimeout(applyManualTranslation, 100);
         }
+
+        function applyManualTranslation() {
+            function getCookie(name) {
+                let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+                return v ? v[2] : null;
+            }
+
+            let googtrans = getCookie('googtrans');
+            let lang = 'fr';
+            if (googtrans) {
+                let parts = googtrans.split('/');
+                lang = parts[parts.length - 1];
+            }
+
+            const isAr = (lang === 'ar');
+
+            document.querySelectorAll('[data-ar]').forEach(el => {
+                if (!el.hasAttribute('data-fr')) {
+                    el.setAttribute('data-fr', el.innerHTML);
+                }
+
+                if (isAr) {
+                    el.innerHTML = el.getAttribute('data-ar');
+                    el.classList.add('notranslate');
+                    el.setAttribute('dir', 'rtl');
+                } else {
+                    el.innerHTML = el.getAttribute('data-fr');
+                    el.classList.remove('notranslate');
+                    el.removeAttribute('dir');
+                }
+            });
+
+            if (isAr) {
+                document.body.classList.add('lang-ar');
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.body.setAttribute('dir', 'rtl');
+            } else {
+                document.body.classList.remove('lang-ar');
+                document.documentElement.removeAttribute('dir');
+                document.body.removeAttribute('dir');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyManualTranslation();
+            const observer = new MutationObserver((mutations) => {
+                applyManualTranslation();
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'lang'] });
+
+            // Custom lang selector toggle
+            var btn = document.querySelector('.custom-lang-btn');
+            var list = document.querySelector('.custom-lang-list');
+            if (btn && list) {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    list.classList.toggle('show');
+                });
+                document.addEventListener('click', function (e) {
+                    if (!list.contains(e.target) && !btn.contains(e.target)) {
+                        list.classList.remove('show');
+                    }
+                });
+            }
+        });
     </script>
+
+    {% include 'manual_lang.html' %}
+    {% include 'chatbot_carre.html' %}
 
 </body>
 

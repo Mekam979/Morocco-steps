@@ -30,7 +30,7 @@ template_dir = os.path.join(frontend_dir, 'templates')
 static_dir = os.path.join(frontend_dir, 'static')
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
-app.secret_key = 'trippy_maroc_secret_key_2026'
+app.secret_key = os.getenv('SECRET_KEY', 'trippy_maroc_secret_key_2026')
 
 # ============================================================
 # CONFIGURATION EMAIL
@@ -48,17 +48,18 @@ mail = Mail(app)
 # ============================================================
 # CONFIGURATION GROQ & DB
 # ============================================================
-GROQ_API_KEY = "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"
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 GROQ_MODEL   = "llama-3.3-70b-versatile"
 
 DB_CONFIG = {
     'host':        os.getenv('DB_HOST', 'localhost'),
     'port':        int(os.getenv('DB_PORT', 3306)),
     'user':        os.getenv('DB_USER', 'root'),
-    'password':    os.getenv('DB_PASSWORD', '123456789'),
+    'password':    os.getenv('DB_PASSWORD', ''),
     'db':          os.getenv('DB_NAME', 'tourisme_maroc'),
     'cursorclass': pymysql.cursors.DictCursor,
-    'charset':     'utf8mb4'
+    'charset':     'utf8mb4',
+    'ssl':         {'verify_cert': False}
 }
 
 TIER_LIMITS = {

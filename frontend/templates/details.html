@@ -105,39 +105,98 @@
         }
 
         /* --- CUSTOM UI TRANSLATE --- */
-        #gt_nav_slot { display: none !important; }
-        .custom-lang-selector { position: relative; display: inline-block; }
+        #gt_nav_slot {
+            display: none !important;
+        }
+
+        .custom-lang-selector {
+            position: relative;
+            display: inline-block;
+        }
+
         .custom-lang-btn {
-            background: rgba(255,255,255,0.15); color:#FFF;
-            border: 1px solid rgba(255,255,255,0.4); padding: 8px 16px;
-            font-family: inherit; font-size: 0.75rem; border-radius: 20px;
-            cursor: pointer; display: flex; align-items: center; gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFF;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             transition: all 0.3s ease;
         }
-        .custom-lang-btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+        .custom-lang-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
         .custom-lang-list {
-            position: absolute; top: calc(100% + 10px); right: 0;
-            background: var(--grona, #6b1d1d); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            list-style: none; padding: 8px 0; margin: 0; min-width: 150px;
-            opacity: 0; visibility: hidden; transform: translateY(10px);
-            transition: all 0.3s ease; z-index: 9999;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: var(--grona, #6b1d1d);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            list-style: none;
+            padding: 8px 0;
+            margin: 0;
+            min-width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 9999;
         }
-        .custom-lang-list.show { opacity:1; visibility:visible; transform:translateY(0); }
+
+        .custom-lang-list.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
         .custom-lang-list li {
-            padding: 10px 20px; color: rgba(255,255,255,0.85); font-size: 0.75rem;
-            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .custom-lang-list li:hover { background: rgba(255,255,255,0.15); color:#FFF; }
+
+        .custom-lang-list li:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFF;
+        }
 
         .dropdown-menu {
-            position: absolute; top: calc(100% + 15px); left: 50%;
-            transform: translateX(-50%) translateY(10px); background: var(--grona);
-            min-width: 210px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3); opacity: 0; visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.23,1,0.32,1); padding: 8px; z-index: 3000;
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--grona);
+            min-width: 210px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 8px;
+            z-index: 3000;
         }
-        .nav-item:hover .dropdown-menu { opacity:1; visibility:visible; transform: translateX(-50%) translateY(0); }
+
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
 
         .nav-brand {
             font-family: 'Playfair Display';
@@ -902,9 +961,12 @@
             <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="sidebar-links">
-            <a href="/" onclick="closeSidebar()"><i class="fa-solid fa-house"></i>Accueil</a>
-            <a href="/villes" onclick="closeSidebar()"><i class="fa-solid fa-map"></i>Villes</a>
-            <a href="/pricing" onclick="closeSidebar()"><i class="fa-solid fa-tag"></i>Offres</a>
+            <a href="/" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-house'></i>الرئيسية"><i
+                    class="fa-solid fa-house"></i>Accueil</a>
+            <a href="/villes" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-map'></i>المدن"><i
+                    class="fa-solid fa-map"></i>Villes</a>
+            <a href="/pricing" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-tag'></i>العروض"><i
+                    class="fa-solid fa-tag"></i>Offres</a>
         </div>
         <div class="sidebar-lang">
             <div class="sidebar-lang-label">Langue</div>
@@ -929,22 +991,26 @@
     <nav class="nav" id="mainNav">
         <a href="/" class="nav-brand" style="text-decoration:none;">Morocco <em>Secrets</em></a>
         <div class="nav-links">
-            <a href="/" class="nav-link">Accueil</a>
+            <a href="/" class="nav-link" data-ar="الرئيسية">Accueil</a>
             <div class="nav-item">
-                <a href="/villes" class="nav-link">Villes <i class="fa-solid fa-chevron-down"
+                <a href="/villes" class="nav-link"
+                    data-ar="المدن <i class='fa-solid fa-chevron-down' style='font-size: 0.75em; margin-left: 4px; opacity: 0.8;'></i>">Villes
+                    <i class="fa-solid fa-chevron-down"
                         style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i></a>
                 <div class="dropdown-menu">
-                    <a href="/villes">Toutes les villes</a>
-                    <a href="/filter/Villes côtières">Côtières</a>
-                    <a href="/filter/Villes sahariennes">Sahariennes</a>
-                    <a href="/filter/Villes de montagne">Montagne</a>
-                    <a href="/filter/Villes culturelles">Culturelles</a>
-                    <a href="/filter/Villes agricoles">Agricoles</a>
+                    <a href="/villes" data-ar="كل المدن">Toutes les villes</a>
+                    <a href="/filter/Villes côtières" data-ar="ساحلية">Côtières</a>
+                    <a href="/filter/Villes sahariennes" data-ar="صحراوية">Sahariennes</a>
+                    <a href="/filter/Villes de montagne" data-ar="جبلية">Montagne</a>
+                    <a href="/filter/Villes culturelles" data-ar="ثقافية">Culturelles</a>
+                    <a href="/filter/Villes agricoles" data-ar="فلاحية">Agricoles</a>
                 </div>
             </div>
-            <a href="/pricing" class="nav-link">Offres</a>
-            
-            <div id="gt_nav_slot"><div id="google_translate_element"></div></div>
+            <a href="/pricing" class="nav-link" data-ar="العروض">Offres</a>
+
+            <div id="gt_nav_slot">
+                <div id="google_translate_element"></div>
+            </div>
             <div class="custom-lang-selector" id="customLangDropdown">
                 <div class="custom-lang-btn">
                     <i class="fa-solid fa-globe"></i>
@@ -971,15 +1037,30 @@
         </button>
     </nav>
 
+    {% set city_map = {
+    "Agadir": "أكادير", "Al Hoceima": "الحسيمة", "Asilah": "أصيلة", "Azrou": "أزرو",
+    "Berkane": "بركان", "Casablanca": "الدار البيضاء", "Chefchaouen": "شفشاون",
+    "Dakhla": "الداخلة", "El Jadida": "الجديدة", "Essaouira": "الصويرة", "Fès": "فاس",
+    "Haut Atlas": "الأطلس الكبير", "Ifrane": "إفران", "Imlil": "إمليل",
+    "Kelaat M'Gouna": "قلعة مكونة", "Kénitra": "القنيطرة", "Laâyoune": "العيون",
+    "Marrakech": "مراكش", "Meknès": "مكناس", "Merzouga": "مرزوكة",
+    "Moyen Atlas": "الأطلس المتوسط", "Nador": "الناظور", "Oualidia": "الوليدية",
+    "Ouarzazate": "ورزازات", "Oujda": "وجدة", "Oukaïmeden": "أوكايمدن",
+    "Rabat": "الرباط", "Safi": "آسفي", "Saïdia": "السعيدية", "Tanger": "طنجة",
+    "Taourirt": "تاوريرت", "Taroudant": "تارودانت", "Taza": "تازة",
+    "Tétouan": "تطوان", "Zagora": "زاكورة"
+    } %}
     <!-- HERO -->
     <header class="hero-details">
-        <h1>{{ ville.nom_ville }}</h1>
-        <p>{{ ville.slogan }}</p>
+        <h1 data-ar="{{ city_map[ville.nom_ville] if ville.nom_ville in city_map else ville.nom_ville }}">{{
+            ville.nom_ville }}</h1>
+        <p data-ar="{{ ville.slogan }}">{{ ville.slogan }}</p>
     </header>
 
     <!-- ÂME DE LA VILLE -->
     <section class="section-wrapper" style="background: var(--white-silk); text-align: center;">
-        <h2 class="section-heading"><i class="fa-solid fa-feather-pointed"></i>L'Âme de la <span>Ville</span></h2>
+        <h2 class="section-heading" data-ar="<i class='fa-solid fa-feather-pointed'></i>روح <span>المدينة</span>"><i
+                class="fa-solid fa-feather-pointed"></i>L'Âme de la <span>Ville</span></h2>
         <div style="max-width: 800px; margin: 0 auto;">
             <p style="font-size: clamp(0.95rem, 2.5vw, 1.15rem); line-height: 1.8;">{{ ville.description }}</p>
             <a href="https://www.google.com/maps/search/?api=1&query={{ ville.nom_ville }}" target="_blank"
@@ -994,7 +1075,8 @@
     ══════════════════════════════════ -->
     {% if attractions and attractions|length > 0 %}
     <section class="att-section">
-        <h2 class="section-heading"><i class="fa-solid fa-landmark"></i>Monuments <span>Iconiques</span></h2>
+        <h2 class="section-heading" data-ar="<i class='fa-solid fa-landmark'></i>معالم <span>بارزة</span>"><i
+                class="fa-solid fa-landmark"></i>Monuments <span>Iconiques</span></h2>
 
         <!-- Image principale -->
         <div style="max-width: 100%; margin: 0; padding: 0 clamp(8px, 1.5vw, 20px);">
@@ -1005,7 +1087,9 @@
 
                 <!-- Overlay -->
                 <div class="att-overlay">
-                    <div class="att-tag">Monument — {{ ville.nom_ville }}</div>
+                    <div class="att-tag"
+                        data-ar="معلم — {{ city_map[ville.nom_ville] if ville.nom_ville in city_map else ville.nom_ville }}">
+                        Monument — {{ ville.nom_ville }}</div>
                     <h3 class="att-overlay-title" id="attTitle"></h3>
                     <div class="att-rule"></div>
                     <p class="att-overlay-desc" id="attDesc"></p>
@@ -1052,8 +1136,8 @@
         var ATTRACTIONS = [
             {% for att in attractions %}
         {
-            nom: {{ att.nom | tojson }},
-            desc: {{ att.description | tojson }},
+            nom: { { att.nom | tojson } },
+            desc: { { att.description | tojson } },
             img: "/static/images/attractions/{{ att.image_path }}"
         } {% if not loop.last %}, {% endif %}
         {% endfor %}
@@ -1063,7 +1147,9 @@
 
     <!-- SPÉCIALITÉS CULINAIRES -->
     <section class="section-wrapper" id="specialites">
-        <h2 class="section-heading" style="color: white;"><i class="fa-solid fa-plate-wheat"></i>Spécialités
+        <h2 class="section-heading" style="color: white;"
+            data-ar="<i class='fa-solid fa-plate-wheat'></i>تخصصات <span>الطبخ</span>"><i
+                class="fa-solid fa-plate-wheat"></i>Spécialités
             <span>Culinaires</span>
         </h2>
         <div class="grid">
@@ -1079,7 +1165,8 @@
 
     <!-- OÙ MANGER -->
     <section class="section-wrapper">
-        <h2 class="section-heading"><i class="fa-solid fa-utensils"></i>Où <span>Manger</span></h2>
+        <h2 class="section-heading" data-ar="<i class='fa-solid fa-utensils'></i>أين <span>تأكل</span>"><i
+                class="fa-solid fa-utensils"></i>Où <span>Manger</span></h2>
         <div class="grid">
             {% for rest in restaurants %}
             <div class="magazine-card" style="padding: 24px; border-bottom: 5px solid var(--grona);">
@@ -1088,7 +1175,8 @@
                     rest.specialites }}</span>
                 <h3 style="margin: 10px 0; font-size: 1.2rem;">{{ rest.nom }}</h3>
                 <p style="font-size: 0.85rem; color: #666;">{{ rest.description }}</p>
-                <a href="{{ rest.lien }}" target="_blank" class="btn-gold" style="margin-top: 15px;">RÉSERVER</a>
+                <a href="{{ rest.lien }}" target="_blank" class="btn-gold" style="margin-top: 15px;"
+                    data-ar="حجز">RÉSERVER</a>
             </div>
             {% endfor %}
         </div>
@@ -1096,14 +1184,18 @@
 
     <!-- ARTISANAT -->
     <section class="section-wrapper" style="background: #FDF7F0;">
-        <h2 class="section-heading"><i class="fa-solid fa-gem"></i>Héritage <span>Artisanal</span></h2>
+        <h2 class="section-heading" data-ar="<i class='fa-solid fa-gem'></i>التراث <span>التقليدي</span>"><i
+                class="fa-solid fa-gem"></i>Héritage <span>Artisanal</span></h2>
         <div class="grid">
             {% for art in artisanat %}
-            <div class="magazine-card" style="padding: 20px; text-align: center; border-bottom: 4px solid var(--desert-gold);">
+            <div class="magazine-card"
+                style="padding: 20px; text-align: center; border-bottom: 4px solid var(--desert-gold);">
                 <img src="/static/images/artisanat/{{ art.image_path }}" onerror="this.src='/static/images/default.jpg'"
                     style="width:100%; height:220px; object-fit:cover; border-radius: 15px; margin-bottom: 15px;">
-                <h3 style="margin-top: 18px; font-family: 'Playfair Display'; color: var(--grona); font-size: 1.3rem;">{{ art.nom }}</h3>
-                <p style="font-size: 0.9rem; max-width: 450px; margin: 8px auto 0; color: #555; line-height: 1.6;">{{ art.description }}</p>
+                <h3 style="margin-top: 18px; font-family: 'Playfair Display'; color: var(--grona); font-size: 1.3rem;">
+                    {{ art.nom }}</h3>
+                <p style="font-size: 0.9rem; max-width: 450px; margin: 8px auto 0; color: #555; line-height: 1.6;">{{
+                    art.description }}</p>
             </div>
             {% endfor %}
         </div>
@@ -1111,7 +1203,8 @@
 
     <!-- COSTUMES TRADITIONNELS -->
     <section class="section-wrapper">
-        <h2 class="section-heading"><i class="fa-solid fa-shirt"></i>Costumes <span>Traditionnels</span></h2>
+        <h2 class="section-heading" data-ar="<i class='fa-solid fa-shirt'></i>الأزياء <span>التقليدية</span>"><i
+                class="fa-solid fa-shirt"></i>Costumes <span>Traditionnels</span></h2>
         <div class="grid">
             {% for vest in vetements %}
             <div style="text-align: center;">
@@ -1126,7 +1219,8 @@
 
     <!-- HÉBERGEMENTS -->
     <section class="section-wrapper" style="background: var(--white-silk);">
-        <h2 class="section-heading"><i class="fa-solid fa-bed"></i>Oasis de <span>Repos</span></h2>
+        <h2 class="section-heading" data-ar="<i class='fa-solid fa-bed'></i>واحة <span>الراحة</span>"><i
+                class="fa-solid fa-bed"></i>Oasis de <span>Repos</span></h2>
         <div class="grid">
             {% for heb in hebergements %}
             <div class="magazine-card" style="padding: 24px;">
@@ -1136,18 +1230,25 @@
                 <h3>{{ heb.nom }}</h3>
                 <p style="font-style: italic; font-size: 0.85rem; color: #666; margin-top: 8px;">"{{ heb.avis }}"</p>
                 <a href="{{ heb.lien }}" target="_blank" class="btn-gold"
-                    style="background: var(--grona); margin-top: 14px;">RÉSERVER</a>
+                    style="background: var(--grona); margin-top: 14px;" data-ar="حجز">RÉSERVER</a>
             </div>
             {% endfor %}
         </div>
     </section>
 
-    <!-- ÉVÉNEMENTS + TRANSPORTS -->
+    <!-- ÉVÉNEMENTS & FESTIVALS -->
     <section class="section-wrapper">
+        <h2 class="section-heading" data-ar="<i class='fa-solid fa-calendar-star'></i>أحداث <span>ومهرجانات</span>"><i
+                class="fa-solid fa-calendar-star"></i>Événements &
+            <span>Festivals</span>
+        </h2>
         <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
             <div style="background: white; padding: 32px; border-radius: var(--radius); border: 1px solid #eee;">
-                <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-calendar"
-                        style="color: var(--desert-gold); margin-right: 10px;"></i>Événements</h3>
+                <h3 style="margin-bottom: 20px;"
+                    data-ar="<i class='fa-solid fa-calendar' style='color: var(--desert-gold); margin-right: 10px;'></i>الأحداث">
+                    <i class="fa-solid fa-calendar"
+                        style="color: var(--desert-gold); margin-right: 10px;"></i>Événements
+                </h3>
                 {% for ev in evenements %}
                 <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #f0e8df;">
                     <strong>{{ ev.nom }}</strong> <small style="color: var(--desert-gold);">({{ ev.periode }})</small>
@@ -1156,8 +1257,10 @@
                 {% endfor %}
             </div>
             <div style="background: var(--grona); color: white; padding: 32px; border-radius: var(--radius);">
-                <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-bus"
-                        style="color: var(--desert-gold); margin-right: 10px;"></i>Transport</h3>
+                <h3 style="margin-bottom: 20px;"
+                    data-ar="<i class='fa-solid fa-bus' style='color: var(--desert-gold); margin-right: 10px;'></i>وسائل النقل">
+                    <i class="fa-solid fa-bus" style="color: var(--desert-gold); margin-right: 10px;"></i>Transport
+                </h3>
                 {% for trans in transports %}
                 <p style="font-size: 0.9rem; margin-bottom: 12px;">
                     <i class="fa-solid fa-check-circle" style="color: var(--desert-gold); margin-right: 8px;"></i>{{
@@ -1210,23 +1313,28 @@
             var DELAY = 5500;
 
             function goTo(n) {
+                if (!dots[cur]) return;
                 dots[cur].classList.remove('active');
                 if (thumbs[cur]) thumbs[cur].classList.remove('active');
                 cur = ((n % total) + total) % total;
-                dots[cur].classList.add('active');
+                if (dots[cur]) dots[cur].classList.add('active');
                 if (thumbs[cur]) thumbs[cur].classList.add('active');
 
                 /* Fade */
-                titleEl.style.opacity = '0';
-                descEl.style.opacity = '0';
-                imgEl.style.opacity = '0.45';
+                if (titleEl) titleEl.style.opacity = '0';
+                if (descEl) descEl.style.opacity = '0';
+                if (imgEl) imgEl.style.opacity = '0.45';
                 if (labelEl) labelEl.style.opacity = '0';
 
                 setTimeout(function () {
-                    titleEl.textContent = ATTRACTIONS[cur].nom;
-                    descEl.textContent = ATTRACTIONS[cur].desc;
-                    imgEl.src = ATTRACTIONS[cur].img;
-                    if (labelEl) labelEl.textContent = ATTRACTIONS[cur].nom;
+                    const att = ATTRACTIONS[cur];
+                    if (titleEl) titleEl.textContent = att.nom;
+                    if (descEl) descEl.textContent = att.desc;
+                    if (imgEl) {
+                        imgEl.src = att.img;
+                        imgEl.onerror = function () { this.src = '/static/images/default.jpg'; };
+                    }
+                    if (labelEl) labelEl.textContent = att.nom;
                     if (curEl) curEl.textContent = cur + 1;
                     titleEl.style.opacity = '1';
                     descEl.style.opacity = '1';
@@ -1307,44 +1415,12 @@
             closeSidebar();
             window.location.reload();
         }
-    
-        // Custom lang dropdown toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            var btn = document.querySelector('.custom-lang-btn');
-            var list = document.querySelector('.custom-lang-list');
-            if(btn && list) {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    list.classList.toggle('show');
-                });
-                document.addEventListener('click', function(e) {
-                    if(!list.contains(e.target) && !btn.contains(e.target)) {
-                        list.classList.remove('show');
-                    }
-                });
-            }
-        });
 
-        function changeLanguage(langCode, langName) {
-            document.getElementById('currentLangText').innerText = langName;
-            document.querySelector('.custom-lang-list').classList.remove('show');
-            var select = document.querySelector('.goog-te-combo');
-            if (select) {
-                select.value = langCode === 'fr' ? '' : langCode;
-                select.dispatchEvent(new Event('change'));
-            } else {
-                setTimeout(() => {
-                    var select = document.querySelector('.goog-te-combo');
-                    if (select) {
-                        select.value = langCode === 'fr' ? '' : langCode;
-                        select.dispatchEvent(new Event('change'));
-                    }
-                }, 500);
-            }
-        }
+
     </script>
 
     {% include 'chatbot_carre.html' %}
+    {% include 'manual_lang.html' %}
 </body>
 
 </html>

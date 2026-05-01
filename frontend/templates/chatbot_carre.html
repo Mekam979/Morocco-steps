@@ -1721,7 +1721,7 @@
                             </div>
                             <div class="pack-card-price">
                                 <div class="pack-card-amount explorer" id="price0">0</div>
-                                <div class="pack-card-period">MAD/mois</div>
+                                <div class="pack-card-period" data-ar="درهم/شهرياً">MAD/mois</div>
                             </div>
                         </div>
                         <div class="pack-card-feats">
@@ -1744,7 +1744,7 @@
                             </div>
                             <div class="pack-card-price">
                                 <div class="pack-card-amount standard" id="price1">87</div>
-                                <div class="pack-card-period">MAD/mois</div>
+                                <div class="pack-card-period" data-ar="درهم/شهرياً">MAD/mois</div>
                             </div>
                         </div>
                         <div class="pack-card-feats">
@@ -1766,7 +1766,7 @@
                             </div>
                             <div class="pack-card-price">
                                 <div class="pack-card-amount premium" id="price2">495</div>
-                                <div class="pack-card-period">MAD/mois</div>
+                                <div class="pack-card-period" data-ar="درهم/شهرياً">MAD/mois</div>
                             </div>
                         </div>
                         <div class="pack-card-feats">
@@ -1803,11 +1803,11 @@
                     </div>
                     <div class="payment-sum-row">
                         <span class="payment-sum-label">Prix unitaire</span>
-                        <span class="payment-sum-val" id="payUnit">87 MAD</span>
+                        <span class="payment-sum-val" id="payUnit" data-ar="87 درهم">87 MAD</span>
                     </div>
                     <div class="payment-total-row">
                         <span class="payment-total-label">Total</span>
-                        <span class="payment-total-amount" id="payTotal">87 MAD</span>
+                        <span class="payment-total-amount" id="payTotal" data-ar="87 درهم">87 MAD</span>
                     </div>
                 </div>
 
@@ -2308,8 +2308,9 @@
         document.getElementById('payTitle').textContent    = `Paiement · ${label}`;
         document.getElementById('payPackName').textContent = label;
         document.getElementById('payBilling').textContent  = packIsAnnual ? 'Annuelle (−20%)' : 'Mensuelle';
-        document.getElementById('payUnit').textContent     = `${price} MAD`;
-        document.getElementById('payTotal').textContent    = `${price} MAD`;
+        const isAr = document.body.classList.contains('lang-ar');
+        document.getElementById('payUnit').textContent     = `${price} ${isAr ? 'درهم' : 'MAD'}`;
+        document.getElementById('payTotal').textContent    = `${price} ${isAr ? 'درهم' : 'MAD'}`;
         document.getElementById('payRef').textContent      = ref;
         document.getElementById('payRib').textContent      = RIB;
 
