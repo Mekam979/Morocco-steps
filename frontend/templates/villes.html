@@ -1168,7 +1168,7 @@
     <!-- HERO -->
     <div class="page-hero" style="background-image: url('
         {%- if titre_filter == 'Toutes les villes du Maroc' -%}
-            {{ url_for(" static", filename="images/maroc-bg.png" ) }} {%- elif "côtières" in titre_filter -%} {{
+            {{ url_for("static", filename="images/maroc-bg.png" ) }} {%- elif "côtières" in titre_filter -%} {{
         url_for("static", filename="images/coast.jpg" ) }} {%- elif "sahariennes" in titre_filter -%} {{
         url_for("static", filename="images/sahara.jpg" ) }} {%- elif "montagne" in titre_filter -%} {{ url_for("static",
         filename="images/mountain.jpg" ) }} {%- elif "culturelles" in titre_filter -%} {{ url_for("static",
