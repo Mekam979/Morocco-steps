@@ -1125,7 +1125,7 @@
         <div class="att-thumbs" id="attThumbs">
             {% for att in attractions %}
             <div class="att-thumb {% if loop.first %}active{% endif %}" data-i="{{ loop.index0 }}">
-                <img src="{{ cloudinary_url(att.image_path, 'Attractions') }}" alt="{{ att.nom }}"
+                <img src="{{ cloudinary_url(att.image_path, 'attractions') }}" alt="{{ att.nom }}"
                     onerror="this.parentElement.style.background='rgba(197,157,95,0.3)';">
             </div>
             {% endfor %}
@@ -1138,7 +1138,7 @@
         {
             nom: {{ att.nom | tojson }},
             desc: {{ att.description | tojson }},
-            img: "{{ cloudinary_url(att.image_path, 'Attractions') }}"
+            img: "{{ cloudinary_url(att.image_path, 'attractions') }}"
         } {% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
@@ -1190,7 +1190,7 @@
             {% for art in artisanat %}
             <div class="magazine-card"
                 style="padding: 20px; text-align: center; border-bottom: 4px solid var(--desert-gold);">
-                <img src="{{ cloudinary_url(art.image_path, 'Artisanat') }}" onerror="this.src='{{ cloudinary_url('default.jpg', 'root') }}'"
+                <img src="{{ cloudinary_url(art.image_path, 'artisanat') }}" onerror="this.src='{{ cloudinary_url('default.jpg', 'root') }}'"
                     style="width:100%; height:220px; object-fit:cover; border-radius: 15px; margin-bottom: 15px;">
                 <h3 style="margin-top: 18px; font-family: 'Playfair Display'; color: var(--grona); font-size: 1.3rem;">
                     {{ art.nom }}</h3>
@@ -1208,7 +1208,7 @@
         <div class="grid">
             {% for vest in vetements %}
             <div style="text-align: center;">
-                <img src="{{ cloudinary_url(vest.image_path, 'Vestimentaire') }}"
+                <img src="{{ cloudinary_url(vest.image_path, 'vestimentaire') }}"
                     onerror="this.src='{{ cloudinary_url('default.jpg', 'root') }}'" class="img-mode">
                 <h3 style="margin-top: 18px; font-family: 'Playfair Display';">{{ vest.nom }}</h3>
                 <p style="font-size: 0.9rem; max-width: 350px; margin: 8px auto 0;">{{ vest.description }}</p>

@@ -25,8 +25,7 @@ except ImportError:
                 "has_context": False, "ville_detec": None, "intent_detec": None}
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-# Comme app.py est dans /backend, le dossier frontend est au niveau parent
-frontend_dir = os.path.join(os.path.dirname(base_dir), 'frontend')
+frontend_dir = os.path.join(base_dir, 'frontend')
 template_dir = os.path.join(frontend_dir, 'templates')
 static_dir = os.path.join(frontend_dir, 'static')
 
@@ -47,8 +46,35 @@ app.config['MAIL_DEFAULT_SENDER'] = app.config['MAIL_USERNAME'] or 'noreply@moro
 mail = Mail(app)
 
 # ============================================================
-# CONFIGURATION GROQ & DB
+# CLOUDINARY HELPER
 # ============================================================
+CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME', 'darytb39v')
+CLOUDINARY_BASE = f"https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/image/upload"
+
+def cloudinary_url(filename, folder=None):
+    """
+    Converts a local image filename to a Cloudinary URL.
+    Usage in Jinja2:
+      {{ cloudinary_url(ville.image_path) }}                → root (villes are in root)
+      {{ cloudinary_url(art.image_path, 'artisanat') }}     → artisanat/
+      {{ cloudinary_url(att.image_path, 'attractions') }}   → attractions/
+      {{ cloudinary_url(vest.image_path, 'vestimentaire') }}→ vestimentaire/
+      {{ cloudinary_url('trippy.jpg', 'root') }}            → root (UI images)
+    """
+    if not filename:
+        return f"{CLOUDINARY_BASE}/default.jpg"
+    if filename.startswith('http'):
+        return filename
+    # root = no subfolder (villes + UI images)
+    if folder == 'root' or folder is None:
+        return f"{CLOUDINARY_BASE}/{filename}"
+    return f"{CLOUDINARY_BASE}/{folder}/{filename}"
+
+@app.context_processor
+def inject_cloudinary():
+    return dict(cloudinary_url=cloudinary_url)
+
+
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 GROQ_MODEL   = "llama-3.3-70b-versatile"
 
