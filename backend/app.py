@@ -52,10 +52,11 @@ GROQ_API_KEY = "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"
 GROQ_MODEL   = "llama-3.3-70b-versatile"
 
 DB_CONFIG = {
-    'host':        'localhost',
-    'user':        'root',
-    'password':    '123456789',
-    'db':          'tourisme_maroc',
+    'host':        os.getenv('DB_HOST', 'localhost'),
+    'port':        int(os.getenv('DB_PORT', 3306)),
+    'user':        os.getenv('DB_USER', 'root'),
+    'password':    os.getenv('DB_PASSWORD', '123456789'),
+    'db':          os.getenv('DB_NAME', 'tourisme_maroc'),
     'cursorclass': pymysql.cursors.DictCursor,
     'charset':     'utf8mb4'
 }
