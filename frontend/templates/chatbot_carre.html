@@ -1606,7 +1606,7 @@
 
     <!-- Toggle button -->
     <div class="chatbot-toggle" onclick="toggleChat()">
-        <img src="/static/images/trippy.jpg" class="cb-toggle-img" alt="Trippy"
+        <img src="{{ cloudinary_url('trippy.jpg', 'root') }}" class="cb-toggle-img" alt="Trippy"
             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23ffffff%27/%3E%3Ctext x=%2750%27 y=%2770%27 text-anchor=%27middle%27 font-size=%2740%27 fill=%27%236b1d1d%27%3ET%3C/text%3E%3C/svg%3E'">
         <span class="chatbot-badge" id="cbBadge">!</span>
     </div>
@@ -1618,7 +1618,7 @@
         <div class="cb-header">
             <div class="cb-header-left">
                 <div class="cb-avatar-header" onclick="openZoom()">
-                    <img src="/static/images/trippy.jpg" alt="Trippy"
+                    <img src="{{ cloudinary_url('trippy.jpg', 'root') }}" alt="Trippy"
                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23ffffff%27/%3E%3Ctext x=%2750%27 y=%2770%27 text-anchor=%27middle%27 font-size=%2740%27 fill=%27%236b1d1d%27%3ET%3C/text%3E%3C/svg%3E'">
                 </div>
                 <div class="cb-header-info">
@@ -1645,7 +1645,7 @@
             <div id="cbChatView" class="cb-messages-area">
                 <div class="bot-wrapper">
                     <div class="bot-avatar" onclick="openZoom()">
-                        <img src="/static/images/trippy.jpg" alt="Trippy"
+                        <img src="{{ cloudinary_url('trippy.jpg', 'root') }}" alt="Trippy"
                             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23ffffff%27/%3E%3Ctext x=%2750%27 y=%2770%27 text-anchor=%27middle%27 font-size=%2740%27 fill=%27%236b1d1d%27%3ET%3C/text%3E%3C/svg%3E'">
                     </div>
                     <div class="bot-content">
@@ -1661,7 +1661,7 @@
             <!-- PROFILE VIEW -->
             <div id="cbProfileView">
                 <div class="profile-avatar" onclick="openZoom()">
-                    <img src="/static/images/trippy.jpg" alt="Trippy"
+                    <img src="{{ cloudinary_url('trippy.jpg', 'root') }}" alt="Trippy"
                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23ffffff%27/%3E%3Ctext x=%2750%27 y=%2770%27 text-anchor=%27middle%27 font-size=%2740%27 fill=%27%236b1d1d%27%3ET%3C/text%3E%3C/svg%3E'">
                 </div>
                 <div class="profile-name" id="profileName">Trippy Bot</div>
@@ -1714,7 +1714,7 @@
                     <div class="pack-card explorer-card selected" id="packCard0" onclick="selectPack('explorer')">
                         <div class="pack-selected-check">✓</div>
                         <div class="pack-card-inner">
-                            <img class="pack-card-img" src="/static/images/Chefchaouen.jpg" alt="Chefchaouen" onerror="this.style.display='none'">
+                            <img class="pack-card-img" src="{{ cloudinary_url('Chefchaouen.jpg', 'root') }}" alt="Chefchaouen" onerror="this.style.display='none'">
                             <div class="pack-card-info">
                                 <div class="pack-card-name">Explorateur</div>
                                 <div class="pack-card-desc">Découverte gratuite · 10 messages IA</div>
@@ -1737,7 +1737,7 @@
                         <div class="pack-popular-badge">✦ Populaire</div>
                         <div class="pack-selected-check">✓</div>
                         <div class="pack-card-inner">
-                            <img class="pack-card-img" src="/static/images/Aventure.jpg" alt="Aventure" onerror="this.style.display='none'">
+                            <img class="pack-card-img" src="{{ cloudinary_url('Aventure.jpg', 'root') }}" alt="Aventure" onerror="this.style.display='none'">
                             <div class="pack-card-info">
                                 <div class="pack-card-name">Voyageur Pro</div>
                                 <div class="pack-card-desc">IA illimitée · Circuits personnalisés</div>
@@ -1759,7 +1759,7 @@
                     <div class="pack-card premium-card" id="packCard2" onclick="selectPack('premium')">
                         <div class="pack-selected-check">✓</div>
                         <div class="pack-card-inner">
-                            <img class="pack-card-img" src="/static/images/Casablanca.webp" alt="Casablanca" onerror="this.style.display='none'">
+                            <img class="pack-card-img" src="{{ cloudinary_url('Casablanca.webp', 'root') }}" alt="Casablanca" onerror="this.style.display='none'">
                             <div class="pack-card-info">
                                 <div class="pack-card-name">Partenaire</div>
                                 <div class="pack-card-desc">Pour professionnels · Badge officiel</div>
@@ -2018,7 +2018,7 @@
 <!-- Zoom Modal -->
 <div id="cbImageModal" onclick="closeZoom()">
     <div class="cb-modal-content">
-        <img src="/static/images/trippy.jpg" alt="Zoom Trippy"
+        <img src="{{ cloudinary_url('trippy.jpg', 'root') }}" alt="Zoom Trippy"
             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23ffffff%27/%3E%3Ctext x=%2750%27 y=%2770%27 text-anchor=%27middle%27 font-size=%2740%27 fill=%27%236b1d1d%27%3ET%3C/text%3E%3C/svg%3E'">
     </div>
 </div>
@@ -2591,7 +2591,7 @@
             const avatar = document.createElement('div');
             avatar.className = 'bot-avatar';
             avatar.onclick = () => openZoom();
-            avatar.innerHTML = `<img src="/static/images/trippy.jpg" alt="Trippy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23ffffff%27/%3E%3Ctext x=%2750%27 y=%2770%27 text-anchor=%27middle%27 font-size=%2740%27 fill=%27%236b1d1d%27%3ET%3C/text%3E%3C/svg%3E'">`;
+            avatar.innerHTML = `<img src="{{ cloudinary_url('trippy.jpg', 'root') }}" alt="Trippy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23ffffff%27/%3E%3Ctext x=%2750%27 y=%2770%27 text-anchor=%27middle%27 font-size=%2740%27 fill=%27%236b1d1d%27%3ET%3C/text%3E%3C/svg%3E'">`;
             const content = document.createElement('div');
             content.className = 'bot-content';
             const name = document.createElement('div');

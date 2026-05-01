@@ -612,8 +612,9 @@
         <div class="villes-grid">
             {% for ville in villes %}
             <div class="card">
-                <img src="{{ url_for('static', filename='images/' + (ville['image_path'] if ville['image_path'] else 'default.jpg')) }}" 
+                <img src="{{ cloudinary_url(ville['image_path'] if ville['image_path'] else 'default.jpg') }}" 
                      alt="{{ ville['nom_ville'] }}">
+
                 
                 <div class="card-content">
                     <span class="badge">{{ ville['type_ville'] }}</span>
