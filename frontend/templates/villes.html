@@ -1168,11 +1168,11 @@
     <!-- HERO -->
     <div class="page-hero" style="background-image: url('
         {%- if titre_filter == 'Toutes les villes du Maroc' -%}
-            {{ cloudinary_url('maroc-bg.png', 'root') }} {%- elif "côtières" in titre_filter -%} {{
-        cloudinary_url('coast.jpg', 'root') }} {%- elif "sahariennes" in titre_filter -%} {{
-        cloudinary_url('sahara.jpg', 'root') }} {%- elif "montagne" in titre_filter -%} {{
-        cloudinary_url('mountain.jpg', 'root') }} {%- elif "culturelles" in titre_filter -%} {{
-        cloudinary_url('culture.jpg', 'root') }} {%- else -%} {{ cloudinary_url('maroc-bg.png', 'root') }} {%-
+            {{ url_for("static", filename="images/maroc-bg.png" ) }} {%- elif "côtières" in titre_filter -%} {{
+        url_for("static", filename="images/coast.jpg" ) }} {%- elif "sahariennes" in titre_filter -%} {{
+        url_for("static", filename="images/sahara.jpg" ) }} {%- elif "montagne" in titre_filter -%} {{ url_for("static",
+        filename="images/mountain.jpg" ) }} {%- elif "culturelles" in titre_filter -%} {{ url_for("static",
+        filename="images/culture.jpg" ) }} {%- else -%} {{ url_for("static", filename="images/maroc-bg.png" ) }} {%-
         endif -%} ');">
         <div class="hero-content">
             <div class="hero-eyebrow">
@@ -1257,7 +1257,7 @@
 
             <div class="city-card">
 
-                <img src="{{ cloudinary_url(ville['image_path'] if ville['image_path'] else 'default.jpg') }}"
+                <img src="{{ url_for('static', filename='images/' + (ville['image_path'] if ville['image_path'] else 'default.jpg')) }}"
                     alt="{{ ville['nom_ville'] }}" loading="lazy"
                     onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/852E1E/FFFFFF?text={{ ville['nom_ville']|urlencode }}'">
 

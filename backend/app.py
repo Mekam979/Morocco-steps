@@ -24,8 +24,9 @@ except ImportError:
         return {"system_prompt": "Expert Maroc", "user_prompt": message,
                 "has_context": False, "ville_detec": None, "intent_detec": None}
 
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-frontend_dir = os.path.join(base_dir, 'frontend')
+base_dir = os.path.dirname(os.path.abspath(__file__))
+# app.py est dans /backend — frontend est au niveau parent (root)
+frontend_dir = os.path.join(os.path.dirname(base_dir), 'frontend')
 template_dir = os.path.join(frontend_dir, 'templates')
 static_dir = os.path.join(frontend_dir, 'static')
 
