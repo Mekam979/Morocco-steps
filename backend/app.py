@@ -685,4 +685,5 @@ if __name__ == '__main__':
     print(f"  Anon     : {ANON_LIMIT} messages gratuits")
     print(f"  Explorer : {int(TIER_LIMITS['explorer'])} messages/jour")
     print("=" * 55)
+    # v1.0.1 - Vercel Deployment Force
     app.run(debug=True, port=5001)
