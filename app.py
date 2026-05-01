@@ -25,7 +25,7 @@ except ImportError:
                 "has_context": False, "ville_detec": None, "intent_detec": None}
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-frontend_dir = os.path.join(base_dir, '..', 'frontend')
+frontend_dir = os.path.join(base_dir, 'frontend')
 template_dir = os.path.join(frontend_dir, 'templates')
 static_dir = os.path.join(frontend_dir, 'static')
 
