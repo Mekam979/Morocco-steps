@@ -1,8 +1,7 @@
 venv/
+.venv/
 __pycache__/
 *.pyc
 .env
-.antigravity/
-.gemini/
-*.log
-cloudflared/
+.vscode/
+node_modules/
