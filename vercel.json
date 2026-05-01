@@ -2,12 +2,12 @@
   "version": 2,
   "builds": [
     {
-      "src": "app.py",
+      "src": "backend/app.py",
       "use": "@vercel/python",
       "config": {
         "includeFiles": [
           "frontend/**",
-          "rag_engine.py"
+          "backend/rag_engine.py"
         ]
       }
     }
@@ -19,7 +19,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "app.py"
+      "dest": "backend/app.py"
     }
   ]
 }
