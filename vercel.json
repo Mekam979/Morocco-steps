@@ -3,11 +3,13 @@
   "builds": [
     {
       "src": "backend/app.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "frontend/static/**",
-      "use": "@vercel/static"
+      "use": "@vercel/python",
+      "config": {
+        "includeFiles": [
+          "frontend/**",
+          "backend/rag_engine.py"
+        ]
+      }
     }
   ],
   "routes": [
