@@ -1,7 +1,20 @@
+# Environnement
 venv/
 .venv/
 __pycache__/
 *.pyc
+
+# Config & Secrets
 .env
 .vscode/
+.idea/
+
+# Binaires & Gros fichiers
+cloudflared/
+*.exe
+*.sql
+*.zip
+*.tar.gz
+
+# Node (au cas où)
 node_modules/

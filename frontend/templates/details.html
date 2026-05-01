@@ -1136,8 +1136,8 @@
         var ATTRACTIONS = [
             {% for att in attractions %}
         {
-            nom: { { att.nom | tojson } },
-            desc: { { att.description | tojson } },
+            nom: {{ att.nom | tojson }},
+            desc: {{ att.description | tojson }},
             img: "/static/images/attractions/{{ att.image_path }}"
         } {% if not loop.last %}, {% endif %}
         {% endfor %}
