@@ -51,7 +51,7 @@ mail = Mail(app)
 # ============================================================
 CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME', 'darytb39v')
 CLOUDINARY_BASE = f"https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/image/upload"
-
+CDN_URL = "https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/"
 def cloudinary_url(filename, folder=None):
     """
     Converts a local image filename to a Cloudinary URL.
@@ -73,7 +73,7 @@ def cloudinary_url(filename, folder=None):
 
 @app.context_processor
 def inject_cloudinary():
-    return dict(cloudinary_url=cloudinary_url)
+    return dict(cloudinary_url=cloudinary_url, cdn_url=CDN_URL)
 
 
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
@@ -208,7 +208,7 @@ def utility_processor():
 # ============================================================
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', cdn_url=CDN_URL)
 
 @app.route('/villes')
 def index():
@@ -226,7 +226,7 @@ def index():
         print(f"Erreur villes : {e}")
     finally:
         if conn: conn.close()
-    return render_template('villes.html', villes=villes, titre_filter="Toutes les villes du Maroc")
+    return render_template('villes.html', villes=villes, titre_filter="Toutes les villes du Maroc", cdn_url=CDN_URL)
 
 @app.route('/filter/<type_ville>')
 def filter_villes(type_ville):
@@ -245,7 +245,7 @@ def filter_villes(type_ville):
         print(f"Erreur filtre : {e}")
     finally:
         if conn: conn.close()
-    return render_template('villes.html', villes=villes, titre_filter=type_ville)
+    return render_template('villes.html', villes=villes, titre_filter=type_ville, cdn_url=CDN_URL)
 
 @app.route('/ville/<string:nom>')
 def details_ville(nom):
@@ -295,11 +295,11 @@ def details_ville(nom):
         restaurants=restaurants, specialites=specialites,
         artisanat=artisanat, hebergements=hebergements,
         vetements=vetements, evenements=evenements,
-        transports=transports)
+        transports=transports, cdn_url=CDN_URL)
 
 @app.route('/pricing')
 def pricing():
-    return render_template('pricing.html')
+    return render_template('pricing.html', cdn_url=CDN_URL)
 
 # ============================================================
 # AUTHENTIFICATION (avec code email)
