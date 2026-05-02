@@ -480,7 +480,7 @@
             height: 50vh;
             min-height: 470px;
             background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
-            url('/static/images/{{ ville.image_path }}') center/cover no-repeat;
+            url('{{ cdn_url }}{{ ville.image_path }}') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1125,7 +1125,7 @@
         <div class="att-thumbs" id="attThumbs">
             {% for att in attractions %}
             <div class="att-thumb {% if loop.first %}active{% endif %}" data-i="{{ loop.index0 }}">
-                <img src="/static/images/attractions/{{ att.image_path }}" alt="{{ att.nom }}"
+                <img src="{{ cdn_url }}attractions/{{ att.image_path }}" alt="{{ att.nom }}"
                     onerror="this.parentElement.style.background='rgba(197,157,95,0.3)';">
             </div>
             {% endfor %}
@@ -1138,7 +1138,7 @@
         {
             nom: {{ att.nom | tojson }},
             desc: {{ att.description | tojson }},
-            img: "/static/images/attractions/{{ att.image_path }}"
+            img: "{{ cdn_url }}attractions/{{ att.image_path }}"
         } {% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
@@ -1190,7 +1190,7 @@
             {% for art in artisanat %}
             <div class="magazine-card"
                 style="padding: 20px; text-align: center; border-bottom: 4px solid var(--desert-gold);">
-                <img src="/static/images/artisanat/{{ art.image_path }}" onerror="this.src='/static/images/default.jpg'"
+                <img src="{{ cdn_url }}artisanat/{{ art.image_path }}" onerror="this.src='{{ cdn_url }}default.jpg'"
                     style="width:100%; height:220px; object-fit:cover; border-radius: 15px; margin-bottom: 15px;">
                 <h3 style="margin-top: 18px; font-family: 'Playfair Display'; color: var(--grona); font-size: 1.3rem;">
                     {{ art.nom }}</h3>
@@ -1208,8 +1208,8 @@
         <div class="grid">
             {% for vest in vetements %}
             <div style="text-align: center;">
-                <img src="/static/images/vestimentaire/{{ vest.image_path }}"
-                    onerror="this.src='/static/images/default.jpg'" class="img-mode">
+                <img src="{{ cdn_url }}vestimentaire/{{ vest.image_path }}"
+                    onerror="this.src='{{ cdn_url }}default.jpg'" class="img-mode">
                 <h3 style="margin-top: 18px; font-family: 'Playfair Display';">{{ vest.nom }}</h3>
                 <p style="font-size: 0.9rem; max-width: 350px; margin: 8px auto 0;">{{ vest.description }}</p>
             </div>
@@ -1332,7 +1332,7 @@
                     if (descEl) descEl.textContent = att.desc;
                     if (imgEl) {
                         imgEl.src = att.img;
-                        imgEl.onerror = function () { this.src = '/static/images/default.jpg'; };
+                        imgEl.onerror = function () { this.src = '{{ cdn_url }}default.jpg'; };
                     }
                     if (labelEl) labelEl.textContent = att.nom;
                     if (curEl) curEl.textContent = cur + 1;
