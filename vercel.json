@@ -7,12 +7,17 @@
       "config": {
         "includeFiles": [
           "frontend/**",
-          "backend/rag_engine.py"
+          "backend/rag_engine.py",
+          "backend/templates/**"
         ]
       }
     }
   ],
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "frontend/static/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "backend/app.py"
