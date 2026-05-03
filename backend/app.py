@@ -209,8 +209,6 @@ def index():
         print(f"Erreur villes : {e}")
     finally:
         if conn: conn.close()
-    if villes:
-        print(f"\n\n🚨 DEBUG FROM SERVER: First city image path is: {villes[0]['image_path']}\n\n")
     return render_template('villes.html', villes=villes, titre_filter="Toutes les villes du Maroc", cdn_url=CDN_URL)
 
 @app.route('/filter/<type_ville>')

@@ -1516,7 +1516,7 @@
 
             <div class="cat-grid">
                 <a href="/filter/Villes côtières" class="cat-card">
-                    <div class="cat-card-bg" style="background-image:url('https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/coast.jpg')"></div>
+                    <div class="cat-card-bg" style="background-image:url('{{ cdn_url }}villes/coast.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
                         <span class="cat-name" data-ar="ساحلية">Côtières</span>
@@ -1524,7 +1524,7 @@
                     </div>
                 </a>
                 <a href="/filter/Villes sahariennes" class="cat-card">
-                    <div class="cat-card-bg" style="background-image:url('https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/sahara.jpg')"></div>
+                    <div class="cat-card-bg" style="background-image:url('{{ cdn_url }}villes/sahara.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
                         <span class="cat-name" data-ar="صحراوية">Sahariennes</span>
@@ -1532,7 +1532,7 @@
                     </div>
                 </a>
                 <a href="/filter/Villes de montagne" class="cat-card">
-                    <div class="cat-card-bg" style="background-image:url('https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/mountain.jpg')"></div>
+                    <div class="cat-card-bg" style="background-image:url('{{ cdn_url }}villes/mountain.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
                         <span class="cat-name" data-ar="جبلية">Montagne</span>
@@ -1540,7 +1540,7 @@
                     </div>
                 </a>
                 <a href="/filter/Villes culturelles" class="cat-card">
-                    <div class="cat-card-bg" style="background-image:url('https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/culture.jpg')"></div>
+                    <div class="cat-card-bg" style="background-image:url('{{ cdn_url }}villes/culture.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
                         <span class="cat-name" data-ar="ثقافية">Culturelles</span>
@@ -1548,7 +1548,7 @@
                     </div>
                 </a>
                 <a href="/filter/Villes agricoles" class="cat-card">
-                    <div class="cat-card-bg" style="background-image:url('https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/agricole.jpg')"></div>
+                    <div class="cat-card-bg" style="background-image:url('{{ cdn_url }}villes/agricole.jpg')"></div>
                     <div class="cat-card-overlay"></div>
                     <div class="cat-card-content">
                         <span class="cat-name" data-ar="فلاحية">Agricoles</span>
@@ -1590,7 +1590,7 @@
         " class="about-grid">
 
             <div style="position: relative;">
-                <img src="https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/maroc_bg.png" alt="Maroc" onerror="this.src='https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/maroc_bg.png'"
+                <img src="{{ cdn_url }}villes/maroc_bg.png" alt="Maroc" onerror="this.src='{{ cdn_url }}villes/maroc_bg.png'"
                     style="width: 100%; height: clamp(220px, 40vw, 480px); object-fit: cover; border-radius: 25px; display: block; filter: brightness(0.92);">
                 <div
                     style="position: absolute; top: -10px; left: -10px; right: 10px; bottom: 10px; border: 1.5px solid rgba(107,29,29,0.15); border-radius: 28px; pointer-events: none;">
@@ -1729,14 +1729,14 @@
     <!-- COMPOSANT URGENCE CORRIGÉ -->
     <div id="emergency-fab">
         <button onclick="toggleEmergency()">
-            <img src="https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/urgence.png" alt="Urgence" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="{{ cdn_url }}villes/urgence.png" alt="Urgence" style="width: 100%; height: 100%; object-fit: cover;">
         </button>
 
         <div id="emergency-list">
             <!-- Header -->
             <div
                 style="position: relative; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; overflow: hidden;">
-                <img src="https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/urgence.png"
+                <img src="{{ cdn_url }}villes/urgence.png"
                     style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
                 <div
                     style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(185, 28, 28, 0.9) 0%, rgba(239, 68, 68, 0.4) 100%); z-index: 1;">
