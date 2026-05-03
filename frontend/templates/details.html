@@ -600,6 +600,18 @@
             display: inline-block;
         }
 
+        .img-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(197, 157, 95, 0.15);
+            color: rgba(197, 157, 95, 0.55);
+            font-size: 2.4rem;
+            border-radius: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
         .img-mode {
             width: 100%;
             height: clamp(220px, 40vw, 400px);
@@ -1125,8 +1137,12 @@
         <div class="att-thumbs" id="attThumbs">
             {% for att in attractions %}
             <div class="att-thumb {% if loop.first %}active{% endif %}" data-i="{{ loop.index0 }}">
+                {% if att.image_path %}
                 <img src="{{ cdn_url }}attractions/{{ att.image_path }}" alt="{{ att.nom }}"
                     onerror="this.parentElement.style.background='rgba(197,157,95,0.3)';">
+                {% else %}
+                <div class="img-placeholder" style="font-size:1.1rem;">🖼️</div>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
@@ -1138,7 +1154,7 @@
         {
             nom: {{ att.nom | tojson }},
             desc: {{ att.description | tojson }},
-            img: "{{ cdn_url }}attractions/{{ att.image_path }}"
+            img: {% if att.image_path %}"{{ cdn_url }}attractions/{{ att.image_path }}"{% else %}""{% endif %}
         } {% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
@@ -1190,8 +1206,12 @@
             {% for art in artisanat %}
             <div class="magazine-card"
                 style="padding: 20px; text-align: center; border-bottom: 4px solid var(--desert-gold);">
+                {% if art.image_path %}
                 <img src="{{ cdn_url }}artisanat/{{ art.image_path }}" onerror="this.src='{{ cdn_url }}villes/default.jpg'"
                     style="width:100%; height:220px; object-fit:cover; border-radius: 15px; margin-bottom: 15px;">
+                {% else %}
+                <div class="img-placeholder" style="height:220px; border-radius:15px; margin-bottom:15px;">🖼️</div>
+                {% endif %}
                 <h3 style="margin-top: 18px; font-family: 'Playfair Display'; color: var(--grona); font-size: 1.3rem;">
                     {{ art.nom }}</h3>
                 <p style="font-size: 0.9rem; max-width: 450px; margin: 8px auto 0; color: #555; line-height: 1.6;">{{
@@ -1208,8 +1228,12 @@
         <div class="grid">
             {% for vest in vetements %}
             <div style="text-align: center;">
+                {% if vest.image_path %}
                 <img src="{{ cdn_url }}vestimentaire/{{ vest.image_path }}"
                     onerror="this.src='{{ cdn_url }}villes/default.jpg'" class="img-mode">
+                {% else %}
+                <div class="img-placeholder img-mode">🖼️</div>
+                {% endif %}
                 <h3 style="margin-top: 18px; font-family: 'Playfair Display';">{{ vest.nom }}</h3>
                 <p style="font-size: 0.9rem; max-width: 350px; margin: 8px auto 0;">{{ vest.description }}</p>
             </div>
