@@ -15,7 +15,8 @@ from datetime import datetime, timedelta
 from functools import wraps
 from dotenv import load_dotenv
 
-load_dotenv()
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+load_dotenv(dotenv_path=env_path)
 
 try:
     from rag_engine import rag_retrieve_and_augment
@@ -47,33 +48,15 @@ app.config['MAIL_DEFAULT_SENDER'] = app.config['MAIL_USERNAME'] or 'noreply@moro
 mail = Mail(app)
 
 # ============================================================
-# CLOUDINARY HELPER
+# CLOUDINARY CDN
 # ============================================================
 CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME', 'darytb39v')
-CLOUDINARY_BASE = f"https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/image/upload"
-CDN_URL = "https://cdn.jsdelivr.net/gh/Mekam979/Morocco-steps@main/frontend/static/images/"
-def cloudinary_url(filename, folder=None):
-    """
-    Converts a local image filename to a Cloudinary URL.
-    Usage in Jinja2:
-      {{ cloudinary_url(ville.image_path) }}                → root (villes are in root)
-      {{ cloudinary_url(art.image_path, 'artisanat') }}     → artisanat/
-      {{ cloudinary_url(att.image_path, 'attractions') }}   → attractions/
-      {{ cloudinary_url(vest.image_path, 'vestimentaire') }}→ vestimentaire/
-      {{ cloudinary_url('trippy.jpg', 'root') }}            → root (UI images)
-    """
-    if not filename:
-        return f"{CLOUDINARY_BASE}/default.jpg"
-    if filename.startswith('http'):
-        return filename
-    # root = no subfolder (villes + UI images)
-    if folder == 'root' or folder is None:
-        return f"{CLOUDINARY_BASE}/{filename}"
-    return f"{CLOUDINARY_BASE}/{folder}/{filename}"
+CLOUDINARY_BASE = f"https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto/"
+CDN_URL = CLOUDINARY_BASE
 
 @app.context_processor
 def inject_cloudinary():
-    return dict(cloudinary_url=cloudinary_url, cdn_url=CDN_URL)
+    return dict(cdn_url=CDN_URL)
 
 
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
@@ -226,6 +209,8 @@ def index():
         print(f"Erreur villes : {e}")
     finally:
         if conn: conn.close()
+    if villes:
+        print(f"\n\n🚨 DEBUG FROM SERVER: First city image path is: {villes[0]['image_path']}\n\n")
     return render_template('villes.html', villes=villes, titre_filter="Toutes les villes du Maroc", cdn_url=CDN_URL)
 
 @app.route('/filter/<type_ville>')

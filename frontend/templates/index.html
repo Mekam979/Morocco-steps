@@ -612,7 +612,7 @@
         <div class="villes-grid">
             {% for ville in villes %}
             <div class="card">
-                <img src="{{ cdn_url }}{{ ville['image_path'] or 'default.jpg' }}" 
+                <img src="{{ cdn_url }}villes/{{ ville['image_path'] or 'default.jpg' }}"
                      alt="{{ ville['nom_ville'] }}">
                 
                 <div class="card-content">
