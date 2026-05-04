@@ -4,7 +4,7 @@
 {% block heading %}Villes{% endblock %}
 
 {% block header_actions %}
-<a href="#" class="btn-add" title="Step 3 — non implémenté">+ Ajouter une ville</a>
+<a href="{{ url_for('admin.villes_new') }}" class="btn-add">+ Ajouter une ville</a>
 {% endblock %}
 
 {% block head_extra %}
@@ -107,12 +107,16 @@
     }
     .actions .edit:hover { background: var(--beige); }
     .actions .delete {
-        color: var(--muted);
+        color: var(--darkred);
         border: 1px solid var(--border);
         background: transparent;
-        cursor: not-allowed;
-        opacity: 0.5;
+        cursor: pointer;
     }
+    .actions .delete:hover {
+        background: #fdecec;
+        border-color: rgba(139, 0, 0, 0.25);
+    }
+    .actions form { display: inline; margin: 0; padding: 0; }
 
     .empty-state {
         text-align: center;
@@ -147,14 +151,18 @@
                 {% endif %}
             </td>
             <td>
-                <a class="ville-name" href="/admin/villes/{{ v.nom_ville }}/edit">{{ v.nom_ville }}</a>
+                <a class="ville-name" href="{{ url_for('admin.villes_edit', nom_ville=v.nom_ville) }}">{{ v.nom_ville }}</a>
             </td>
             <td>
                 {% if v.type_ville %}<span class="ville-type">{{ v.type_ville }}</span>{% endif %}
             </td>
             <td class="actions" style="text-align: right;">
-                <a class="edit" href="/admin/villes/{{ v.nom_ville }}/edit">Edit</a>
-                <button class="delete" disabled title="Step 3 — non implémenté">Delete</button>
+                <a class="edit" href="{{ url_for('admin.villes_edit', nom_ville=v.nom_ville) }}">Edit</a>
+                <form method="post"
+                      action="{{ url_for('admin.villes_delete', nom_ville=v.nom_ville) }}"
+                      onsubmit="return confirm('Supprimer la ville {{ v.nom_ville }} ? Cette action est irréversible.');">
+                    <button type="submit" class="delete">Delete</button>
+                </form>
             </td>
         </tr>
         {% endfor %}

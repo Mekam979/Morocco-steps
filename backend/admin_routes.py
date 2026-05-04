@@ -1,23 +1,94 @@
 """
-Admin Blueprint — step 1: auth + base template only.
+Admin Blueprint — auth + villes CRUD.
 
 Routes:
     GET/POST /admin/login
     GET      /admin/logout
-    GET      /admin/dashboard   (placeholder)
+    GET      /admin/dashboard
+    GET      /admin/villes
+    GET/POST /admin/villes/new
+    GET/POST /admin/villes/<nom_ville>/edit
+    POST     /admin/villes/<nom_ville>/delete
 """
 
 import os
 import secrets
+import unicodedata
 from functools import wraps
 
+import cloudinary
+import cloudinary.exceptions
+import cloudinary.uploader
 from flask import (
     Blueprint, render_template, request, redirect, url_for, session
 )
 
 from db import get_connection
 
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+    secure=True,
+)
+
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+
+TYPE_VILLE_OPTIONS = ["CÔTIÈRES", "MONTAGNE", "CULTURELLES", "SAHARIENNES", "AGRICOLES"]
+
+ACCENT_MAP = {
+    "é": "e", "è": "e", "ê": "e", "ë": "e",
+    "â": "a", "à": "a", "ä": "a",
+    "ô": "o", "ö": "o",
+    "û": "u", "ù": "u", "ü": "u",
+    "î": "i", "ï": "i",
+    "ç": "c",
+}
+
+
+def slugify(s: str) -> str:
+    s = (s or "").strip().lower()
+    for k, v in ACCENT_MAP.items():
+        s = s.replace(k, v)
+    s = "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
+    s = s.replace(" ", "_")
+    s = "".join(c for c in s if c.isalnum() or c == "_")
+    while "__" in s:
+        s = s.replace("__", "_")
+    return s.strip("_")
+
+
+def _ensure_google_maps_link_column():
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT COUNT(*) AS n FROM INFORMATION_SCHEMA.COLUMNS "
+                "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'villes' "
+                "AND COLUMN_NAME = 'google_maps_link'"
+            )
+            if cur.fetchone()["n"] == 0:
+                cur.execute(
+                    "ALTER TABLE villes ADD COLUMN google_maps_link VARCHAR(500) NULL"
+                )
+                conn.commit()
+                print("[admin] added column villes.google_maps_link")
+    finally:
+        conn.close()
+
+
+_migrated = False
+
+
+@admin_bp.before_request
+def _run_migrations():
+    global _migrated
+    if not _migrated:
+        try:
+            _ensure_google_maps_link_column()
+            _migrated = True
+        except Exception as e:
+            print(f"[admin] migration check failed: {e}")
 
 
 def admin_required(f):
@@ -72,3 +143,224 @@ def villes_list():
     finally:
         conn.close()
     return render_template("admin/villes_list.html", villes=villes)
+
+
+# ---------------------------------------------------------------------------
+# Villes CRUD — new / edit / delete
+# ---------------------------------------------------------------------------
+
+
+def _legacy_type_ville_for(value):
+    if value and value not in TYPE_VILLE_OPTIONS:
+        return value
+    return None
+
+
+def _validate_form(form, mode, current_nom=None):
+    """Returns (raw, errors). raw holds string values for re-rendering."""
+    raw = {
+        "nom_ville":
+            (form.get("nom_ville") or "").strip() if mode == "new" else current_nom,
+        "slogan": (form.get("slogan") or "").strip(),
+        "description": (form.get("description") or "").strip(),
+        "type_ville": (form.get("type_ville") or "").strip(),
+        "latitude": (form.get("latitude") or "").strip(),
+        "longitude": (form.get("longitude") or "").strip(),
+        "google_maps_link": (form.get("google_maps_link") or "").strip(),
+    }
+    errors = {}
+
+    if mode == "new":
+        if not raw["nom_ville"]:
+            errors["nom_ville"] = "Nom requis."
+        elif len(raw["nom_ville"]) > 120:
+            errors["nom_ville"] = "Maximum 120 caractères."
+        else:
+            conn = get_connection()
+            try:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        "SELECT 1 FROM villes WHERE nom_ville = %s",
+                        (raw["nom_ville"],),
+                    )
+                    if cur.fetchone():
+                        errors["nom_ville"] = "Une ville avec ce nom existe déjà."
+            finally:
+                conn.close()
+
+    if len(raw["slogan"]) > 60:
+        errors["slogan"] = "Maximum 60 caractères."
+
+    if raw["latitude"]:
+        try:
+            lat = float(raw["latitude"])
+            if not -90 <= lat <= 90:
+                errors["latitude"] = "Doit être entre -90 et 90."
+        except ValueError:
+            errors["latitude"] = "Doit être un nombre valide."
+
+    if raw["longitude"]:
+        try:
+            lon = float(raw["longitude"])
+            if not -180 <= lon <= 180:
+                errors["longitude"] = "Doit être entre -180 et 180."
+        except ValueError:
+            errors["longitude"] = "Doit être un nombre valide."
+
+    if raw["google_maps_link"] and not raw["google_maps_link"].startswith(
+        ("http://", "https://")
+    ):
+        errors["google_maps_link"] = "Doit commencer par http:// ou https://."
+
+    return raw, errors
+
+
+def _to_db(raw):
+    return {
+        "nom_ville": raw["nom_ville"],
+        "slogan": raw["slogan"] or None,
+        "description": raw["description"] or None,
+        "type_ville": raw["type_ville"] or None,
+        "latitude": float(raw["latitude"]) if raw["latitude"] else None,
+        "longitude": float(raw["longitude"]) if raw["longitude"] else None,
+        "google_maps_link": raw["google_maps_link"] or None,
+    }
+
+
+def _upload_image_if_present(file_storage, slug):
+    """Returns (image_path, error). image_path None means no upload requested."""
+    if not file_storage or not file_storage.filename:
+        return None, None
+    try:
+        result = cloudinary.uploader.upload(
+            file_storage,
+            public_id=f"villes/{slug}",
+            overwrite=True,
+            resource_type="image",
+        )
+        return f"{slug}.{result.get('format', 'jpg')}", None
+    except cloudinary.exceptions.Error as e:
+        return None, str(e)
+
+
+def _render_form(mode, raw, errors, image_path=None):
+    return render_template(
+        "admin/villes_form.html",
+        mode=mode,
+        v={**raw, "image_path": image_path},
+        errors=errors,
+        type_ville_options=TYPE_VILLE_OPTIONS,
+        legacy_type_ville=_legacy_type_ville_for(raw.get("type_ville")),
+    )
+
+
+@admin_bp.route("/villes/new", methods=["GET", "POST"])
+@admin_required
+def villes_new():
+    if request.method == "GET":
+        empty = {k: "" for k in (
+            "nom_ville", "slogan", "description", "type_ville",
+            "latitude", "longitude", "google_maps_link",
+        )}
+        return _render_form("new", empty, {})
+
+    raw, errors = _validate_form(request.form, mode="new")
+    if errors:
+        return _render_form("new", raw, errors)
+
+    slug = slugify(raw["nom_ville"])
+    image_path, upload_err = _upload_image_if_present(request.files.get("image"), slug)
+    if upload_err:
+        errors["_form"] = f"Erreur d'upload Cloudinary : {upload_err}"
+        return _render_form("new", raw, errors)
+
+    db = _to_db(raw)
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO villes (nom_ville, slogan, description, type_ville, "
+                "latitude, longitude, image_path, google_maps_link) "
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                (db["nom_ville"], db["slogan"], db["description"], db["type_ville"],
+                 db["latitude"], db["longitude"], image_path, db["google_maps_link"]),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    return redirect(url_for("admin.villes_list"))
+
+
+@admin_bp.route("/villes/<nom_ville>/edit", methods=["GET", "POST"])
+@admin_required
+def villes_edit(nom_ville):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT nom_ville, slogan, description, type_ville, latitude, "
+                "longitude, image_path, google_maps_link "
+                "FROM villes WHERE nom_ville = %s",
+                (nom_ville,),
+            )
+            row = cur.fetchone()
+    finally:
+        conn.close()
+
+    if not row:
+        return redirect(url_for("admin.villes_list"))
+
+    if request.method == "GET":
+        raw = {
+            "nom_ville": row["nom_ville"],
+            "slogan": row["slogan"] or "",
+            "description": row["description"] or "",
+            "type_ville": row["type_ville"] or "",
+            "latitude": "" if row["latitude"] is None else str(row["latitude"]),
+            "longitude": "" if row["longitude"] is None else str(row["longitude"]),
+            "google_maps_link": row["google_maps_link"] or "",
+        }
+        return _render_form("edit", raw, {}, image_path=row["image_path"])
+
+    raw, errors = _validate_form(request.form, mode="edit", current_nom=nom_ville)
+    if errors:
+        return _render_form("edit", raw, errors, image_path=row["image_path"])
+
+    slug = slugify(nom_ville)
+    new_image_path, upload_err = _upload_image_if_present(
+        request.files.get("image"), slug
+    )
+    if upload_err:
+        errors["_form"] = f"Erreur d'upload Cloudinary : {upload_err}"
+        return _render_form("edit", raw, errors, image_path=row["image_path"])
+    image_path = new_image_path or row["image_path"]
+
+    db = _to_db(raw)
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE villes SET slogan=%s, description=%s, type_ville=%s, "
+                "latitude=%s, longitude=%s, image_path=%s, google_maps_link=%s "
+                "WHERE nom_ville=%s",
+                (db["slogan"], db["description"], db["type_ville"],
+                 db["latitude"], db["longitude"], image_path,
+                 db["google_maps_link"], nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    return redirect(url_for("admin.villes_list"))
+
+
+@admin_bp.route("/villes/<nom_ville>/delete", methods=["POST"])
+@admin_required
+def villes_delete(nom_ville):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM villes WHERE nom_ville = %s", (nom_ville,))
+        conn.commit()
+    finally:
+        conn.close()
+    return redirect(url_for("admin.villes_list"))
