@@ -117,7 +117,7 @@
             <nav class="sidebar-nav">
                 <a href="{{ url_for('admin.dashboard') }}"
                    class="{% if active_nav == 'dashboard' %}active{% endif %}">Dashboard</a>
-                <a href="#"
+                <a href="{{ url_for('admin.villes_list') }}"
                    class="{% if active_nav == 'villes' %}active{% endif %}">Villes</a>
             </nav>
             <div class="sidebar-footer">

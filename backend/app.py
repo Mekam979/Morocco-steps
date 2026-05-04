@@ -65,16 +65,7 @@ def inject_cloudinary():
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 GROQ_MODEL   = "llama-3.3-70b-versatile"
 
-DB_CONFIG = {
-    'host':        os.getenv('DB_HOST', 'localhost'),
-    'port':        int(os.getenv('DB_PORT', 3306)),
-    'user':        os.getenv('DB_USER', 'root'),
-    'password':    os.getenv('DB_PASSWORD', ''),
-    'db':          os.getenv('DB_NAME', 'tourisme_maroc'),
-    'cursorclass': pymysql.cursors.DictCursor,
-    'charset':     'utf8mb4',
-    'ssl':         {'verify_cert': False}
-}
+from db import DB_CONFIG
 
 TIER_LIMITS = {
     'explorer': 10,

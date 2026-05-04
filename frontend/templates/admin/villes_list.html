@@ -1,0 +1,168 @@
+{% extends "admin/base_admin.html" %}
+{% set active_nav = 'villes' %}
+{% block title %}Villes — Morocco Secrets Admin{% endblock %}
+{% block heading %}Villes{% endblock %}
+
+{% block header_actions %}
+<a href="#" class="btn-add" title="Step 3 — non implémenté">+ Ajouter une ville</a>
+{% endblock %}
+
+{% block head_extra %}
+<style>
+    .btn-add {
+        background: var(--darkred);
+        color: var(--white);
+        text-decoration: none;
+        padding: 9px 16px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        transition: background 0.15s;
+    }
+    .btn-add:hover { background: #6b0000; }
+
+    .villes-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .villes-table thead th {
+        text-align: left;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        padding: 14px 18px;
+        border-bottom: 2px solid var(--gold);
+        background: var(--beige);
+    }
+    .villes-table tbody td {
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+    }
+    .villes-table tbody tr {
+        transition: background 0.12s, box-shadow 0.12s;
+        border-left: 3px solid transparent;
+    }
+    .villes-table tbody tr:hover {
+        background: rgba(201, 168, 76, 0.06);
+        border-left-color: var(--gold);
+    }
+    .villes-table tbody tr:last-child td { border-bottom: none; }
+
+    .ville-thumb {
+        width: 64px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 6px;
+        display: block;
+    }
+    .ville-thumb-placeholder {
+        width: 64px;
+        height: 48px;
+        border-radius: 6px;
+        background: rgba(201, 168, 76, 0.18);
+        color: rgba(139, 0, 0, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+    }
+    .ville-name {
+        color: var(--darkred);
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .ville-name:hover { text-decoration: underline; }
+
+    .ville-type {
+        display: inline-block;
+        padding: 3px 10px;
+        background: rgba(201, 168, 76, 0.18);
+        color: #7a5e1c;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+
+    .actions { white-space: nowrap; }
+    .actions a, .actions button {
+        font-size: 0.85rem;
+        text-decoration: none;
+        padding: 6px 10px;
+        border-radius: 5px;
+        margin-right: 4px;
+        font-family: inherit;
+    }
+    .actions .edit {
+        color: var(--darkred);
+        border: 1px solid var(--border);
+        background: var(--white);
+    }
+    .actions .edit:hover { background: var(--beige); }
+    .actions .delete {
+        color: var(--muted);
+        border: 1px solid var(--border);
+        background: transparent;
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: var(--muted);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if villes %}
+<table class="villes-table">
+    <thead>
+        <tr>
+            <th style="width: 80px;">Image</th>
+            <th>Nom</th>
+            <th>Type</th>
+            <th style="width: 180px; text-align: right;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for v in villes %}
+        <tr>
+            <td>
+                {% if v.image_path %}
+                <img class="ville-thumb"
+                     src="{{ cdn_url }}villes/{{ v.image_path }}"
+                     alt="{{ v.nom_ville }}"
+                     onerror="this.outerHTML='<div class=&quot;ville-thumb-placeholder&quot;>🖼️</div>';">
+                {% else %}
+                <div class="ville-thumb-placeholder">🖼️</div>
+                {% endif %}
+            </td>
+            <td>
+                <a class="ville-name" href="/admin/villes/{{ v.nom_ville }}/edit">{{ v.nom_ville }}</a>
+            </td>
+            <td>
+                {% if v.type_ville %}<span class="ville-type">{{ v.type_ville }}</span>{% endif %}
+            </td>
+            <td class="actions" style="text-align: right;">
+                <a class="edit" href="/admin/villes/{{ v.nom_ville }}/edit">Edit</a>
+                <button class="delete" disabled title="Step 3 — non implémenté">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="card empty-state">
+    Aucune ville.
+</div>
+{% endif %}
+{% endblock %}

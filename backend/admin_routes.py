@@ -15,6 +15,8 @@ from flask import (
     Blueprint, render_template, request, redirect, url_for, session
 )
 
+from db import get_connection
+
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
@@ -54,3 +56,19 @@ def logout():
 @admin_required
 def dashboard():
     return render_template("admin/dashboard.html")
+
+
+@admin_bp.route("/villes")
+@admin_required
+def villes_list():
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT nom_ville, type_ville, image_path FROM villes "
+                "ORDER BY nom_ville"
+            )
+            villes = cur.fetchall()
+    finally:
+        conn.close()
+    return render_template("admin/villes_list.html", villes=villes)
