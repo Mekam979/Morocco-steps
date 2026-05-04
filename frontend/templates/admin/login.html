@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Morocco Secrets Admin</title>
+    <style>
+        :root {
+            --darkred: #8B0000;
+            --gold: #C9A84C;
+            --beige: #F5F0E8;
+            --white: #FFFFFF;
+            --text: #1f1a16;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--beige) 0%, #ede2d3 100%);
+            color: var(--text);
+            padding: 24px;
+        }
+        .login-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 380px;
+            padding: 36px 32px 32px;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(139, 0, 0, 0.12);
+            border-top: 4px solid var(--darkred);
+        }
+        .login-card h1 {
+            margin: 0 0 4px;
+            font-size: 1.3rem;
+            color: var(--darkred);
+            text-align: center;
+        }
+        .login-card .subtitle {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--gold);
+            margin-bottom: 28px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d8cfc2;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: var(--beige);
+            transition: border-color 0.15s, background 0.15s;
+        }
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: var(--white);
+        }
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: var(--darkred);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background 0.15s;
+        }
+        button:hover { background: #6b0000; }
+        .error {
+            margin-top: 16px;
+            padding: 10px 12px;
+            background: #fdecec;
+            color: #8B0000;
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form class="login-card" method="post" action="{{ url_for('admin.login') }}">
+        <h1>Morocco Secrets</h1>
+        <div class="subtitle">Admin</div>
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" autofocus required autocomplete="current-password">
+        <button type="submit">Se connecter</button>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    </form>
+</body>
+</html>
