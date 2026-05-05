@@ -215,11 +215,11 @@ def index():
     return render_template('villes.html', villes=villes, titre_filter="Toutes les villes du Maroc", cdn_url=CDN_URL)
 
 FILTER_PATTERNS = {
-    'CÔTIÈRES':    ['%côtière%', '%côtières%', '%cotiere%', '%cotieres%'],
-    'MONTAGNE':    ['%montagne%', '%montagneuse%'],
-    'CULTURELLES': ['%culturelle%', '%culturelles%'],
-    'SAHARIENNES': ['%saharienne%', '%sahariennes%'],
-    'AGRICOLES':   ['%agricole%', '%agricoles%'],
+    'CÔTIÈRES':    ['%côtière%', '%côtières%', '%cotiere%', '%cotieres%', '%côtier%', '%cotier%'],
+    'MONTAGNE':    ['%montagne%', '%montagneuse%', '%mont%'],
+    'CULTURELLES': ['%culturelle%', '%culturelles%', '%cultur%'],
+    'SAHARIENNES': ['%saharienne%', '%sahariennes%', '%sahar%'],
+    'AGRICOLES':   ['%agricole%', '%agricoles%', '%agric%'],
 }
 
 @app.route('/filter/<type_ville>')
@@ -229,7 +229,13 @@ def filter_villes(type_ville):
     try:
         conn = pymysql.connect(**DB_CONFIG)
         with conn.cursor() as cur:
-            patterns = FILTER_PATTERNS.get(type_ville.upper())
+            tv_upper = type_ville.upper()
+            matched_key = None
+            for key, pats in FILTER_PATTERNS.items():
+                if key in tv_upper or any(p.strip('%').upper() in tv_upper for p in pats):
+                    matched_key = key
+                    break
+            patterns = FILTER_PATTERNS[matched_key] if matched_key else None
             if patterns:
                 where = " OR ".join(["LOWER(type_ville) LIKE %s"] * len(patterns))
                 cur.execute(
