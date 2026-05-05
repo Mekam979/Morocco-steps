@@ -14,6 +14,7 @@ import hashlib
 import random
 from datetime import datetime, timedelta
 from functools import wraps
+from urllib.parse import unquote
 from dotenv import load_dotenv
 
 env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
@@ -26,11 +27,11 @@ except ImportError:
         return {"system_prompt": "Expert Maroc", "user_prompt": message,
                 "has_context": False, "ville_detec": None, "intent_detec": None}
 
-base_dir = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # app.py est dans /backend — frontend est au niveau parent (root)
-frontend_dir = os.path.join(os.path.dirname(base_dir), 'frontend')
-template_dir = os.path.join(frontend_dir, 'templates')
-static_dir = os.path.join(frontend_dir, 'static')
+frontend_dir = os.path.join(BASE_DIR, '..', 'frontend')
+template_dir = os.path.join(BASE_DIR, '..', 'frontend', 'templates')
+static_dir = os.path.join(BASE_DIR, '..', 'frontend', 'static')
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.secret_key = os.getenv('SECRET_KEY', 'trippy_maroc_secret_key_2026')
@@ -215,27 +216,37 @@ def index():
     return render_template('villes.html', villes=villes, titre_filter="Toutes les villes du Maroc", cdn_url=CDN_URL)
 
 FILTER_PATTERNS = {
-    'CÔTIÈRES':    ['%côtière%', '%côtières%', '%cotiere%', '%cotieres%', '%côtier%', '%cotier%'],
+    'COTIERES':    ['%côtière%', '%côtières%', '%cotiere%', '%cotieres%', '%côtier%', '%cotier%'],
     'MONTAGNE':    ['%montagne%', '%montagneuse%', '%mont%'],
     'CULTURELLES': ['%culturelle%', '%culturelles%', '%cultur%'],
     'SAHARIENNES': ['%saharienne%', '%sahariennes%', '%sahar%'],
     'AGRICOLES':   ['%agricole%', '%agricoles%', '%agric%'],
 }
 
+FILTER_TITLES = {
+    'COTIERES':    'Villes côtières',
+    'MONTAGNE':    'Villes de montagne',
+    'CULTURELLES': 'Villes culturelles',
+    'SAHARIENNES': 'Villes sahariennes',
+    'AGRICOLES':   'Villes agricoles',
+}
+
 @app.route('/filter/<type_ville>')
 def filter_villes(type_ville):
+    type_ville = unquote(type_ville)
+    tv_upper = type_ville.upper()
+    matched_key = None
+    for key, pats in FILTER_PATTERNS.items():
+        if key in tv_upper or any(p.strip('%').upper() in tv_upper for p in pats):
+            matched_key = key
+            break
+    patterns = FILTER_PATTERNS[matched_key] if matched_key else None
+
     conn = None
     villes = []
     try:
         conn = pymysql.connect(**DB_CONFIG)
         with conn.cursor() as cur:
-            tv_upper = type_ville.upper()
-            matched_key = None
-            for key, pats in FILTER_PATTERNS.items():
-                if key in tv_upper or any(p.strip('%').upper() in tv_upper for p in pats):
-                    matched_key = key
-                    break
-            patterns = FILTER_PATTERNS[matched_key] if matched_key else None
             if patterns:
                 where = " OR ".join(["LOWER(type_ville) LIKE %s"] * len(patterns))
                 cur.execute(
@@ -254,7 +265,8 @@ def filter_villes(type_ville):
         print(f"Erreur filtre : {e}")
     finally:
         if conn: conn.close()
-    return render_template('villes.html', villes=villes, titre_filter=type_ville, cdn_url=CDN_URL)
+    titre = FILTER_TITLES.get(matched_key, type_ville)
+    return render_template('villes.html', villes=villes, titre_filter=titre, cdn_url=CDN_URL)
 
 @app.route('/ville/<string:nom>')
 def details_ville(nom):
