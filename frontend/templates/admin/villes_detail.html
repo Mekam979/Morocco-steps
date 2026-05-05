@@ -1,0 +1,385 @@
+{% extends "admin/base_admin.html" %}
+{% set active_nav = 'villes' %}
+{% block title %}{{ ville.nom_ville }} — Admin{% endblock %}
+{% block heading %}{{ ville.nom_ville }}{% endblock %}
+
+{% block header_actions %}
+<div style="display:flex; gap:10px;">
+    <a href="{{ url_for('admin.villes_list') }}" class="btn-back">← Retour</a>
+    <a href="{{ url_for('admin.villes_edit', nom_ville=ville.nom_ville) }}" class="btn-edit-fields">Modifier les champs</a>
+</div>
+{% endblock %}
+
+{% block head_extra %}
+<style>
+    .btn-back, .btn-edit-fields {
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        transition: background 0.15s;
+    }
+    .btn-back { color: var(--muted); background: var(--white); }
+    .btn-back:hover { background: var(--beige); color: var(--text); }
+    .btn-edit-fields { color: var(--white); background: var(--darkred); border-color: var(--darkred); }
+    .btn-edit-fields:hover { background: #6b0000; }
+
+    .tabs-bar {
+        display: flex;
+        gap: 4px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 18px;
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+    .tab {
+        flex: 0 0 auto;
+        padding: 12px 18px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        font-family: inherit;
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: var(--muted);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: color 0.15s, border-color 0.15s;
+        margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.active {
+        color: var(--darkred);
+        border-bottom-color: var(--gold);
+    }
+    .tab-count {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 1px 8px;
+        font-size: 0.75rem;
+        background: rgba(201, 168, 76, 0.18);
+        color: #7a5e1c;
+        border-radius: 999px;
+        font-weight: 700;
+    }
+    .tab.active .tab-count { background: rgba(139, 0, 0, 0.12); color: var(--darkred); }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .detail-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .detail-table thead th {
+        text-align: left;
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        padding: 12px 16px;
+        border-bottom: 2px solid var(--gold);
+        background: var(--beige);
+    }
+    .detail-table tbody td {
+        padding: 11px 16px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+        font-size: 0.92rem;
+    }
+    .detail-table tbody tr:last-child td { border-bottom: none; }
+    .detail-table tbody tr:hover { background: rgba(201, 168, 76, 0.05); }
+
+    .item-thumb {
+        width: 64px; height: 48px;
+        object-fit: cover; border-radius: 6px; display: block;
+    }
+    .item-thumb-placeholder {
+        width: 64px; height: 48px;
+        border-radius: 6px;
+        background: rgba(201, 168, 76, 0.18);
+        color: rgba(139, 0, 0, 0.45);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1rem;
+    }
+    .item-name { color: var(--darkred); font-weight: 600; }
+    .item-desc { color: var(--muted); }
+    .item-link {
+        color: var(--darkred);
+        text-decoration: none;
+        font-size: 0.85rem;
+    }
+    .item-link:hover { text-decoration: underline; }
+
+    .badge-pill {
+        display: inline-block;
+        padding: 2px 10px;
+        background: rgba(201, 168, 76, 0.18);
+        color: #7a5e1c;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+    .badge-stars {
+        display: inline-block;
+        padding: 2px 10px;
+        background: rgba(139, 0, 0, 0.08);
+        color: var(--darkred);
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .empty-card {
+        background: var(--white);
+        border: 1px dashed var(--border);
+        border-radius: 8px;
+        padding: 36px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
+</style>
+{% endblock %}
+
+{% macro thumb(image_path, folder) %}
+    {% if image_path %}
+    <img class="item-thumb" src="{{ cdn_url }}{{ folder }}/{{ image_path }}" alt=""
+         onerror="this.outerHTML='<div class=&quot;item-thumb-placeholder&quot;>🖼️</div>';">
+    {% else %}
+    <div class="item-thumb-placeholder">🖼️</div>
+    {% endif %}
+{% endmacro %}
+
+{% macro truncate_desc(text) -%}
+    {% if text and text|length > 120 %}{{ text[:120] }}…{% else %}{{ text or '' }}{% endif %}
+{%- endmacro %}
+
+{% block content %}
+<div class="tabs-bar" role="tablist">
+    <button class="tab active" data-tab="attractions">Attractions <span class="tab-count">{{ attractions|length }}</span></button>
+    <button class="tab" data-tab="specialites">Spécialités <span class="tab-count">{{ specialites|length }}</span></button>
+    <button class="tab" data-tab="restaurants">Restaurants <span class="tab-count">{{ restaurants|length }}</span></button>
+    <button class="tab" data-tab="artisanat">Artisanat <span class="tab-count">{{ artisanat|length }}</span></button>
+    <button class="tab" data-tab="vestimentaire">Vestimentaire <span class="tab-count">{{ vestimentaire|length }}</span></button>
+    <button class="tab" data-tab="hebergements">Hébergements <span class="tab-count">{{ hebergements|length }}</span></button>
+    <button class="tab" data-tab="evenements">Événements <span class="tab-count">{{ evenements|length }}</span></button>
+    <button class="tab" data-tab="transport">Transport <span class="tab-count">{{ transports|length }}</span></button>
+</div>
+
+<!-- Attractions -->
+<div class="panel active" data-panel="attractions">
+    {% if attractions %}
+    <table class="detail-table">
+        <thead><tr>
+            <th style="width:80px;">Image</th>
+            <th>Nom</th>
+            <th>Description</th>
+        </tr></thead>
+        <tbody>
+            {% for a in attractions %}
+            <tr>
+                <td>{{ thumb(a.image_path, 'attractions') }}</td>
+                <td><span class="item-name">{{ a.nom or '—' }}</span></td>
+                <td><span class="item-desc">{{ truncate_desc(a.description) }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Spécialités Culinaires -->
+<div class="panel" data-panel="specialites">
+    {% if specialites %}
+    <table class="detail-table">
+        <thead><tr><th>Plat</th></tr></thead>
+        <tbody>
+            {% for s in specialites %}
+            <tr><td><span class="item-name">{{ s.nom_plat or '—' }}</span></td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Restaurants -->
+<div class="panel" data-panel="restaurants">
+    {% if restaurants %}
+    <table class="detail-table">
+        <thead><tr>
+            <th>Nom</th>
+            <th>Spécialités</th>
+            <th>Description</th>
+            <th>Lien</th>
+        </tr></thead>
+        <tbody>
+            {% for r in restaurants %}
+            <tr>
+                <td><span class="item-name">{{ r.nom or '—' }}</span></td>
+                <td>{% if r.specialites %}<span class="badge-pill">{{ r.specialites }}</span>{% endif %}</td>
+                <td><span class="item-desc">{{ truncate_desc(r.description) }}</span></td>
+                <td>{% if r.lien %}<a class="item-link" href="{{ r.lien }}" target="_blank" rel="noopener">Réserver →</a>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Artisanat -->
+<div class="panel" data-panel="artisanat">
+    {% if artisanat %}
+    <table class="detail-table">
+        <thead><tr>
+            <th style="width:80px;">Image</th>
+            <th>Nom</th>
+            <th>Description</th>
+        </tr></thead>
+        <tbody>
+            {% for a in artisanat %}
+            <tr>
+                <td>{{ thumb(a.image_path, 'artisanat') }}</td>
+                <td><span class="item-name">{{ a.nom_artisanat or '—' }}</span></td>
+                <td><span class="item-desc">{{ truncate_desc(a.description) }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Vestimentaire -->
+<div class="panel" data-panel="vestimentaire">
+    {% if vestimentaire %}
+    <table class="detail-table">
+        <thead><tr>
+            <th style="width:80px;">Image</th>
+            <th>Nom</th>
+            <th>Description</th>
+        </tr></thead>
+        <tbody>
+            {% for v in vestimentaire %}
+            <tr>
+                <td>{{ thumb(v.image_path, 'vestimentaire') }}</td>
+                <td><span class="item-name">{{ v.nom or '—' }}</span></td>
+                <td><span class="item-desc">{{ truncate_desc(v.description) }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Hébergements -->
+<div class="panel" data-panel="hebergements">
+    {% if hebergements %}
+    <table class="detail-table">
+        <thead><tr>
+            <th>Nom</th>
+            <th>Étoiles</th>
+            <th>Avis</th>
+            <th>Lien</th>
+        </tr></thead>
+        <tbody>
+            {% for h in hebergements %}
+            <tr>
+                <td><span class="item-name">{{ h.nom or '—' }}</span></td>
+                <td>{% if h.etoiles %}<span class="badge-stars">{{ h.etoiles }}</span>{% endif %}</td>
+                <td><span class="item-desc">{{ truncate_desc(h.avis) }}</span></td>
+                <td>{% if h.lien %}<a class="item-link" href="{{ h.lien }}" target="_blank" rel="noopener">Réserver →</a>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Événements -->
+<div class="panel" data-panel="evenements">
+    {% if evenements %}
+    <table class="detail-table">
+        <thead><tr>
+            <th>Nom</th>
+            <th>Période</th>
+            <th>Description</th>
+        </tr></thead>
+        <tbody>
+            {% for e in evenements %}
+            <tr>
+                <td><span class="item-name">{{ e.nom or '—' }}</span></td>
+                <td>{% if e.periode %}<span class="badge-pill">{{ e.periode }}</span>{% endif %}</td>
+                <td><span class="item-desc">{{ truncate_desc(e.description) }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Transport -->
+<div class="panel" data-panel="transport">
+    {% if transports %}
+    <table class="detail-table">
+        <thead><tr><th>Type</th></tr></thead>
+        <tbody>
+            {% for t in transports %}
+            <tr><td><span class="item-name">{{ t.type or '—' }}</span></td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<script>
+    (function () {
+        const tabs = document.querySelectorAll('.tab');
+        const panels = document.querySelectorAll('.panel');
+        const validNames = new Set(Array.from(tabs).map(t => t.dataset.tab));
+
+        function activate(name) {
+            if (!validNames.has(name)) return false;
+            tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+            panels.forEach(p => p.classList.toggle('active', p.dataset.panel === name));
+            return true;
+        }
+
+        tabs.forEach(t => {
+            t.addEventListener('click', () => {
+                history.replaceState(null, '', '#' + t.dataset.tab);
+                activate(t.dataset.tab);
+            });
+        });
+
+        window.addEventListener('hashchange', () => {
+            activate(location.hash.slice(1));
+        });
+
+        const initial = location.hash.slice(1);
+        if (!activate(initial)) activate('attractions');
+    })();
+</script>
+{% endblock %}

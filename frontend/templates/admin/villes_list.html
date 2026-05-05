@@ -151,7 +151,7 @@
                 {% endif %}
             </td>
             <td>
-                <a class="ville-name" href="{{ url_for('admin.villes_edit', nom_ville=v.nom_ville) }}">{{ v.nom_ville }}</a>
+                <a class="ville-name" href="{{ url_for('admin.villes_detail', nom_ville=v.nom_ville) }}">{{ v.nom_ville }}</a>
             </td>
             <td>
                 {% if v.type_ville %}<span class="ville-type">{{ v.type_ville }}</span>{% endif %}

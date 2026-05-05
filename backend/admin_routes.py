@@ -353,6 +353,76 @@ def villes_edit(nom_ville):
     return redirect(url_for("admin.villes_list"))
 
 
+@admin_bp.route("/villes/<nom_ville>/detail")
+@admin_required
+def villes_detail(nom_ville):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT nom_ville, slogan, description, type_ville, latitude, "
+                "longitude, image_path, google_maps_link "
+                "FROM villes WHERE nom_ville = %s", (nom_ville,))
+            ville = cur.fetchone()
+            if not ville:
+                return redirect(url_for("admin.villes_list"))
+
+            cur.execute(
+                "SELECT id, nom, description, image_path FROM attractions "
+                "WHERE nom_ville = %s ORDER BY id", (nom_ville,))
+            attractions = cur.fetchall()
+
+            cur.execute(
+                "SELECT id, nom_plat FROM specialites_ville "
+                "WHERE nom_ville = %s ORDER BY id", (nom_ville,))
+            specialites = cur.fetchall()
+
+            cur.execute(
+                "SELECT id, nom, description, specialites, lien FROM restaurants "
+                "WHERE nom_ville = %s ORDER BY id", (nom_ville,))
+            restaurants = cur.fetchall()
+
+            cur.execute(
+                "SELECT id, nom_artisanat, description, image_path FROM artisanat "
+                "WHERE nom_ville = %s ORDER BY id", (nom_ville,))
+            artisanat = cur.fetchall()
+
+            cur.execute(
+                "SELECT id, nom, description, image_path FROM patrimoine_vestimentaire "
+                "WHERE nom_ville = %s ORDER BY id", (nom_ville,))
+            vestimentaire = cur.fetchall()
+
+            cur.execute(
+                "SELECT id, nom, etoiles, avis, lien FROM hebergements "
+                "WHERE nom_ville = %s ORDER BY id", (nom_ville,))
+            hebergements = cur.fetchall()
+
+            cur.execute(
+                "SELECT id, nom, periode, description FROM evenements "
+                "WHERE nom_ville = %s ORDER BY id", (nom_ville,))
+            evenements = cur.fetchall()
+
+            cur.execute(
+                "SELECT id, type FROM transports "
+                "WHERE nom_ville = %s ORDER BY id", (nom_ville,))
+            transports = cur.fetchall()
+    finally:
+        conn.close()
+
+    return render_template(
+        "admin/villes_detail.html",
+        ville=ville,
+        attractions=attractions,
+        specialites=specialites,
+        restaurants=restaurants,
+        artisanat=artisanat,
+        vestimentaire=vestimentaire,
+        hebergements=hebergements,
+        evenements=evenements,
+        transports=transports,
+    )
+
+
 @admin_bp.route("/villes/<nom_ville>/delete", methods=["POST"])
 @admin_required
 def villes_delete(nom_ville):
