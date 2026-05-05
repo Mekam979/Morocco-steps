@@ -956,3 +956,214 @@ def hebergements_delete(nom_ville, id):
         conn.close()
     flash("Hébergement supprimé.", "success")
     return _detail_redirect(nom_ville, "hebergements")
+
+
+# ---------------------------------------------------------------------------
+# Artisanat CRUD
+# ---------------------------------------------------------------------------
+
+
+def _validate_artisanat(form):
+    nom = (form.get("nom_artisanat") or "").strip()
+    description = (form.get("description") or "").strip() or None
+    if not nom:
+        return None, None, "Le nom est requis."
+    if len(nom) > 200:
+        return None, None, "Le nom dépasse 200 caractères."
+    return nom, description, None
+
+
+@admin_bp.route("/villes/<nom_ville>/artisanat/new", methods=["POST"])
+@admin_required
+def artisanat_new(nom_ville):
+    nom, description, err = _validate_artisanat(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "artisanat")
+
+    slug = slugify(nom)
+    image_path, upload_err = _upload_image_if_present(
+        request.files.get("image"), slug, folder="artisanat"
+    )
+    if upload_err:
+        flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+        return _detail_redirect(nom_ville, "artisanat")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO artisanat (nom_ville, nom_artisanat, description, "
+                "image_path) VALUES (%s, %s, %s, %s)",
+                (nom_ville, nom, description, image_path),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Artisanat ajouté.", "success")
+    return _detail_redirect(nom_ville, "artisanat")
+
+
+@admin_bp.route("/villes/<nom_ville>/artisanat/<int:id>/edit", methods=["POST"])
+@admin_required
+def artisanat_edit(nom_ville, id):
+    nom, description, err = _validate_artisanat(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "artisanat")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT image_path FROM artisanat "
+                "WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville),
+            )
+            current = cur.fetchone()
+            if not current:
+                flash("Artisanat introuvable.", "error")
+                return _detail_redirect(nom_ville, "artisanat")
+
+            slug = slugify(nom)
+            new_image, upload_err = _upload_image_if_present(
+                request.files.get("image"), slug, folder="artisanat"
+            )
+            if upload_err:
+                flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+                return _detail_redirect(nom_ville, "artisanat")
+            image_path = new_image or current["image_path"]
+
+            cur.execute(
+                "UPDATE artisanat SET nom_artisanat=%s, description=%s, "
+                "image_path=%s WHERE id=%s AND nom_ville=%s",
+                (nom, description, image_path, id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Artisanat modifié.", "success")
+    return _detail_redirect(nom_ville, "artisanat")
+
+
+@admin_bp.route("/villes/<nom_ville>/artisanat/<int:id>/delete", methods=["POST"])
+@admin_required
+def artisanat_delete(nom_ville, id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "DELETE FROM artisanat WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Artisanat supprimé.", "success")
+    return _detail_redirect(nom_ville, "artisanat")
+
+
+# ---------------------------------------------------------------------------
+# Vestimentaire CRUD (patrimoine_vestimentaire table)
+# ---------------------------------------------------------------------------
+
+
+def _validate_vestimentaire(form):
+    nom = (form.get("nom") or "").strip()
+    description = (form.get("description") or "").strip() or None
+    if not nom:
+        return None, None, "Le nom est requis."
+    if len(nom) > 100:
+        return None, None, "Le nom dépasse 100 caractères."
+    return nom, description, None
+
+
+@admin_bp.route("/villes/<nom_ville>/vestimentaire/new", methods=["POST"])
+@admin_required
+def vestimentaire_new(nom_ville):
+    nom, description, err = _validate_vestimentaire(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "vestimentaire")
+
+    slug = slugify(nom)
+    image_path, upload_err = _upload_image_if_present(
+        request.files.get("image"), slug, folder="vestimentaire"
+    )
+    if upload_err:
+        flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+        return _detail_redirect(nom_ville, "vestimentaire")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO patrimoine_vestimentaire (nom_ville, nom, "
+                "description, image_path) VALUES (%s, %s, %s, %s)",
+                (nom_ville, nom, description, image_path),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Vêtement ajouté.", "success")
+    return _detail_redirect(nom_ville, "vestimentaire")
+
+
+@admin_bp.route("/villes/<nom_ville>/vestimentaire/<int:id>/edit", methods=["POST"])
+@admin_required
+def vestimentaire_edit(nom_ville, id):
+    nom, description, err = _validate_vestimentaire(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "vestimentaire")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT image_path FROM patrimoine_vestimentaire "
+                "WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville),
+            )
+            current = cur.fetchone()
+            if not current:
+                flash("Vêtement introuvable.", "error")
+                return _detail_redirect(nom_ville, "vestimentaire")
+
+            slug = slugify(nom)
+            new_image, upload_err = _upload_image_if_present(
+                request.files.get("image"), slug, folder="vestimentaire"
+            )
+            if upload_err:
+                flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+                return _detail_redirect(nom_ville, "vestimentaire")
+            image_path = new_image or current["image_path"]
+
+            cur.execute(
+                "UPDATE patrimoine_vestimentaire SET nom=%s, description=%s, "
+                "image_path=%s WHERE id=%s AND nom_ville=%s",
+                (nom, description, image_path, id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Vêtement modifié.", "success")
+    return _detail_redirect(nom_ville, "vestimentaire")
+
+
+@admin_bp.route("/villes/<nom_ville>/vestimentaire/<int:id>/delete", methods=["POST"])
+@admin_required
+def vestimentaire_delete(nom_ville, id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "DELETE FROM patrimoine_vestimentaire "
+                "WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Vêtement supprimé.", "success")
+    return _detail_redirect(nom_ville, "vestimentaire")

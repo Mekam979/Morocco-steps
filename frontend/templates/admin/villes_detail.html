@@ -517,19 +517,61 @@
 
 <!-- Artisanat -->
 <div class="panel" data-panel="artisanat">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-artisanat">+ Ajouter un artisanat</button>
+    </div>
+
+    <form id="form-artisanat" class="inline-form" method="post"
+          enctype="multipart/form-data" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="arti-nom">Nom *</label>
+                <input type="text" id="arti-nom" name="nom_artisanat" maxlength="200" required>
+            </div>
+            <div class="field full-width">
+                <label for="arti-description">Description</label>
+                <textarea id="arti-description" name="description" rows="5"></textarea>
+            </div>
+            <div class="field full-width">
+                <label for="arti-image">Image</label>
+                <div class="current-image" id="arti-current-image" style="display:none;">
+                    <img id="arti-current-img" src="" alt="">
+                    <span>Téléverser un fichier pour remplacer.</span>
+                </div>
+                <input type="file" id="arti-image" name="image" accept="image/*">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-artisanat">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-artisanat">Créer</button>
+        </div>
+    </form>
+
     {% if artisanat %}
-    <table class="detail-table">
+    <table class="detail-table" id="artisanat-table">
         <thead><tr>
             <th style="width:80px;">Image</th>
             <th>Nom</th>
             <th>Description</th>
+            <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
             {% for a in artisanat %}
-            <tr>
+            <tr data-id="{{ a.id }}"
+                data-nom-artisanat="{{ a.nom_artisanat or '' }}"
+                data-description="{{ a.description or '' }}"
+                data-image-path="{{ a.image_path or '' }}">
                 <td>{{ thumb(a.image_path, 'artisanat') }}</td>
                 <td><span class="item-name">{{ a.nom_artisanat or '—' }}</span></td>
                 <td><span class="item-desc">{{ truncate_desc(a.description) }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.artisanat_delete', nom_ville=ville.nom_ville, id=a.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ a.nom_artisanat }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -541,19 +583,61 @@
 
 <!-- Vestimentaire -->
 <div class="panel" data-panel="vestimentaire">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-vestimentaire">+ Ajouter un vêtement</button>
+    </div>
+
+    <form id="form-vestimentaire" class="inline-form" method="post"
+          enctype="multipart/form-data" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="vest-nom">Nom *</label>
+                <input type="text" id="vest-nom" name="nom" maxlength="100" required>
+            </div>
+            <div class="field full-width">
+                <label for="vest-description">Description</label>
+                <textarea id="vest-description" name="description" rows="5"></textarea>
+            </div>
+            <div class="field full-width">
+                <label for="vest-image">Image</label>
+                <div class="current-image" id="vest-current-image" style="display:none;">
+                    <img id="vest-current-img" src="" alt="">
+                    <span>Téléverser un fichier pour remplacer.</span>
+                </div>
+                <input type="file" id="vest-image" name="image" accept="image/*">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-vestimentaire">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-vestimentaire">Créer</button>
+        </div>
+    </form>
+
     {% if vestimentaire %}
-    <table class="detail-table">
+    <table class="detail-table" id="vestimentaire-table">
         <thead><tr>
             <th style="width:80px;">Image</th>
             <th>Nom</th>
             <th>Description</th>
+            <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
             {% for v in vestimentaire %}
-            <tr>
+            <tr data-id="{{ v.id }}"
+                data-nom="{{ v.nom or '' }}"
+                data-description="{{ v.description or '' }}"
+                data-image-path="{{ v.image_path or '' }}">
                 <td>{{ thumb(v.image_path, 'vestimentaire') }}</td>
                 <td><span class="item-name">{{ v.nom or '—' }}</span></td>
                 <td><span class="item-desc">{{ truncate_desc(v.description) }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.vestimentaire_delete', nom_ville=ville.nom_ville, id=v.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ v.nom }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -1006,6 +1090,124 @@
                     inputDesc.value = tr.dataset.description || '';
                     inputSpec.value = tr.dataset.specialites || '';
                     inputLien.value = tr.dataset.lien || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Artisanat inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const CDN = {{ cdn_url | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/artisanat/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/artisanat/${id}/edit`;
+
+        const form = document.getElementById('form-artisanat');
+        const btnAdd = document.getElementById('btn-add-artisanat');
+        const btnCancel = document.getElementById('btn-cancel-artisanat');
+        const btnSave = document.getElementById('btn-save-artisanat');
+        const inputNom = document.getElementById('arti-nom');
+        const inputDesc = document.getElementById('arti-description');
+        const inputFile = document.getElementById('arti-image');
+        const currentWrap = document.getElementById('arti-current-image');
+        const currentImg = document.getElementById('arti-current-img');
+        const table = document.getElementById('artisanat-table');
+
+        function clearForm() {
+            form.reset();
+            currentWrap.style.display = 'none';
+            currentImg.src = '';
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nomArtisanat || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    if (tr.dataset.imagePath) {
+                        currentImg.src = `${CDN}artisanat/${tr.dataset.imagePath}`;
+                        currentWrap.style.display = 'flex';
+                    }
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Vestimentaire inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const CDN = {{ cdn_url | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/vestimentaire/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/vestimentaire/${id}/edit`;
+
+        const form = document.getElementById('form-vestimentaire');
+        const btnAdd = document.getElementById('btn-add-vestimentaire');
+        const btnCancel = document.getElementById('btn-cancel-vestimentaire');
+        const btnSave = document.getElementById('btn-save-vestimentaire');
+        const inputNom = document.getElementById('vest-nom');
+        const inputDesc = document.getElementById('vest-description');
+        const inputFile = document.getElementById('vest-image');
+        const currentWrap = document.getElementById('vest-current-image');
+        const currentImg = document.getElementById('vest-current-img');
+        const table = document.getElementById('vestimentaire-table');
+
+        function clearForm() {
+            form.reset();
+            currentWrap.style.display = 'none';
+            currentImg.src = '';
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    if (tr.dataset.imagePath) {
+                        currentImg.src = `${CDN}vestimentaire/${tr.dataset.imagePath}`;
+                        currentWrap.style.display = 'flex';
+                    }
                     form.action = editUrl(tr.dataset.id);
                     btnSave.textContent = 'Enregistrer';
                     tr.classList.add('editing');
