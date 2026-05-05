@@ -34,6 +34,8 @@ static_dir = os.path.join(frontend_dir, 'static')
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.secret_key = os.getenv('SECRET_KEY', 'trippy_maroc_secret_key_2026')
 
+import sys, os
+sys.path.insert(0, os.path.dirname(__file__))
 from admin_routes import admin_bp
 app.register_blueprint(admin_bp)
 

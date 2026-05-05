@@ -246,6 +246,12 @@
         }
 
         .nav-brand {
+<<<<<<< HEAD
+=======
+            display: flex;
+            align-items: center;
+            gap: 12px;
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
             font-family: 'Playfair Display', serif;
             font-size: clamp(1.1rem, 2vw, 1.4rem);
             font-weight: 900;
@@ -254,6 +260,20 @@
             letter-spacing: -0.02em;
         }
 
+<<<<<<< HEAD
+=======
+        .nav-logo {
+            height: 65px;
+            width: auto;
+            object-fit: contain;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav.scrolled .nav-logo {
+            height: 48px;
+        }
+
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
         .nav-brand em {
             font-style: italic;
             color: var(--desert-gold);
@@ -428,6 +448,12 @@
         }
 
         .sidebar-brand-m {
+<<<<<<< HEAD
+=======
+            display: flex;
+            align-items: center;
+            gap: 10px;
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
             font-family: 'Playfair Display', serif;
             font-size: 1.25rem;
             font-weight: 900;
@@ -550,10 +576,26 @@
             content: '';
             position: absolute;
             inset: 0;
+<<<<<<< HEAD
             background: linear-gradient(180deg, rgba(107, 29, 29, 0.6) 0%, rgba(107, 29, 29, 0.3) 50%, rgba(0, 0, 0, 0.7) 100%);
             z-index: 1;
         }
 
+=======
+            background: linear-gradient(180deg, rgba(91, 86, 86, 0.6) 0%, rgba(107, 29, 29, 0.3) 50%, rgba(0, 0, 0, 0.7) 100%);
+            z-index: 1;
+        }
+
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(197, 157, 95, 0.1) 0%, transparent 80%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
         .hero-content {
             position: relative;
             z-index: 2;
@@ -576,8 +618,13 @@
         .hero-eyebrow span {
             width: 44px;
             height: 1px;
+<<<<<<< HEAD
             background: #FFFFFF;
             opacity: 0.8;
+=======
+            background: var(--desert-gold);
+            opacity: 1;
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
             display: inline-block;
         }
 
@@ -607,10 +654,18 @@
         }
 
         .hero-line {
+<<<<<<< HEAD
             width: 80px;
             height: 1px;
             background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
             margin: 28px auto 0;
+=======
+            width: 100px;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--desert-gold), transparent);
+            margin: 28px auto 0;
+            opacity: 0.8;
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
         }
 
         /* ══ FILTER BAR ══ */
@@ -1083,7 +1138,14 @@
     <!-- SIDEBAR PANNEAU -->
     <div class="mobile-sidebar" id="mobileSidebar">
         <div class="sidebar-header">
+<<<<<<< HEAD
             <div class="sidebar-brand-m">Morocco <em>Secrets</em></div>
+=======
+            <div class="sidebar-brand-m" style="flex-direction: column; align-items: flex-start; gap: 12px; padding: 10px 0;">
+                <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo" class="nav-logo" style="height: 65px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
+                <span style="font-size: 1.4rem;">Morocco <em>Secrets</em></span>
+            </div>
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
             <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="sidebar-links">
@@ -1115,7 +1177,14 @@
 
     <!-- NAV -->
     <nav class="nav" id="mainNav">
+<<<<<<< HEAD
         <a href="/" class="nav-brand">Morocco <em>Secrets</em></a>
+=======
+        <a href="/" class="nav-brand">
+            <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo" class="nav-logo">
+            <span>Morocco <em>Secrets</em></span>
+        </a>
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
         <div class="nav-links">
             <a href="/" class="nav-link" data-ar="الرئيسية">Accueil</a>
             <div class="nav-item">
@@ -1168,12 +1237,29 @@
     <!-- HERO -->
     <div class="page-hero" style="background-image: url('
         {%- if titre_filter == 'Toutes les villes du Maroc' -%}
+<<<<<<< HEAD
             {{ cdn_url }}villes/maroc_bg.png {%- elif "côtières" in titre_filter -%} {{
         cdn_url }}villes/coast.jpg {%- elif "sahariennes" in titre_filter -%} {{
         cdn_url }}villes/sahara.jpg {%- elif "montagne" in titre_filter -%} {{ cdn_url }}villes/
         mountain.jpg {%- elif "culturelles" in titre_filter -%} {{ cdn_url }}villes/
         culture.jpg {%- else -%} {{ cdn_url }}villes/maroc_bg.png {%-
         endif -%} ');"
+=======
+            {{ cdn_url }}villes/maroc_bg.png
+        {%- elif "côtières" in titre_filter.lower() -%}
+            {{ cdn_url }}villes/coast.jpg
+        {%- elif "sahariennes" in titre_filter.lower() -%}
+            {{ cdn_url }}villes/sahara.jpg
+        {%- elif "montagne" in titre_filter.lower() -%}
+            {{ cdn_url }}villes/mountain.jpg
+        {%- elif "culturelles" in titre_filter.lower() -%}
+            {{ cdn_url }}villes/culture.jpg
+        {%- elif "agricoles" in titre_filter.lower() -%}
+            {{ cdn_url }}villes/agricole.jpg
+        {%- else -%}
+            {{ cdn_url }}villes/maroc_bg.png
+        {%- endif -%} ');">
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
         <div class="hero-content">
             <div class="hero-eyebrow">
                 <span></span>
@@ -1181,8 +1267,13 @@
                 <span></span>
             </div>
             <h1>
+<<<<<<< HEAD
                 {% if titre_filter == ' Toutes les villes du Maroc' %} <span data-ar="كل المدن">Toutes les
         <em>Villes</em></span>
+=======
+                {% if titre_filter == 'Toutes les villes du Maroc' %} 
+                    <span data-ar="كل المدن">Toutes les <em>Villes</em></span>
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
         {% elif 'côtières' in titre_filter %}
         <span data-ar="المدن الساحلية">Villes <em>Côtières</em></span>
         {% elif 'sahariennes' in titre_filter %}

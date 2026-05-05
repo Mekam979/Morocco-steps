@@ -107,13 +107,34 @@ body {
 }
 
 .nav-brand {
+<<<<<<< HEAD
+=======
+    display: flex;
+    align-items: center;
+    gap: 12px;
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.7rem;
     font-weight: 400;
     color: var(--text-light);
     text-decoration: none;
     letter-spacing: 0.1em;
+<<<<<<< HEAD
     transition: opacity 0.3s;
+=======
+    transition: all 0.3s ease;
+}
+
+.nav-logo {
+    height: 55px; /* Increased for better visibility */
+    width: auto;
+    object-fit: contain;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav.scrolled .nav-logo {
+    height: 48px; /* Balanced for scrolled state */
+>>>>>>> daf63d1e6bdf093af01e9cbe060a1351f19265be
 }
 
 .nav-brand:hover {
