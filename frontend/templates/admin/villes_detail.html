@@ -146,6 +146,157 @@
         color: var(--muted);
         font-size: 0.95rem;
     }
+
+    /* Flash banner */
+    .flash {
+        padding: 11px 16px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        font-size: 0.92rem;
+        border: 1px solid transparent;
+    }
+    .flash-success {
+        background: #ecf6ed; color: #1e6f33;
+        border-color: rgba(30, 111, 51, 0.2);
+    }
+    .flash-error {
+        background: #fdecec; color: var(--darkred);
+        border-color: rgba(139, 0, 0, 0.2);
+    }
+
+    /* Panel header (above each tab's content) */
+    .panel-header {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 12px;
+    }
+    .btn-add-inline {
+        background: var(--darkred);
+        color: var(--white);
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .btn-add-inline:hover { background: #6b0000; }
+
+    /* Inline form */
+    .inline-form {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--gold);
+        border-radius: 8px;
+        padding: 20px 22px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .inline-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 18px;
+    }
+    .inline-form .field { display: flex; flex-direction: column; }
+    .inline-form .field.full-width { grid-column: 1 / -1; }
+    .inline-form label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: var(--text);
+    }
+    .inline-form input[type="text"],
+    .inline-form input[type="file"],
+    .inline-form textarea {
+        padding: 9px 11px;
+        border: 1px solid #d8cfc2;
+        border-radius: 6px;
+        font-size: 0.92rem;
+        font-family: inherit;
+        background: var(--beige);
+        transition: border-color 0.15s, background 0.15s;
+    }
+    .inline-form input:focus,
+    .inline-form textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+        background: var(--white);
+    }
+    .inline-form textarea { resize: vertical; min-height: 90px; }
+    .inline-form .current-image {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 6px;
+        padding: 8px;
+        background: var(--beige);
+        border-radius: 6px;
+        border: 1px dashed #d8cfc2;
+    }
+    .inline-form .current-image img {
+        width: 80px; height: 60px;
+        object-fit: cover; border-radius: 5px;
+    }
+    .inline-form .current-image span {
+        font-size: 0.82rem; color: var(--muted);
+    }
+    .inline-form-actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+    .inline-form-actions button {
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        border: 1px solid var(--border);
+    }
+    .inline-form-actions .btn-cancel {
+        background: var(--white); color: var(--muted);
+    }
+    .inline-form-actions .btn-cancel:hover {
+        background: var(--beige); color: var(--text);
+    }
+    .inline-form-actions .btn-save {
+        background: var(--darkred); color: var(--white);
+        border-color: var(--darkred);
+    }
+    .inline-form-actions .btn-save:hover { background: #6b0000; }
+
+    /* Actions column */
+    .row-actions { white-space: nowrap; }
+    .row-actions form { display: inline; margin: 0; padding: 0; }
+    .row-actions .btn-row-edit,
+    .row-actions .btn-row-delete {
+        font-size: 0.82rem;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-left: 4px;
+        background: transparent;
+        border: 1px solid var(--border);
+        font-family: inherit;
+        cursor: pointer;
+    }
+    .row-actions .btn-row-edit { color: var(--darkred); }
+    .row-actions .btn-row-edit:hover { background: var(--beige); }
+    .row-actions .btn-row-delete { color: var(--darkred); }
+    .row-actions .btn-row-delete:hover {
+        background: #fdecec;
+        border-color: rgba(139, 0, 0, 0.25);
+    }
+    .detail-table tbody tr.editing {
+        background: rgba(201, 168, 76, 0.12);
+        border-left: 3px solid var(--gold);
+    }
+    @media (max-width: 720px) {
+        .inline-form-grid { grid-template-columns: 1fr; }
+    }
 </style>
 {% endblock %}
 
@@ -163,6 +314,14 @@
 {%- endmacro %}
 
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+        <div class="flash flash-{{ category }}">{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <div class="tabs-bar" role="tablist">
     <button class="tab active" data-tab="attractions">Attractions <span class="tab-count">{{ attractions|length }}</span></button>
     <button class="tab" data-tab="specialites">Spécialités <span class="tab-count">{{ specialites|length }}</span></button>
@@ -176,19 +335,61 @@
 
 <!-- Attractions -->
 <div class="panel active" data-panel="attractions">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-attraction">+ Ajouter une attraction</button>
+    </div>
+
+    <form id="form-attraction" class="inline-form" method="post"
+          enctype="multipart/form-data" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="attr-nom">Nom *</label>
+                <input type="text" id="attr-nom" name="nom" maxlength="120" required>
+            </div>
+            <div class="field full-width">
+                <label for="attr-description">Description</label>
+                <textarea id="attr-description" name="description" rows="5"></textarea>
+            </div>
+            <div class="field full-width">
+                <label for="attr-image">Image</label>
+                <div class="current-image" id="attr-current-image" style="display:none;">
+                    <img id="attr-current-img" src="" alt="">
+                    <span>Téléverser un fichier pour remplacer.</span>
+                </div>
+                <input type="file" id="attr-image" name="image" accept="image/*">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-attraction">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-attraction">Enregistrer</button>
+        </div>
+    </form>
+
     {% if attractions %}
-    <table class="detail-table">
+    <table class="detail-table" id="attractions-table">
         <thead><tr>
             <th style="width:80px;">Image</th>
             <th>Nom</th>
             <th>Description</th>
+            <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
             {% for a in attractions %}
-            <tr>
+            <tr data-id="{{ a.id }}"
+                data-nom="{{ a.nom or '' }}"
+                data-description="{{ a.description or '' }}"
+                data-image-path="{{ a.image_path or '' }}">
                 <td>{{ thumb(a.image_path, 'attractions') }}</td>
                 <td><span class="item-name">{{ a.nom or '—' }}</span></td>
                 <td><span class="item-desc">{{ truncate_desc(a.description) }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.attractions_delete', nom_ville=ville.nom_ville, id=a.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ a.nom }} » ? Cette action est irréversible.');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -380,6 +581,70 @@
 
         const initial = location.hash.slice(1);
         if (!activate(initial)) activate('attractions');
+    })();
+
+    // Attractions inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const CDN = {{ cdn_url | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/attractions/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/attractions/${id}/edit`;
+
+        const form = document.getElementById('form-attraction');
+        const btnAdd = document.getElementById('btn-add-attraction');
+        const btnCancel = document.getElementById('btn-cancel-attraction');
+        const btnSave = document.getElementById('btn-save-attraction');
+        const inputNom = document.getElementById('attr-nom');
+        const inputDesc = document.getElementById('attr-description');
+        const inputFile = document.getElementById('attr-image');
+        const currentWrap = document.getElementById('attr-current-image');
+        const currentImg = document.getElementById('attr-current-img');
+        const table = document.getElementById('attractions-table');
+
+        function clearForm() {
+            form.reset();
+            currentWrap.style.display = 'none';
+            currentImg.src = '';
+            if (table) {
+                table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+            }
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() {
+            form.style.display = 'none';
+            clearForm();
+        }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    if (tr.dataset.imagePath) {
+                        currentImg.src = `${CDN}attractions/${tr.dataset.imagePath}`;
+                        currentWrap.style.display = 'flex';
+                    }
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
     })();
 </script>
 {% endblock %}

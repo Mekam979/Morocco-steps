@@ -20,7 +20,7 @@ import cloudinary
 import cloudinary.exceptions
 import cloudinary.uploader
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, session
+    Blueprint, flash, render_template, request, redirect, url_for, session
 )
 
 from db import get_connection
@@ -227,20 +227,26 @@ def _to_db(raw):
     }
 
 
-def _upload_image_if_present(file_storage, slug):
+def _upload_image_if_present(file_storage, slug, folder="villes"):
     """Returns (image_path, error). image_path None means no upload requested."""
     if not file_storage or not file_storage.filename:
         return None, None
     try:
         result = cloudinary.uploader.upload(
             file_storage,
-            public_id=f"villes/{slug}",
+            public_id=f"{folder}/{slug}",
             overwrite=True,
             resource_type="image",
         )
         return f"{slug}.{result.get('format', 'jpg')}", None
     except cloudinary.exceptions.Error as e:
         return None, str(e)
+
+
+def _detail_redirect(nom_ville, tab):
+    return redirect(
+        url_for("admin.villes_detail", nom_ville=nom_ville) + f"#{tab}"
+    )
 
 
 def _render_form(mode, raw, errors, image_path=None):
@@ -434,3 +440,108 @@ def villes_delete(nom_ville):
     finally:
         conn.close()
     return redirect(url_for("admin.villes_list"))
+
+
+# ---------------------------------------------------------------------------
+# Attractions CRUD (inline on the villes_detail page)
+# ---------------------------------------------------------------------------
+
+
+def _validate_attraction(form):
+    nom = (form.get("nom") or "").strip()
+    description = (form.get("description") or "").strip() or None
+    if not nom:
+        return None, None, "Le nom est requis."
+    if len(nom) > 120:
+        return None, None, "Le nom dépasse 120 caractères."
+    return nom, description, None
+
+
+@admin_bp.route("/villes/<nom_ville>/attractions/new", methods=["POST"])
+@admin_required
+def attractions_new(nom_ville):
+    nom, description, err = _validate_attraction(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "attractions")
+
+    slug = slugify(nom)
+    image_path, upload_err = _upload_image_if_present(
+        request.files.get("image"), slug, folder="attractions"
+    )
+    if upload_err:
+        flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+        return _detail_redirect(nom_ville, "attractions")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO attractions (nom_ville, nom, description, image_path) "
+                "VALUES (%s, %s, %s, %s)",
+                (nom_ville, nom, description, image_path),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Attraction ajoutée.", "success")
+    return _detail_redirect(nom_ville, "attractions")
+
+
+@admin_bp.route("/villes/<nom_ville>/attractions/<int:id>/edit", methods=["POST"])
+@admin_required
+def attractions_edit(nom_ville, id):
+    nom, description, err = _validate_attraction(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "attractions")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT image_path FROM attractions "
+                "WHERE id = %s AND nom_ville = %s",
+                (id, nom_ville),
+            )
+            current = cur.fetchone()
+            if not current:
+                flash("Attraction introuvable.", "error")
+                return _detail_redirect(nom_ville, "attractions")
+
+            slug = slugify(nom)
+            new_image, upload_err = _upload_image_if_present(
+                request.files.get("image"), slug, folder="attractions"
+            )
+            if upload_err:
+                flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+                return _detail_redirect(nom_ville, "attractions")
+            image_path = new_image or current["image_path"]
+
+            cur.execute(
+                "UPDATE attractions SET nom=%s, description=%s, image_path=%s "
+                "WHERE id=%s AND nom_ville=%s",
+                (nom, description, image_path, id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Attraction modifiée.", "success")
+    return _detail_redirect(nom_ville, "attractions")
+
+
+@admin_bp.route("/villes/<nom_ville>/attractions/<int:id>/delete", methods=["POST"])
+@admin_required
+def attractions_delete(nom_ville, id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "DELETE FROM attractions WHERE id = %s AND nom_ville = %s",
+                (id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Attraction supprimée.", "success")
+    return _detail_redirect(nom_ville, "attractions")
