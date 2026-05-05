@@ -1,0 +1,24 @@
+# Environnement
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Config & Secrets
+.env
+.vscode/
+.idea/
+.claude/
+
+# Binaires & Gros fichiers
+cloudflared/
+*.exe
+*.sql
+*.zip
+*.tar.gz
+
+# Images servies via Cloudinary CDN
+frontend/static/images/
+
+# Node (au cas où)
+node_modules/

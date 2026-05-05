@@ -1,0 +1,1294 @@
+{% extends "admin/base_admin.html" %}
+{% set active_nav = 'villes' %}
+{% block title %}{{ ville.nom_ville }} — Admin{% endblock %}
+{% block heading %}{{ ville.nom_ville }}{% endblock %}
+
+{% block header_actions %}
+<div style="display:flex; gap:10px;">
+    <a href="{{ url_for('admin.villes_list') }}" class="btn-back">← Retour</a>
+    <a href="{{ url_for('admin.villes_edit', nom_ville=ville.nom_ville) }}" class="btn-edit-fields">Modifier les champs</a>
+</div>
+{% endblock %}
+
+{% block head_extra %}
+<style>
+    .btn-back, .btn-edit-fields {
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        transition: background 0.15s;
+    }
+    .btn-back { color: var(--muted); background: var(--white); }
+    .btn-back:hover { background: var(--beige); color: var(--text); }
+    .btn-edit-fields { color: var(--white); background: var(--darkred); border-color: var(--darkred); }
+    .btn-edit-fields:hover { background: #6b0000; }
+
+    .tabs-bar {
+        display: flex;
+        gap: 4px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 18px;
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+    .tab {
+        flex: 0 0 auto;
+        padding: 12px 18px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        font-family: inherit;
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: var(--muted);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: color 0.15s, border-color 0.15s;
+        margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.active {
+        color: var(--darkred);
+        border-bottom-color: var(--gold);
+    }
+    .tab-count {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 1px 8px;
+        font-size: 0.75rem;
+        background: rgba(201, 168, 76, 0.18);
+        color: #7a5e1c;
+        border-radius: 999px;
+        font-weight: 700;
+    }
+    .tab.active .tab-count { background: rgba(139, 0, 0, 0.12); color: var(--darkred); }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .detail-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .detail-table thead th {
+        text-align: left;
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        padding: 12px 16px;
+        border-bottom: 2px solid var(--gold);
+        background: var(--beige);
+    }
+    .detail-table tbody td {
+        padding: 11px 16px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+        font-size: 0.92rem;
+    }
+    .detail-table tbody tr:last-child td { border-bottom: none; }
+    .detail-table tbody tr:hover { background: rgba(201, 168, 76, 0.05); }
+
+    .item-thumb {
+        width: 64px; height: 48px;
+        object-fit: cover; border-radius: 6px; display: block;
+    }
+    .item-thumb-placeholder {
+        width: 64px; height: 48px;
+        border-radius: 6px;
+        background: rgba(201, 168, 76, 0.18);
+        color: rgba(139, 0, 0, 0.45);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1rem;
+    }
+    .item-name { color: var(--darkred); font-weight: 600; }
+    .item-desc { color: var(--muted); }
+    .item-link {
+        color: var(--darkred);
+        text-decoration: none;
+        font-size: 0.85rem;
+    }
+    .item-link:hover { text-decoration: underline; }
+
+    .badge-pill {
+        display: inline-block;
+        padding: 2px 10px;
+        background: rgba(201, 168, 76, 0.18);
+        color: #7a5e1c;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+    .badge-stars {
+        display: inline-block;
+        padding: 2px 10px;
+        background: rgba(139, 0, 0, 0.08);
+        color: var(--darkred);
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .empty-card {
+        background: var(--white);
+        border: 1px dashed var(--border);
+        border-radius: 8px;
+        padding: 36px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
+
+    /* Flash banner */
+    .flash {
+        padding: 11px 16px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        font-size: 0.92rem;
+        border: 1px solid transparent;
+    }
+    .flash-success {
+        background: #ecf6ed; color: #1e6f33;
+        border-color: rgba(30, 111, 51, 0.2);
+    }
+    .flash-error {
+        background: #fdecec; color: var(--darkred);
+        border-color: rgba(139, 0, 0, 0.2);
+    }
+
+    /* Panel header (above each tab's content) */
+    .panel-header {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 12px;
+    }
+    .btn-add-inline {
+        background: var(--darkred);
+        color: var(--white);
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .btn-add-inline:hover { background: #6b0000; }
+
+    /* Inline form */
+    .inline-form {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--gold);
+        border-radius: 8px;
+        padding: 20px 22px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .inline-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 18px;
+    }
+    .inline-form .field { display: flex; flex-direction: column; }
+    .inline-form .field.full-width { grid-column: 1 / -1; }
+    .inline-form label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: var(--text);
+    }
+    .inline-form input[type="text"],
+    .inline-form input[type="file"],
+    .inline-form textarea {
+        padding: 9px 11px;
+        border: 1px solid #d8cfc2;
+        border-radius: 6px;
+        font-size: 0.92rem;
+        font-family: inherit;
+        background: var(--beige);
+        transition: border-color 0.15s, background 0.15s;
+    }
+    .inline-form input:focus,
+    .inline-form textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+        background: var(--white);
+    }
+    .inline-form textarea { resize: vertical; min-height: 90px; }
+    .inline-form .current-image {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 6px;
+        padding: 8px;
+        background: var(--beige);
+        border-radius: 6px;
+        border: 1px dashed #d8cfc2;
+    }
+    .inline-form .current-image img {
+        width: 80px; height: 60px;
+        object-fit: cover; border-radius: 5px;
+    }
+    .inline-form .current-image span {
+        font-size: 0.82rem; color: var(--muted);
+    }
+    .inline-form-actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+    .inline-form-actions button {
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        border: 1px solid var(--border);
+    }
+    .inline-form-actions .btn-cancel {
+        background: var(--white); color: var(--muted);
+    }
+    .inline-form-actions .btn-cancel:hover {
+        background: var(--beige); color: var(--text);
+    }
+    .inline-form-actions .btn-save {
+        background: var(--darkred); color: var(--white);
+        border-color: var(--darkred);
+    }
+    .inline-form-actions .btn-save:hover { background: #6b0000; }
+
+    /* Actions column */
+    .row-actions { white-space: nowrap; }
+    .row-actions form { display: inline; margin: 0; padding: 0; }
+    .row-actions .btn-row-edit,
+    .row-actions .btn-row-delete {
+        font-size: 0.82rem;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-left: 4px;
+        background: transparent;
+        border: 1px solid var(--border);
+        font-family: inherit;
+        cursor: pointer;
+    }
+    .row-actions .btn-row-edit { color: var(--darkred); }
+    .row-actions .btn-row-edit:hover { background: var(--beige); }
+    .row-actions .btn-row-delete { color: var(--darkred); }
+    .row-actions .btn-row-delete:hover {
+        background: #fdecec;
+        border-color: rgba(139, 0, 0, 0.25);
+    }
+    .detail-table tbody tr.editing {
+        background: rgba(201, 168, 76, 0.12);
+        border-left: 3px solid var(--gold);
+    }
+    @media (max-width: 720px) {
+        .inline-form-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}
+
+{% macro thumb(image_path, folder) %}
+    {% if image_path %}
+    <img class="item-thumb" src="{{ cdn_url }}{{ folder }}/{{ image_path }}" alt=""
+         onerror="this.outerHTML='<div class=&quot;item-thumb-placeholder&quot;>🖼️</div>';">
+    {% else %}
+    <div class="item-thumb-placeholder">🖼️</div>
+    {% endif %}
+{% endmacro %}
+
+{% macro truncate_desc(text) -%}
+    {% if text and text|length > 120 %}{{ text[:120] }}…{% else %}{{ text or '' }}{% endif %}
+{%- endmacro %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+        <div class="flash flash-{{ category }}">{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="tabs-bar" role="tablist">
+    <button class="tab active" data-tab="attractions">Attractions <span class="tab-count">{{ attractions|length }}</span></button>
+    <button class="tab" data-tab="specialites">Spécialités <span class="tab-count">{{ specialites|length }}</span></button>
+    <button class="tab" data-tab="restaurants">Restaurants <span class="tab-count">{{ restaurants|length }}</span></button>
+    <button class="tab" data-tab="artisanat">Artisanat <span class="tab-count">{{ artisanat|length }}</span></button>
+    <button class="tab" data-tab="vestimentaire">Vestimentaire <span class="tab-count">{{ vestimentaire|length }}</span></button>
+    <button class="tab" data-tab="hebergements">Hébergements <span class="tab-count">{{ hebergements|length }}</span></button>
+    <button class="tab" data-tab="evenements">Événements <span class="tab-count">{{ evenements|length }}</span></button>
+    <button class="tab" data-tab="transport">Transport <span class="tab-count">{{ transports|length }}</span></button>
+</div>
+
+<!-- Attractions -->
+<div class="panel active" data-panel="attractions">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-attraction">+ Ajouter une attraction</button>
+    </div>
+
+    <form id="form-attraction" class="inline-form" method="post"
+          enctype="multipart/form-data" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="attr-nom">Nom *</label>
+                <input type="text" id="attr-nom" name="nom" maxlength="120" required>
+            </div>
+            <div class="field full-width">
+                <label for="attr-description">Description</label>
+                <textarea id="attr-description" name="description" rows="5"></textarea>
+            </div>
+            <div class="field full-width">
+                <label for="attr-image">Image</label>
+                <div class="current-image" id="attr-current-image" style="display:none;">
+                    <img id="attr-current-img" src="" alt="">
+                    <span>Téléverser un fichier pour remplacer.</span>
+                </div>
+                <input type="file" id="attr-image" name="image" accept="image/*">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-attraction">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-attraction">Enregistrer</button>
+        </div>
+    </form>
+
+    {% if attractions %}
+    <table class="detail-table" id="attractions-table">
+        <thead><tr>
+            <th style="width:80px;">Image</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th style="width:160px; text-align:right;">Actions</th>
+        </tr></thead>
+        <tbody>
+            {% for a in attractions %}
+            <tr data-id="{{ a.id }}"
+                data-nom="{{ a.nom or '' }}"
+                data-description="{{ a.description or '' }}"
+                data-image-path="{{ a.image_path or '' }}">
+                <td>{{ thumb(a.image_path, 'attractions') }}</td>
+                <td><span class="item-name">{{ a.nom or '—' }}</span></td>
+                <td><span class="item-desc">{{ truncate_desc(a.description) }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.attractions_delete', nom_ville=ville.nom_ville, id=a.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ a.nom }} » ? Cette action est irréversible.');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Spécialités Culinaires -->
+<div class="panel" data-panel="specialites">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-specialite">+ Ajouter une spécialité</button>
+    </div>
+
+    <form id="form-specialite" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="spec-nom-plat">Nom du plat *</label>
+                <input type="text" id="spec-nom-plat" name="nom_plat" maxlength="200" required>
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-specialite">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-specialite">Créer</button>
+        </div>
+    </form>
+
+    {% if specialites %}
+    <table class="detail-table" id="specialites-table">
+        <thead><tr>
+            <th>Plat</th>
+            <th style="width:160px; text-align:right;">Actions</th>
+        </tr></thead>
+        <tbody>
+            {% for s in specialites %}
+            <tr data-id="{{ s.id }}" data-nom-plat="{{ s.nom_plat or '' }}">
+                <td><span class="item-name">{{ s.nom_plat or '—' }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.specialites_delete', nom_ville=ville.nom_ville, id=s.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ s.nom_plat }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Restaurants -->
+<div class="panel" data-panel="restaurants">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-restaurant">+ Ajouter un restaurant</button>
+    </div>
+
+    <form id="form-restaurant" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="rest-nom">Nom *</label>
+                <input type="text" id="rest-nom" name="nom" maxlength="150" required>
+            </div>
+            <div class="field full-width">
+                <label for="rest-description">Description</label>
+                <textarea id="rest-description" name="description" rows="4"></textarea>
+            </div>
+            <div class="field">
+                <label for="rest-specialites">Spécialités</label>
+                <input type="text" id="rest-specialites" name="specialites" maxlength="100"
+                       placeholder="Italien, Pizza, Méditerranéen...">
+            </div>
+            <div class="field">
+                <label for="rest-lien">Lien réservation</label>
+                <input type="url" id="rest-lien" name="lien" maxlength="255"
+                       placeholder="https://...">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-restaurant">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-restaurant">Créer</button>
+        </div>
+    </form>
+
+    {% if restaurants %}
+    <table class="detail-table" id="restaurants-table">
+        <thead><tr>
+            <th>Nom</th>
+            <th>Spécialités</th>
+            <th>Description</th>
+            <th>Lien</th>
+            <th style="width:160px; text-align:right;">Actions</th>
+        </tr></thead>
+        <tbody>
+            {% for r in restaurants %}
+            <tr data-id="{{ r.id }}"
+                data-nom="{{ r.nom or '' }}"
+                data-description="{{ r.description or '' }}"
+                data-specialites="{{ r.specialites or '' }}"
+                data-lien="{{ r.lien or '' }}">
+                <td><span class="item-name">{{ r.nom or '—' }}</span></td>
+                <td>{% if r.specialites %}<span class="badge-pill">{{ r.specialites }}</span>{% endif %}</td>
+                <td><span class="item-desc">{{ truncate_desc(r.description) }}</span></td>
+                <td>{% if r.lien %}<a class="item-link" href="{{ r.lien }}" target="_blank" rel="noopener">Réserver →</a>{% endif %}</td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.restaurants_delete', nom_ville=ville.nom_ville, id=r.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ r.nom }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Artisanat -->
+<div class="panel" data-panel="artisanat">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-artisanat">+ Ajouter un artisanat</button>
+    </div>
+
+    <form id="form-artisanat" class="inline-form" method="post"
+          enctype="multipart/form-data" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="arti-nom">Nom *</label>
+                <input type="text" id="arti-nom" name="nom_artisanat" maxlength="200" required>
+            </div>
+            <div class="field full-width">
+                <label for="arti-description">Description</label>
+                <textarea id="arti-description" name="description" rows="5"></textarea>
+            </div>
+            <div class="field full-width">
+                <label for="arti-image">Image</label>
+                <div class="current-image" id="arti-current-image" style="display:none;">
+                    <img id="arti-current-img" src="" alt="">
+                    <span>Téléverser un fichier pour remplacer.</span>
+                </div>
+                <input type="file" id="arti-image" name="image" accept="image/*">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-artisanat">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-artisanat">Créer</button>
+        </div>
+    </form>
+
+    {% if artisanat %}
+    <table class="detail-table" id="artisanat-table">
+        <thead><tr>
+            <th style="width:80px;">Image</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th style="width:160px; text-align:right;">Actions</th>
+        </tr></thead>
+        <tbody>
+            {% for a in artisanat %}
+            <tr data-id="{{ a.id }}"
+                data-nom-artisanat="{{ a.nom_artisanat or '' }}"
+                data-description="{{ a.description or '' }}"
+                data-image-path="{{ a.image_path or '' }}">
+                <td>{{ thumb(a.image_path, 'artisanat') }}</td>
+                <td><span class="item-name">{{ a.nom_artisanat or '—' }}</span></td>
+                <td><span class="item-desc">{{ truncate_desc(a.description) }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.artisanat_delete', nom_ville=ville.nom_ville, id=a.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ a.nom_artisanat }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Vestimentaire -->
+<div class="panel" data-panel="vestimentaire">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-vestimentaire">+ Ajouter un vêtement</button>
+    </div>
+
+    <form id="form-vestimentaire" class="inline-form" method="post"
+          enctype="multipart/form-data" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="vest-nom">Nom *</label>
+                <input type="text" id="vest-nom" name="nom" maxlength="100" required>
+            </div>
+            <div class="field full-width">
+                <label for="vest-description">Description</label>
+                <textarea id="vest-description" name="description" rows="5"></textarea>
+            </div>
+            <div class="field full-width">
+                <label for="vest-image">Image</label>
+                <div class="current-image" id="vest-current-image" style="display:none;">
+                    <img id="vest-current-img" src="" alt="">
+                    <span>Téléverser un fichier pour remplacer.</span>
+                </div>
+                <input type="file" id="vest-image" name="image" accept="image/*">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-vestimentaire">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-vestimentaire">Créer</button>
+        </div>
+    </form>
+
+    {% if vestimentaire %}
+    <table class="detail-table" id="vestimentaire-table">
+        <thead><tr>
+            <th style="width:80px;">Image</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th style="width:160px; text-align:right;">Actions</th>
+        </tr></thead>
+        <tbody>
+            {% for v in vestimentaire %}
+            <tr data-id="{{ v.id }}"
+                data-nom="{{ v.nom or '' }}"
+                data-description="{{ v.description or '' }}"
+                data-image-path="{{ v.image_path or '' }}">
+                <td>{{ thumb(v.image_path, 'vestimentaire') }}</td>
+                <td><span class="item-name">{{ v.nom or '—' }}</span></td>
+                <td><span class="item-desc">{{ truncate_desc(v.description) }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.vestimentaire_delete', nom_ville=ville.nom_ville, id=v.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ v.nom }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Hébergements -->
+<div class="panel" data-panel="hebergements">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-hebergement">+ Ajouter un hébergement</button>
+    </div>
+
+    <form id="form-hebergement" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="hebe-nom">Nom *</label>
+                <input type="text" id="hebe-nom" name="nom" maxlength="500" required>
+            </div>
+            <div class="field">
+                <label for="hebe-etoiles">Étoiles</label>
+                <select id="hebe-etoiles" name="etoiles">
+                    <option value="">— Choisir —</option>
+                    <option value="1">1 étoile</option>
+                    <option value="2">2 étoiles</option>
+                    <option value="3">3 étoiles</option>
+                    <option value="4">4 étoiles</option>
+                    <option value="5">5 étoiles</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="hebe-lien">Lien réservation</label>
+                <input type="url" id="hebe-lien" name="lien" maxlength="255"
+                       placeholder="https://...">
+            </div>
+            <div class="field full-width">
+                <label for="hebe-avis">Avis</label>
+                <textarea id="hebe-avis" name="avis" rows="4"></textarea>
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-hebergement">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-hebergement">Créer</button>
+        </div>
+    </form>
+
+    {% if hebergements %}
+    <table class="detail-table" id="hebergements-table">
+        <thead><tr>
+            <th>Nom</th>
+            <th>Étoiles</th>
+            <th>Avis</th>
+            <th>Lien</th>
+            <th style="width:160px; text-align:right;">Actions</th>
+        </tr></thead>
+        <tbody>
+            {% for h in hebergements %}
+            <tr data-id="{{ h.id }}"
+                data-nom="{{ h.nom or '' }}"
+                data-etoiles="{{ h.etoiles or '' }}"
+                data-avis="{{ h.avis or '' }}"
+                data-lien="{{ h.lien or '' }}">
+                <td><span class="item-name">{{ h.nom or '—' }}</span></td>
+                <td>{% if h.etoiles %}<span class="badge-stars">{{ h.etoiles }}</span>{% endif %}</td>
+                <td><span class="item-desc">{{ truncate_desc(h.avis) }}</span></td>
+                <td>{% if h.lien %}<a class="item-link" href="{{ h.lien }}" target="_blank" rel="noopener">Réserver →</a>{% endif %}</td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.hebergements_delete', nom_ville=ville.nom_ville, id=h.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ h.nom }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Événements -->
+<div class="panel" data-panel="evenements">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-evenement">+ Ajouter un événement</button>
+    </div>
+
+    <form id="form-evenement" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field">
+                <label for="even-nom">Nom *</label>
+                <input type="text" id="even-nom" name="nom" maxlength="100" required>
+            </div>
+            <div class="field">
+                <label for="even-periode">Période</label>
+                <input type="text" id="even-periode" name="periode" maxlength="50"
+                       placeholder="Été, Mai-Juin, Annuel...">
+            </div>
+            <div class="field full-width">
+                <label for="even-description">Description</label>
+                <textarea id="even-description" name="description" rows="4"></textarea>
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-evenement">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-evenement">Créer</button>
+        </div>
+    </form>
+
+    {% if evenements %}
+    <table class="detail-table" id="evenements-table">
+        <thead><tr>
+            <th>Nom</th>
+            <th>Période</th>
+            <th>Description</th>
+            <th style="width:160px; text-align:right;">Actions</th>
+        </tr></thead>
+        <tbody>
+            {% for e in evenements %}
+            <tr data-id="{{ e.id }}"
+                data-nom="{{ e.nom or '' }}"
+                data-periode="{{ e.periode or '' }}"
+                data-description="{{ e.description or '' }}">
+                <td><span class="item-name">{{ e.nom or '—' }}</span></td>
+                <td>{% if e.periode %}<span class="badge-pill">{{ e.periode }}</span>{% endif %}</td>
+                <td><span class="item-desc">{{ truncate_desc(e.description) }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.evenements_delete', nom_ville=ville.nom_ville, id=e.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ e.nom }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<!-- Transport -->
+<div class="panel" data-panel="transport">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-transport">+ Ajouter un transport</button>
+    </div>
+
+    <form id="form-transport" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="trans-type">Type *</label>
+                <input type="text" id="trans-type" name="type" maxlength="200" required
+                       placeholder="Train, Bus, Taxi, Tramway...">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-transport">Annuler</button>
+            <button type="submit" class="btn-save">Créer</button>
+        </div>
+    </form>
+
+    {% if transports %}
+    <table class="detail-table">
+        <thead><tr>
+            <th>Type</th>
+            <th style="width:120px; text-align:right;">Actions</th>
+        </tr></thead>
+        <tbody>
+            {% for t in transports %}
+            <tr>
+                <td><span class="item-name">{{ t.type or '—' }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <form method="post"
+                          action="{{ url_for('admin.transports_delete', nom_ville=ville.nom_ville, id=t.id) }}"
+                          onsubmit="return confirm('Supprimer ce transport ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-card">Aucune entrée.</div>
+    {% endif %}
+</div>
+
+<script>
+    (function () {
+        const tabs = document.querySelectorAll('.tab');
+        const panels = document.querySelectorAll('.panel');
+        const validNames = new Set(Array.from(tabs).map(t => t.dataset.tab));
+
+        function activate(name) {
+            if (!validNames.has(name)) return false;
+            tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+            panels.forEach(p => p.classList.toggle('active', p.dataset.panel === name));
+            return true;
+        }
+
+        tabs.forEach(t => {
+            t.addEventListener('click', () => {
+                history.replaceState(null, '', '#' + t.dataset.tab);
+                activate(t.dataset.tab);
+            });
+        });
+
+        window.addEventListener('hashchange', () => {
+            activate(location.hash.slice(1));
+        });
+
+        const initial = location.hash.slice(1);
+        if (!activate(initial)) activate('attractions');
+    })();
+
+    // Attractions inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const CDN = {{ cdn_url | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/attractions/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/attractions/${id}/edit`;
+
+        const form = document.getElementById('form-attraction');
+        const btnAdd = document.getElementById('btn-add-attraction');
+        const btnCancel = document.getElementById('btn-cancel-attraction');
+        const btnSave = document.getElementById('btn-save-attraction');
+        const inputNom = document.getElementById('attr-nom');
+        const inputDesc = document.getElementById('attr-description');
+        const inputFile = document.getElementById('attr-image');
+        const currentWrap = document.getElementById('attr-current-image');
+        const currentImg = document.getElementById('attr-current-img');
+        const table = document.getElementById('attractions-table');
+
+        function clearForm() {
+            form.reset();
+            currentWrap.style.display = 'none';
+            currentImg.src = '';
+            if (table) {
+                table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+            }
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() {
+            form.style.display = 'none';
+            clearForm();
+        }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    if (tr.dataset.imagePath) {
+                        currentImg.src = `${CDN}attractions/${tr.dataset.imagePath}`;
+                        currentWrap.style.display = 'flex';
+                    }
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Spécialités inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/specialites/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/specialites/${id}/edit`;
+
+        const form = document.getElementById('form-specialite');
+        const btnAdd = document.getElementById('btn-add-specialite');
+        const btnCancel = document.getElementById('btn-cancel-specialite');
+        const btnSave = document.getElementById('btn-save-specialite');
+        const inputNomPlat = document.getElementById('spec-nom-plat');
+        const table = document.getElementById('specialites-table');
+
+        function clearForm() {
+            form.reset();
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNomPlat.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNomPlat.value = tr.dataset.nomPlat || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Événements inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/evenements/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/evenements/${id}/edit`;
+
+        const form = document.getElementById('form-evenement');
+        const btnAdd = document.getElementById('btn-add-evenement');
+        const btnCancel = document.getElementById('btn-cancel-evenement');
+        const btnSave = document.getElementById('btn-save-evenement');
+        const inputNom = document.getElementById('even-nom');
+        const inputPeriode = document.getElementById('even-periode');
+        const inputDesc = document.getElementById('even-description');
+        const table = document.getElementById('evenements-table');
+
+        function clearForm() {
+            form.reset();
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    inputPeriode.value = tr.dataset.periode || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Transport inline form (add only — no edit)
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/transports/new`;
+
+        const form = document.getElementById('form-transport');
+        const btnAdd = document.getElementById('btn-add-transport');
+        const btnCancel = document.getElementById('btn-cancel-transport');
+        const inputType = document.getElementById('trans-type');
+
+        function showForm() {
+            form.style.display = 'block';
+            inputType.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; form.reset(); }
+
+        btnAdd.addEventListener('click', () => {
+            form.reset();
+            form.action = newUrl;
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+    })();
+
+    // Restaurants inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/restaurants/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/restaurants/${id}/edit`;
+
+        const form = document.getElementById('form-restaurant');
+        const btnAdd = document.getElementById('btn-add-restaurant');
+        const btnCancel = document.getElementById('btn-cancel-restaurant');
+        const btnSave = document.getElementById('btn-save-restaurant');
+        const inputNom = document.getElementById('rest-nom');
+        const inputDesc = document.getElementById('rest-description');
+        const inputSpec = document.getElementById('rest-specialites');
+        const inputLien = document.getElementById('rest-lien');
+        const table = document.getElementById('restaurants-table');
+
+        function clearForm() {
+            form.reset();
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    inputSpec.value = tr.dataset.specialites || '';
+                    inputLien.value = tr.dataset.lien || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Artisanat inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const CDN = {{ cdn_url | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/artisanat/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/artisanat/${id}/edit`;
+
+        const form = document.getElementById('form-artisanat');
+        const btnAdd = document.getElementById('btn-add-artisanat');
+        const btnCancel = document.getElementById('btn-cancel-artisanat');
+        const btnSave = document.getElementById('btn-save-artisanat');
+        const inputNom = document.getElementById('arti-nom');
+        const inputDesc = document.getElementById('arti-description');
+        const inputFile = document.getElementById('arti-image');
+        const currentWrap = document.getElementById('arti-current-image');
+        const currentImg = document.getElementById('arti-current-img');
+        const table = document.getElementById('artisanat-table');
+
+        function clearForm() {
+            form.reset();
+            currentWrap.style.display = 'none';
+            currentImg.src = '';
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nomArtisanat || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    if (tr.dataset.imagePath) {
+                        currentImg.src = `${CDN}artisanat/${tr.dataset.imagePath}`;
+                        currentWrap.style.display = 'flex';
+                    }
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Vestimentaire inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const CDN = {{ cdn_url | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/vestimentaire/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/vestimentaire/${id}/edit`;
+
+        const form = document.getElementById('form-vestimentaire');
+        const btnAdd = document.getElementById('btn-add-vestimentaire');
+        const btnCancel = document.getElementById('btn-cancel-vestimentaire');
+        const btnSave = document.getElementById('btn-save-vestimentaire');
+        const inputNom = document.getElementById('vest-nom');
+        const inputDesc = document.getElementById('vest-description');
+        const inputFile = document.getElementById('vest-image');
+        const currentWrap = document.getElementById('vest-current-image');
+        const currentImg = document.getElementById('vest-current-img');
+        const table = document.getElementById('vestimentaire-table');
+
+        function clearForm() {
+            form.reset();
+            currentWrap.style.display = 'none';
+            currentImg.src = '';
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    if (tr.dataset.imagePath) {
+                        currentImg.src = `${CDN}vestimentaire/${tr.dataset.imagePath}`;
+                        currentWrap.style.display = 'flex';
+                    }
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Hébergements inline form (with legacy-etoiles preservation)
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/hebergements/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/hebergements/${id}/edit`;
+        const CANONICAL_ETOILES = new Set(['', '1', '2', '3', '4', '5']);
+
+        const form = document.getElementById('form-hebergement');
+        const btnAdd = document.getElementById('btn-add-hebergement');
+        const btnCancel = document.getElementById('btn-cancel-hebergement');
+        const btnSave = document.getElementById('btn-save-hebergement');
+        const inputNom = document.getElementById('hebe-nom');
+        const selectEtoiles = document.getElementById('hebe-etoiles');
+        const inputAvis = document.getElementById('hebe-avis');
+        const inputLien = document.getElementById('hebe-lien');
+        const table = document.getElementById('hebergements-table');
+
+        function setEtoiles(value) {
+            // Remove any prior legacy option
+            const stale = selectEtoiles.querySelector('option[data-legacy="true"]');
+            if (stale) stale.remove();
+
+            if (CANONICAL_ETOILES.has(value)) {
+                selectEtoiles.value = value;
+            } else {
+                const opt = document.createElement('option');
+                opt.value = value;
+                opt.textContent = `${value} (actuel — non standard)`;
+                opt.dataset.legacy = 'true';
+                opt.selected = true;
+                selectEtoiles.appendChild(opt);
+            }
+        }
+
+        function clearForm() {
+            form.reset();
+            const stale = selectEtoiles.querySelector('option[data-legacy="true"]');
+            if (stale) stale.remove();
+            selectEtoiles.value = '';
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    setEtoiles(tr.dataset.etoiles || '');
+                    inputAvis.value = tr.dataset.avis || '';
+                    inputLien.value = tr.dataset.lien || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+</script>
+{% endblock %}

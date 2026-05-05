@@ -1,0 +1,6 @@
+Flask
+Flask-Mail
+PyMySQL
+requests
+python-dotenv
+cloudinary

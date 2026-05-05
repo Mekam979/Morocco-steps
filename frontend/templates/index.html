@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Morocco Tourism - Toutes les villes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Google Translate Widget -->
+    
+    
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'fr',
+                includedLanguages: 'en,es,zh-CN,ar,ru,de,ja,pt,it,ko',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <style>
+
+        
+        /* --- CUSTOM UI TRANSLATE --- */
+        .custom-lang-selector {
+            position: relative;
+            display: inline-block;
+        }
+        .custom-lang-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            border-radius: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .custom-lang-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+        .custom-lang-list {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: var(--grona, #6b1d1d);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            list-style: none;
+            padding: 8px 0;
+            margin: 0;
+            min-width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+        .custom-lang-list.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .custom-lang-list li {
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .custom-lang-list li:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
+        }
+        #gt_nav_slot { display: none !important; }
+
+        /* --- PREMIUM GOOGLE TRANSLATE --- */
+        .goog-te-gadget { color: transparent !important; font-size: 0 !important; }
+        .goog-te-gadget span { display: none !important; }
+        .goog-te-gadget img { display: none !important; }
+        .goog-te-gadget .goog-te-combo { margin: 0 !important; }
+
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body { top: 0px !important; }
+        #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+        .goog-text-highlight { background: none !important; box-shadow: none !important; }
+        
+        .goog-te-combo {
+            background: rgba(255, 255, 255, 0.15) !important;
+            color: #FFFFFF !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            padding: 8px 12px !important;
+            font-family: inherit !important;
+            font-size: 0.75rem !important;
+            border-radius: 20px !important;
+            cursor: pointer !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            outline: none !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .goog-te-combo:hover {
+            background: rgba(255, 255, 255, 0.25) !important;
+            border-color: rgba(255, 255, 255, 0.8) !important;
+            transform: translateY(-2px);
+        }
+
+        .goog-te-combo option {
+            background: #6b1d1d;
+            color: white;
+            padding: 10px;
+        }
+
+        :root {
+            --grona:     #6b1d1d;
+            --desert-gold: #c59d5f;
+            --soft-beige: #f2e6d9;
+            --ocean:     #0668D3;
+            --ocean-dark:#044A9A;
+            --desert:    #c59d5f;
+            --arch:      #f2e6d9;
+            --identity:  #6b1d1d;
+            --border:    rgba(107,29,29,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--arch);
+            color: var(--identity);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 600;
+            padding: 22px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--identity);
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            transition: all 0.3s;
+        }
+
+        .nav.scrolled {
+            padding: 16px 60px;
+            box-shadow: 0 2px 24px rgba(133,46,30,0.3);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.7rem;
+            font-weight: 400;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-logo {
+            height: 65px;
+            width: auto;
+            object-fit: contain;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav.scrolled .nav-logo {
+            height: 48px;
+        }
+
+        .nav-brand em {
+            font-style: italic;
+            color: var(--desert);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-size: 0.68rem;
+            font-weight: 400;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--identity, #6b1d1d);
+            min-width: 210px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 8px;
+            z-index: 3000;
+            list-style: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 20px;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--identity) 0%, var(--ocean) 100%);
+            color: white;
+            padding: 120px 0 60px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        header h1 span {
+            color: var(--desert);
+            font-style: italic;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .top-btn {
+            background: var(--ocean);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s;
+            border: 2px solid var(--desert);
+        }
+
+        .top-btn:hover {
+            background: var(--ocean-dark);
+        }
+
+        /* Villes Grid */
+        .villes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border: 2px solid var(--desert);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(133,46,30,0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--desert);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--ocean);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-bottom: 10px;
+            border: 1px solid var(--desert);
+        }
+
+        .card h2 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--identity);
+            margin-bottom: 5px;
+        }
+
+        .slogan {
+            font-style: italic;
+            color: var(--desert);
+            margin-bottom: 10px;
+        }
+
+        .desc-short {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .card-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-main, .map-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-main {
+            background: var(--ocean);
+            color: white;
+            border: 1px solid var(--desert);
+        }
+
+        .btn-main:hover {
+            background: var(--ocean-dark);
+            transform: scale(1.05);
+        }
+
+        .map-btn {
+            background: var(--desert);
+            color: white;
+            border: 1px solid var(--ocean);
+        }
+
+        .map-btn:hover {
+            background: #d48b4f;
+            transform: scale(1.05);
+        }
+
+        /* Google Translate */
+        .goog-te-banner-frame { display: none !important; }
+        body { top: 0 !important; }
+        /* ── Translate dans sidebar ── */
+        #gt_sidebar_slot .goog-te-gadget { margin: 0 !important; }
+        #gt_sidebar_slot .goog-te-combo {
+            display: block !important;
+            width: 100% !important;
+            padding: 16px 24px !important;
+            font-size: 0.78rem !important;
+            letter-spacing: 0.22em !important;
+            text-transform: uppercase !important;
+            background: transparent !important;
+            border: none !important;
+            border-top: 1px solid rgba(255,255,255,0.07) !important;
+            color: rgba(255,255,255,0.82) !important;
+            border-radius: 0 !important;
+            cursor: pointer !important;
+            font-family: 'Jost', sans-serif !important;
+            -webkit-appearance: none !important;
+            appearance: none !important;
+        }
+        #gt_sidebar_slot .goog-te-combo option {
+            background: #852E1E !important;
+            color: white !important;
+        }
+        #gt_sidebar_slot .goog-logo-link,
+        #gt_sidebar_slot .goog-te-gadget > span { display: none !important; }
+        .sidebar-footer { padding: 0 !important; border-top: none !important; }
+        .sidebar-footer .lang-label { display: none !important; }
+
+
+        /* ── Langue custom sidebar ── */
+        .sidebar-lang {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 14px 16px 20px;
+        }
+        .sidebar-lang-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 10px;
+            padding-left: 4px;
+        }
+        .sidebar-lang-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        
+        .lang-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.85rem;
+            font-family: 'Jost', sans-serif;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23E19B64' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+        .lang-select option { background: #852E1E; color: white; }
+        .lang-select:focus { outline: none; border-color: var(--desert, #E19B64); }
+        .lang-btn {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            color: rgba(255,255,255,0.80);
+            font-size: 0.72rem;
+            font-family: 'Jost', sans-serif;
+            letter-spacing: 0.05em;
+            padding: 9px 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .lang-btn:active {
+            background: rgba(225,155,100,0.25);
+            border-color: var(--desert, #E19B64);
+            color: white;
+        }
+        .lang-btn-fr {
+            grid-column: span 2;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex !important; }
+            .nav-links  { display: none !important; }
+        }
+
+        /* VIDEO FIX mobile — image directe, pas de vidéo */
+        @media (max-width: 768px) {
+            .hero-video    { display: none !important; }
+            .hero-fallback {
+                display: block !important;
+                position: absolute; inset: 0;
+                width: 100%; height: 100%;
+                object-fit: cover; z-index: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- SIDEBAR PANNEAU -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-brand" style="flex-direction: column; align-items: flex-start; gap: 12px; padding: 10px 0;">
+                <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo" class="nav-logo" style="height: 65px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
+                <span style="font-size: 1.4rem;">Morocco <em>Secrets</em></span>
+            </div>
+            <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+        </div>
+        <div class="sidebar-links">
+            <a href="/" onclick="closeSidebar()"><div class="s-dot"></div>Accueil</a>
+            <a href="/villes" onclick="closeSidebar()"><div class="s-dot"></div>Villes</a>
+            <a href="/pricing" onclick="closeSidebar()"><div class="s-dot"></div>Offres</a>
+        </div>
+        <div class="sidebar-lang">
+            <div class="sidebar-lang-label">Langue</div>
+            <select class="lang-select" onchange="changeLang(this.value)">
+                <option value="">-- Choisir une langue --</option>
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="zh-CN">中文</option>
+                <option value="ru">Русский</option>
+                <option value="it">Italiano</option>
+                <option value="pt">Português</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <a href="/" class="nav-brand">
+            <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo" class="nav-logo">
+            <span>Morocco <em>Secrets</em></span>
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Accueil</a>
+            <div class="nav-item">
+                <a href="/villes" class="nav-link">Villes <i class="fa-solid fa-chevron-down" style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i></a>
+                <div class="dropdown-menu">
+                    <a href="/villes">Toutes les villes</a>
+                    <a href="/filter/Villes côtières">Côtières</a>
+                    <a href="/filter/Villes sahariennes">Sahariennes</a>
+                    <a href="/filter/Villes de montagne">Montagne</a>
+                    <a href="/filter/Villes culturelles">Culturelles</a>
+                    <a href="/filter/Villes agricoles">Agricoles</a>
+                </div>
+            </div>
+            <a href="/pricing" class="nav-link">Offres</a>
+            
+            <div id="gt_nav_slot"><div id="google_translate_element"></div></div>
+            <div class="custom-lang-selector" id="customLangDropdown">
+                <div class="custom-lang-btn">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="currentLangText">FR</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.7em;"></i>
+                </div>
+                <ul class="custom-lang-list">
+                    <li onclick="changeLanguage('fr', 'FR')">🇫🇷 Français</li>
+                    <li onclick="changeLanguage('en', 'EN')">🇬🇧 Anglais</li>
+                    <li onclick="changeLanguage('es', 'ES')">🇪🇸 Espagnol</li>
+                    <li onclick="changeLanguage('ar', 'AR')">🇲🇦 Arabe</li>
+                    <li onclick="changeLanguage('de', 'DE')">🇩🇪 Allemand</li>
+                    <li onclick="changeLanguage('it', 'IT')">🇮🇹 Italien</li>
+                    <li onclick="changeLanguage('pt', 'PT')">🇵🇹 Portugais</li>
+                    <li onclick="changeLanguage('ru', 'RU')">🇷🇺 Russe</li>
+                    <li onclick="changeLanguage('zh-CN', 'ZH')">🇨🇳 Chinois</li>
+                    <li onclick="changeLanguage('ja', 'JA')">🇯🇵 Japonais</li>
+                    <li onclick="changeLanguage('ko', 'KO')">🇰🇷 Coréen</li>
+                </ul>
+            </div>
+
+            
+        </div>
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+
+    <header>
+        <div class="top-bar">
+            <a href="/" class="top-btn">← Retour à l'accueil</a>
+            
+        </div>
+        
+        <h1>Morocco <span>Tourism</span></h1>
+        <p>Toutes les villes du Maroc</p>
+    </header>
+
+    <main>
+        <div class="villes-grid">
+            {% for ville in villes %}
+            <div class="card">
+                <img src="{{ cdn_url }}villes/{{ ville['image_path'] or 'default.jpg' }}"
+                     alt="{{ ville['nom_ville'] }}">
+                
+                <div class="card-content">
+                    <span class="badge">{{ ville['type_ville'] }}</span>
+                    <h2>{{ ville['nom_ville'] }}</h2>
+                    <p class="slogan">"{{ ville['slogan'] }}"</p>
+                    <p class="desc-short">{{ ville['description'][:120] }}...</p>
+                    
+                    <div class="card-buttons">
+                        <a href="{{ url_for('details_ville', nom=ville['nom_ville']) }}" class="btn-main">Explorer</a>
+                        <a href="https://www.google.com/maps/search/{{ ville['nom_ville'] }}+Maroc" target="_blank" class="map-btn">📍 Map</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div style="margin-top: 30px; padding: 20px; border-top: 1px dashed rgba(133, 46, 30, 0.3); background: rgba(251, 213, 188, 0.2);">
+                <p style="font-family: 'Cormorant Garamond', serif; color: #852E1E; font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                    🚨 Urgences Maroc
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <a href="tel:19" style="display: flex; justify-content: space-between; text-decoration: none; color: #333; font-family: 'Jost', sans-serif; font-size: 0.95rem;">
+                        <span>Police (Ville)</span>
+                        <span style="color: #852E1E; font-weight: bold;">19</span>
+                    </a>
+                    <a href="tel:15" style="display: flex; justify-content: space-between; text-decoration: none; color: #333; font-family: 'Jost', sans-serif; font-size: 0.95rem;">
+                        <span>Pompiers / Ambulance</span>
+                        <span style="color: #852E1E; font-weight: bold;">15</span>
+                    </a>
+                    <a href="tel:177" style="display: flex; justify-content: space-between; text-decoration: none; color: #333; font-family: 'Jost', sans-serif; font-size: 0.95rem;">
+                        <span>Gendarmerie (Route)</span>
+                        <span style="color: #852E1E; font-weight: bold;">177</span>
+                    </a>
+                </div>
+</div>
+        </div>
+    </main>
+
+    <div class="footer">
+        <p>© 2026 MoroccoSecrets -Plateforme de Guide touristique intelligent</p>
+    </div>
+
+    <script>
+
+
+
+        // ── Changement de langue ──
+        function changeLang(lang) {
+            // Méthode 1: via Google Translate combo
+            var sel = document.querySelector('.goog-te-combo');
+            if(sel && sel.value !== lang) {
+                sel.value = lang;
+                sel.dispatchEvent(new Event('change'));
+                setTimeout(function(){ closeSidebar(); }, 400);
+                return;
+            }
+            // Méthode 2: cookie + reload (fallback)
+            var d = window.location.hostname;
+            document.cookie = 'googtrans=/fr/' + lang + '; path=/; domain=' + d;
+            document.cookie = 'googtrans=/fr/' + lang + '; path=/';
+            closeSidebar();
+            window.location.reload();
+        }
+
+            // Fermer sidebar après sélection
+            setTimeout(function(){ closeSidebar(); }, 300);
+        }
+
+        // ── Sidebar mobile ──
+        function toggleSidebar(){
+            var s=document.getElementById('mobileSidebar');
+            var o=document.getElementById('sidebarOverlay');
+            var b=document.getElementById('hamburgerBtn');
+            var isOpen = s.classList.contains('open');
+            s.classList.toggle('open');
+            o.classList.toggle('open');
+            b.classList.toggle('open');
+            document.body.style.overflow = !isOpen ? 'hidden' : '';
+
+            // Déplacer Google Translate dans la sidebar quand ouvert
+            var gt = document.getElementById('google_translate_element');
+            var gtSlot = document.getElementById('gt_sidebar_slot');
+            var gtNav = document.getElementById('gt_nav_slot');
+            if(gt && gtSlot && gtNav){
+                if(!isOpen){
+                    gtSlot.appendChild(gt);
+                } else {
+                    gtNav.appendChild(gt);
+                }
+            }
+        }
+        function closeSidebar(){
+            document.getElementById('mobileSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('open');
+            document.getElementById('hamburgerBtn').classList.remove('open');
+            document.body.style.overflow = '';
+            // Remettre Google Translate dans la nav
+            var gt = document.getElementById('google_translate_element');
+            var gtNav = document.getElementById('gt_nav_slot');
+            if(gt && gtNav) gtNav.appendChild(gt);
+        }
+        document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSidebar();});
+
+
+        // Navbar scroll
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+        });
+    </script>
+
+    <!-- CHATBOT CARRÉ INCLUS -->
+    {% include 'chatbot_carre.html' %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var btn = document.querySelector('.custom-lang-btn');
+            var list = document.querySelector('.custom-lang-list');
+            if(btn && list) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    list.classList.toggle('show');
+                });
+                document.addEventListener('click', function(e) {
+                    if(!list.contains(e.target) && !btn.contains(e.target)) {
+                        list.classList.remove('show');
+                    }
+                });
+            }
+        });
+
+        function changeLanguage(langCode, langName) {
+            document.getElementById('currentLangText').innerText = langName;
+            document.querySelector('.custom-lang-list').classList.remove('show');
+            
+            var select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = langCode === 'fr' ? '' : langCode;
+                select.dispatchEvent(new Event('change'));
+            } else {
+                // S'il ne le trouve pas immédiatement, essayer encore dans un délai
+                setTimeout(() => {
+                    var select = document.querySelector('.goog-te-combo');
+                    if (select) {
+                        select.value = langCode === 'fr' ? '' : langCode;
+                        select.dispatchEvent(new Event('change'));
+                    }
+                }, 500);
+            }
+        }
+    </script>
+
+</body>
+</html>

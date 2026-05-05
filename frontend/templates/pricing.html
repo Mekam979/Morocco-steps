@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Offres — Morocco Secrets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&family=Playfair+Display:ital,wght@0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'fr',
+                includedLanguages: 'en,es,zh-CN,ar,ru,de,ja,pt,it,ko',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <style>
+        /* --- CUSTOM UI TRANSLATE --- */
+        .custom-lang-selector {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-lang-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            border-radius: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-lang-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .custom-lang-list {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: var(--grona, #6b1d1d);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            list-style: none;
+            padding: 8px 0;
+            margin: 0;
+            min-width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+
+        .custom-lang-list.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .custom-lang-list li {
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .custom-lang-list li:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
+        }
+
+        #gt_nav_slot {
+            display: none !important;
+        }
+
+        /* --- PREMIUM GOOGLE TRANSLATE --- */
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0 !important;
+        }
+
+        .goog-te-gadget span {
+            display: none !important;
+        }
+
+        .goog-te-gadget img {
+            display: none !important;
+        }
+
+        .goog-te-gadget .goog-te-combo {
+            margin: 0 !important;
+        }
+
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0px !important;
+        }
+
+        #goog-gt-tt,
+        .goog-te-balloon-frame {
+            display: none !important;
+        }
+
+        .goog-text-highlight {
+            background: none !important;
+            box-shadow: none !important;
+        }
+
+        .goog-te-combo {
+            background: rgba(255, 255, 255, 0.15) !important;
+            color: #FFFFFF !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            padding: 8px 12px !important;
+            font-family: inherit !important;
+            font-size: 0.75rem !important;
+            border-radius: 20px !important;
+            cursor: pointer !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            outline: none !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .goog-te-combo:hover {
+            background: rgba(255, 255, 255, 0.25) !important;
+            border-color: rgba(255, 255, 255, 0.8) !important;
+            transform: translateY(-2px);
+        }
+
+        .goog-te-combo option {
+            background: #6b1d1d;
+            color: white;
+            padding: 10px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --grona: #6b1d1d;
+            --desert-gold: #c59d5f;
+            --soft-beige: #f2e6d9;
+            --white-silk: #fdfaf7;
+            --red: #6b1d1d;
+            --red-dk: #4d1515;
+            --peach: #f2e6d9;
+            --gold: #c59d5f;
+            --gold-l: #dbbd8e;
+            --khaki: #7B672A;
+            --blue: #0668D3;
+            --blue-dk: #044A9A;
+            --txt: #6b1d1d;
+            --txt2: #5A4A1A;
+            --white: #FFFFFF;
+            --border: rgba(107, 29, 29, 0.12);
+            --glass: rgba(255, 255, 255, 0.82);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f2e6d9;
+            color: var(--txt);
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── NAVIGATION UNIFIÉE (Style Details + Scroll) ── */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            padding: 18px clamp(20px, 5vw, 60px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav.scrolled {
+            background: var(--grona);
+            padding: 12px clamp(20px, 5vw, 60px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            border-bottom-color: transparent;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: white;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo {
+            height: 65px;
+            width: auto;
+            object-fit: contain;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav.scrolled .nav-logo {
+            height: 48px;
+        }
+        
+        .nav-brand em {
+            font-style: italic;
+            color: var(--desert-gold);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link,
+        .nav-btn {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-btn:hover {
+            background: var(--desert-gold);
+            color: white;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--grona);
+            min-width: 210px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 8px;
+            z-index: 3000;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 18px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding-left: 22px;
+        }
+
+        /* ── Langue custom sidebar ── */
+        .sidebar-lang {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 16px 20px;
+        }
+
+        .sidebar-lang-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 10px;
+            padding-left: 4px;
+        }
+
+        .lang-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.85rem;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C59D5F' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+
+        .lang-select option {
+            background: var(--grona);
+            color: white;
+        }
+
+        .lang-select:focus {
+            outline: none;
+            border-color: var(--desert-gold);
+        }
+
+
+        /* ════ HAMBURGER + SIDEBAR MOBILE ════ */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px 8px;
+            background: none;
+            border: none;
+            z-index: 1200;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-origin: center;
+        }
+
+        .hamburger span:nth-child(1) {
+            width: 24px;
+        }
+
+        .hamburger span:nth-child(2) {
+            width: 16px;
+            opacity: 0.65;
+        }
+
+        .hamburger span:nth-child(3) {
+            width: 24px;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+            opacity: 1;
+            width: 24px;
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+            opacity: 1;
+            width: 24px;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 2050;
+        }
+
+        .sidebar-overlay.open {
+            display: block;
+        }
+
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 75%;
+            max-width: 290px;
+            background: var(--grona);
+            border-left: 2px solid var(--desert-gold);
+            z-index: 2100;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .mobile-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            padding: 22px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-brand-m {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.01em;
+        }
+
+        .sidebar-brand-m em {
+            font-style: italic;
+            color: var(--desert-gold);
+        }
+
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .sidebar-close:hover {
+            color: white;
+        }
+
+        .sidebar-links {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 15px 0;
+        }
+
+        .sidebar-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            transition: all 0.3s;
+        }
+
+        .sidebar-links a i {
+            opacity: 0.6;
+            width: 20px;
+        }
+
+        .sidebar-links a:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--desert-gold);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex !important;
+            }
+
+            .nav-links {
+                display: none !important;
+            }
+
+            .nav {
+                padding: 18px 24px;
+            }
+        }
+
+        /* ══════════════════════════════════════
+       HERO — IMAGE PLEINE AVEC SUPERPOSITION LÉGÈRE
+    ══════════════════════════════════════ */
+        .pricing-hero {
+            position: sticky;
+            padding: 160px 60px 110px;
+            text-align: center;
+            overflow: hidden;
+            min-height: 330px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* L'IMAGE de fond */
+        .pricing-hero-bg {
+            position: absolute;
+            inset: 0;
+            background: var(--grona);
+            z-index: 0;
+        }
+
+
+
+        /* OVERLAY TRÈS LÉGER — seulement pour lisibilité, pas de rouge opaque */
+        .pricing-hero-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            /* Dégradé très doux: noir en bas pour texte, presque transparent en haut */
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.25) 0%,
+                    rgba(0, 0, 0, 0.15) 30%,
+                    rgba(0, 0, 0, 0.45) 70%);
+            pointer-events: none;
+        }
+
+        /* Motif arabesques subtil (optionnel) */
+        .pricing-hero-pattern {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23E19B64' fill-opacity='0.08'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40 Z'/%3E%3Ccircle cx='40' cy='40' r='8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 3;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.58rem;
+            letter-spacing: 0.36em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .hero-eyebrow::before,
+        .hero-eyebrow::after {
+            content: '';
+            width: 36px;
+            height: 1px;
+            background: var(--gold);
+            opacity: 0.7;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 300;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            letter-spacing: 0.02em;
+            animation: fadeUp 0.8s 0.1s ease both;
+            text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-sub {
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: rgba(255, 255, 255, 0.95);
+            text-transform: uppercase;
+            max-width: 500px;
+            margin: 0 auto;
+            animation: fadeUp 0.8s 0.2s ease both;
+            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .billing-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 32px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(225, 155, 100, 0.5);
+            border-radius: 40px;
+            padding: 6px 20px;
+            animation: fadeUp 0.8s 0.3s ease both;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .billing-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.3s;
+        }
+
+        .billing-label.active {
+            color: white;
+        }
+
+        .toggle-switch {
+            width: 40px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 1px solid rgba(225, 155, 100, 0.6);
+            -webkit-tap-highlight-color: transparent;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--gold);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.annual::after {
+            transform: translateX(18px);
+        }
+
+        .save-badge {
+            font-size: 0.55rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: rgba(225, 155, 100, 0.25);
+            color: var(--gold);
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(225, 155, 100, 0.6);
+        }
+
+        /* TRANSITION hero → cards */
+        .plans-section {
+            position: relative;
+            z-index: 1;
+            padding: 0 60px 100px;
+            background: #f2e6d9;
+            margin-top: -50px;
+        }
+
+        .plans-section::before {
+            content: '';
+            display: block;
+            height: 50px;
+            background: linear-gradient(180deg, var(--red-dk), transparent);
+            margin: 0 -60px 44px;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        /* ══════════════════════════════════════
+       CARDS — IMAGES MAROCAINES
+    ══════════════════════════════════════ */
+        .plan-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 8px 32px rgba(133, 46, 30, 0.10);
+        }
+
+        .plan-card.visible {
+            animation: cardReveal 0.7s ease forwards;
+        }
+
+        .plan-card:nth-child(1).visible {
+            animation-delay: 0s;
+        }
+
+        .plan-card:nth-child(2).visible {
+            animation-delay: 0.12s;
+        }
+
+        .plan-card:nth-child(3).visible {
+            animation-delay: 0.24s;
+        }
+
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 28px 70px rgba(133, 46, 30, 0.22);
+        }
+
+        .plan-hero {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .plan-hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+            display: block;
+        }
+
+        .plan-card:hover .plan-hero-img {
+            transform: scale(1.08);
+        }
+
+        /* Fallback coloré si image absente */
+        .plan-card.explorer .plan-hero {
+            background: linear-gradient(135deg, #1a4a8a, #0668D3);
+        }
+
+        .plan-card.standard .plan-hero {
+            background: linear-gradient(135deg, #852E1E, #E19B64);
+        }
+
+        .plan-card.premium .plan-hero {
+            background: linear-gradient(135deg, #1a0a04, #852E1E);
+        }
+
+        .plan-hero-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px 22px 18px;
+        }
+
+        .plan-card.explorer .plan-hero-overlay {
+            background: linear-gradient(to top, rgba(6, 104, 211, 0.88) 0%, rgba(6, 104, 211, 0.15) 55%, transparent 100%);
+        }
+
+        .plan-card.standard .plan-hero-overlay {
+            background: linear-gradient(to top, rgba(107, 26, 10, 0.92) 0%, rgba(133, 46, 30, 0.2) 55%, transparent 100%);
+        }
+
+        .plan-card.premium .plan-hero-overlay {
+            background: linear-gradient(to top, rgba(20, 5, 0, 0.95) 0%, rgba(133, 46, 30, 0.2) 55%, transparent 100%);
+        }
+
+        .plan-hero-label {
+            font-size: 0.54rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 5px;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .plan-hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 400;
+            color: white;
+            line-height: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Icône décorative sur la carte */
+        .plan-hero-icon {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            font-size: 1.6rem;
+            opacity: 0.9;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+        }
+
+        .popular-ribbon {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--blue);
+            color: white;
+            font-size: 0.54rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 30px;
+            box-shadow: 0 4px 14px rgba(6, 104, 211, 0.4);
+            z-index: 2;
+        }
+
+        /* PRIX */
+        .plan-price-block {
+            padding: 20px 24px 18px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(133, 46, 30, 0.08);
+        }
+
+        .plan-price {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .price-amount {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.4rem;
+            font-weight: 400;
+            color: var(--red);
+            line-height: 1;
+            transition: all 0.4s;
+        }
+
+        .price-currency {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--txt2);
+            margin-bottom: 10px;
+        }
+
+        .price-period {
+            font-size: 0.7rem;
+            color: rgba(133, 46, 30, 0.45);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            margin-left: 2px;
+        }
+
+        .plan-card.explorer .price-amount {
+            color: #0668D3;
+        }
+
+        .plan-card.standard .price-amount {
+            color: var(--red);
+        }
+
+        .plan-card.premium .price-amount {
+            background: linear-gradient(135deg, var(--gold), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .plan-tagline-small {
+            font-size: 0.78rem;
+            color: rgba(133, 46, 30, 0.5);
+            letter-spacing: 0.05em;
+            align-self: flex-end;
+            padding-bottom: 10px;
+            font-weight: 300;
+            max-width: 110px;
+            text-align: right;
+            line-height: 1.4;
+        }
+
+        /* FEATURES */
+        .plan-features {
+            flex: 1;
+            padding: 16px 24px 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(133, 46, 30, 0.05);
+            font-size: 0.87rem;
+            color: var(--txt2);
+            line-height: 1.5;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .feat-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .plan-card.explorer .feat-icon {
+            background: rgba(6, 104, 211, 0.10);
+            color: #0668D3;
+        }
+
+        .plan-card.standard .feat-icon {
+            background: rgba(225, 155, 100, 0.18);
+            color: var(--gold);
+        }
+
+        .plan-card.premium .feat-icon {
+            background: rgba(133, 46, 30, 0.1);
+            color: var(--red);
+        }
+
+        .feat-star {
+            color: var(--gold);
+            font-size: 11px;
+        }
+
+        /* CTA */
+        .plan-cta {
+            padding: 20px 24px 26px;
+        }
+
+        .btn-plan {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            min-height: 48px;
+            text-decoration: none;
+            -webkit-appearance: none;
+        }
+
+        .plan-card.explorer .btn-plan {
+            background: rgba(6, 104, 211, 0.08);
+            color: #0668D3;
+            border: 1.5px solid rgba(6, 104, 211, 0.25);
+        }
+
+        .plan-card.explorer .btn-plan:hover {
+            background: #0668D3;
+            color: white;
+        }
+
+        .plan-card.standard .btn-plan {
+            background: var(--gold);
+            color: white;
+            box-shadow: 0 6px 20px rgba(225, 155, 100, 0.35);
+        }
+
+        .plan-card.standard .btn-plan:hover {
+            background: #25D366;
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .plan-card.premium .btn-plan {
+            background: linear-gradient(135deg, var(--red), #c44a2a);
+            color: white;
+            box-shadow: 0 6px 20px rgba(133, 46, 30, 0.3);
+        }
+
+        .plan-card.premium .btn-plan:hover {
+            background: linear-gradient(135deg, #25D366, #1da851);
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-plan:active {
+            transform: scale(0.97) !important;
+        }
+
+        .wa-hint {
+            text-align: center;
+            font-size: 0.65rem;
+            color: rgba(133, 46, 30, 0.4);
+            margin-top: 8px;
+            letter-spacing: 0.06em;
+        }
+
+        /* Standard légèrement surélevée */
+        .plan-card.standard {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .plan-card.standard:hover {
+            transform: translateY(-18px) scale(1.02);
+        }
+
+        .plan-card.standard.visible {
+            animation: cardRevealCenter 0.7s ease 0.12s forwards;
+        }
+
+        @keyframes cardRevealCenter {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(1.02);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(-8px) scale(1.02);
+            }
+        }
+
+        /* COMPARAISON */
+        .comparison-section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 60px 100px;
+            position: relative;
+            z-index: 1;
+            background: #f2e6d9;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+
+        .section-heading h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--red);
+            white-space: nowrap;
+        }
+
+        .section-heading h2 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .section-rule {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: white;
+        }
+
+        .comp-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .comp-table th {
+            padding: 18px 20px;
+            text-align: center;
+            font-size: 0.65rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: white;
+            background: var(--red);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comp-table th:first-child {
+            text-align: left;
+            background: var(--red-dk);
+            position: sticky;
+            left: 0;
+            z-index: 10;
+        }
+
+        .comp-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            font-size: 0.84rem;
+            color: var(--txt2);
+            text-align: center;
+        }
+
+        .comp-table td:first-child {
+            text-align: left;
+            font-weight: 400;
+            color: var(--red);
+            background: white;
+            position: sticky;
+            left: 0;
+            z-index: 9;
+        }
+
+        .comp-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comp-table tr:hover td {
+            background: rgba(225, 155, 100, 0.08);
+        }
+
+        .comp-table tr:hover td:first-child {
+            background: rgba(225, 155, 100, 0.08);
+        }
+
+        .check-yes {
+            color: var(--blue);
+            font-size: 1rem;
+        }
+
+        .check-star {
+            color: var(--gold);
+            font-size: 1rem;
+        }
+
+        .check-no {
+            color: rgba(133, 46, 30, 0.2);
+        }
+
+        /* FOOTER */
+        .pricing-footer {
+            background: var(--red-dk);
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            line-height: 1.8;
+            padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+        }
+
+        .pricing-footer strong {
+            color: var(--gold);
+            font-weight: 400;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:1024px) {
+            .plans-grid {
+                grid-template-columns: repeat(2, 1fr);
+                align-items: start;
+            }
+
+            .plan-card:last-child {
+                grid-column: span 2;
+                max-width: 500px;
+                margin: 0 auto;
+                width: 100%;
+            }
+
+            .plan-card.standard {
+                transform: none;
+            }
+
+            .plan-card.standard:hover {
+                transform: translateY(-10px);
+            }
+
+            .pricing-hero {
+                padding: 140px 40px 90px;
+                min-height: 460px;
+            }
+        }
+
+        @media(max-width:768px) {
+            .pricing-hero {
+                padding: 120px 20px 70px;
+                min-height: 400px;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-sub {
+                font-size: 0.7rem;
+                letter-spacing: 0.12em;
+            }
+
+            .billing-toggle {
+                gap: 8px;
+                padding: 5px 14px;
+                margin-top: 22px;
+            }
+
+            .plans-section {
+                padding: 0 16px 60px;
+                margin-top: -20px;
+            }
+
+            .plans-section::before {
+                height: 30px;
+                margin: 0 -16px 20px;
+            }
+
+            .plans-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .plan-card:last-child {
+                grid-column: span 1;
+                max-width: 100%;
+            }
+
+            .plan-card:hover {
+                transform: none;
+            }
+
+            .plan-card.standard {
+                transform: none;
+            }
+
+            .plan-card.standard:hover {
+                transform: none;
+            }
+
+            .comparison-section {
+                padding: 0 16px 60px;
+            }
+
+            .section-heading h2 {
+                font-size: 1.6rem;
+                white-space: normal;
+            }
+
+            .comp-table {
+                min-width: 550px;
+            }
+
+            .comp-table th,
+            .comp-table td {
+                padding: 12px 15px;
+                font-size: 0.75rem;
+                white-space: nowrap;
+            }
+        }
+
+        @media(max-width:480px) {
+            .pricing-hero {
+                padding: 100px 16px 60px;
+                min-height: 360px;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .plan-hero-title {
+                font-size: 1.5rem;
+            }
+
+            .price-amount {
+                font-size: 2.5rem;
+            }
+
+            .comp-table {
+                min-width: 500px;
+            }
+
+            .comp-table th,
+            .comp-table td {
+                padding: 10px 12px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <!-- SIDEBAR PANNEAU -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-brand-m" style="flex-direction: column; align-items: flex-start; gap: 12px; padding: 10px 0;">
+                <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo" class="nav-logo" style="height: 65px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
+                <span style="font-size: 1.4rem;">Morocco <em>Secrets</em></span>
+            </div>
+            <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sidebar-links">
+            <a href="/" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-house'></i>الرئيسية"><i
+                    class="fa-solid fa-house"></i>Accueil</a>
+            <a href="/villes" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-map'></i>المدن"><i
+                    class="fa-solid fa-map"></i>Villes</a>
+            <a href="/pricing" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-tag'></i>العروض"><i
+                    class="fa-solid fa-tag"></i>Offres</a>
+        </div>
+        <div class="sidebar-lang">
+            <div class="sidebar-lang-label">Langue</div>
+            <select class="lang-select" onchange="changeLang(this.value)">
+                <option value="">-- Choisir une langue --</option>
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="zh-CN">中文</option>
+                <option value="ru">Русский</option>
+                <option value="it">Italiano</option>
+                <option value="pt">Português</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+            </select>
+        </div>
+    </div>
+
+    <nav class="nav" id="mainNav">
+        <a href="/" class="nav-brand">
+            <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo" class="nav-logo">
+            <span>Morocco <em>Secrets</em></span>
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link" data-ar="الرئيسية">Accueil</a>
+            <div class="nav-item">
+                <a href="/villes" class="nav-link"
+                    data-ar="المدن <i class='fa-solid fa-chevron-down' style='font-size: 0.75em; margin-left: 4px; opacity: 0.8;'></i>">Villes
+                    <i class="fa-solid fa-chevron-down"
+                        style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i></a>
+                <div class="dropdown-menu">
+                    <a href="/villes" data-ar="كل المدن">Toutes les villes</a>
+                    <a href="/filter/Villes côtières" data-ar="ساحلية">Côtières</a>
+                    <a href="/filter/Villes sahariennes" data-ar="صحراوية">Sahariennes</a>
+                    <a href="/filter/Villes de montagne" data-ar="جبلية">Montagne</a>
+                    <a href="/filter/Villes culturelles" data-ar="ثقافية">Culturelles</a>
+                    <a href="/filter/Villes agricoles" data-ar="فلاحية">Agricoles</a>
+                </div>
+            </div>
+            <a href="/pricing" class="nav-link" data-ar="العروض">Offres</a>
+
+            <div id="gt_nav_slot">
+                <div id="google_translate_element"></div>
+            </div>
+            <div class="custom-lang-selector" id="customLangDropdown">
+                <div class="custom-lang-btn">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="currentLangText">FR</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.7em;"></i>
+                </div>
+                <ul class="custom-lang-list">
+                    <li onclick="changeLanguage('fr', 'FR')">🇫🇷 Français</li>
+                    <li onclick="changeLanguage('en', 'EN')">🇬🇧 Anglais</li>
+                    <li onclick="changeLanguage('es', 'ES')">🇪🇸 Espagnol</li>
+                    <li onclick="changeLanguage('ar', 'AR')">🇲🇦 Arabe</li>
+                    <li onclick="changeLanguage('de', 'DE')">🇩🇪 Allemand</li>
+                    <li onclick="changeLanguage('it', 'IT')">🇮🇹 Italien</li>
+                    <li onclick="changeLanguage('pt', 'PT')">🇵🇹 Portugais</li>
+                    <li onclick="changeLanguage('ru', 'RU')">🇷🇺 Russe</li>
+                    <li onclick="changeLanguage('zh-CN', 'ZH')">🇨🇳 Chinois</li>
+                    <li onclick="changeLanguage('ja', 'JA')">🇯🇵 Japonais</li>
+                    <li onclick="changeLanguage('ko', 'KO')">🇰🇷 Coréen</li>
+                </ul>
+            </div>
+
+
+        </div>
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ══ HERO — IMAGE NETTE, OVERLAY NE MASQUE PAS ══ -->
+    <div class="pricing-hero">
+        <!-- Image de fond -->
+        <div class="pricing-hero-bg"></div>
+
+        <div class="hero-inner">
+            <div class="hero-eyebrow" data-ar="خططنا">Nos formules</div>
+            <h1 class="hero-title" data-ar="اختر <em>مغامرتك</em>">Choisissez votre <em>aventure</em></h1>
+            <p class="hero-sub" data-ar="خطط مصممة لتناسب كل مسافر في المغرب">Des formules adaptées à chaque voyageur du
+                Maroc</p>
+            <div class="billing-toggle">
+                <span class="billing-label active" id="labelMonthly" data-ar="شهري">Mensuel</span>
+                <div class="toggle-switch" id="toggleSwitch" onclick="toggleBilling()"></div>
+                <span class="billing-label" id="idlabelAnnual" data-ar="سنوي">Annuel</span>
+                <span class="save-badge" data-ar="وفر 20%">−20%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ PLANS ══ -->
+    <div class="plans-section">
+        <div class="plans-grid">
+
+            <!-- ── EXPLORATEUR : Médina de Fès / Marrakech ── -->
+            <div class="plan-card explorer" id="card0">
+                <div class="plan-hero">
+                    <img class="plan-hero-img" src="{{ cdn_url }}villes/chefchaouen.jpg"
+                        alt="Chefchaouen — La perle bleue du Maroc" onerror="this.style.display='none'">
+                    <div class="plan-hero-overlay">
+                        <div class="plan-hero-label" data-ar="باقة الاكتشاف">Pack Découverte</div>
+                        <div class="plan-hero-title" data-ar="مكتشف">Explorateur</div>
+                    </div>
+                </div>
+                <div class="plan-price-block">
+                    <div class="plan-price">
+                        <span class="price-amount" data-monthly="0" data-annual="0">0</span>
+                        <span class="price-currency" data-ar=" درهم"> MAD</span>
+                        <span class="price-period" data-ar="/شهرياً">/mois</span>
+                    </div>
+                    <div class="plan-tagline-small" data-ar="لاكتشاف المغرب">Pour découvrir le Maroc</div>
+                </div>
+                <ul class="plan-features">
+                    <li>
+                        <div class="feat-icon">✓</div><span data-ar="الوصول إلى جميع المدن">Accès à toutes les
+                            villes</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon">✓</div><span data-ar="روبوت محادثة (10 أسئلة)">Chatbot IA (10
+                            questions)</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon">✓</div><span data-ar="الفنادق والمطاعم">Hôtels &amp; restaurants</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon">✓</div><span data-ar="خريطة تفاعلية">Carte interactive</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon">✓</div><span data-ar="متعدد اللغات (10 لغات)">Multilingue (10
+                            langues)</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon">✓</div><span data-ar="الصناعة التقليدية والفعاليات">Artisanat &amp;
+                            événements</span>
+                    </li>
+                </ul>
+                <div class="plan-cta">
+                    <button class="btn-plan" onclick="startFreeExplorer()" data-ar="ابدأ مجاناً">Commencer
+                        gratuitement</button>
+                </div>
+            </div>
+
+            <!-- ── VOYAGEUR PRO : Dunes du Sahara / Erg Chebbi ── -->
+            <div class="plan-card standard">
+                <div class="popular-ribbon">✦ Populaire</div>
+                <div class="plan-hero">
+                    <img class="plan-hero-img" src="{{ cdn_url }}villes/aventure.jpg"
+                        alt="Dunes du Sahara marocain — Aventure" onerror="this.style.display='none'">
+                    <div class="plan-hero-overlay">
+                        <div class="plan-hero-label" data-ar="الباقة القياسية">Pack Standard</div>
+                        <div class="plan-hero-title" data-ar="المسافر المحترف">Voyageur Pro</div>
+                    </div>
+                </div>
+                <div class="plan-price-block">
+                    <div class="plan-price">
+                        <span class="price-amount" data-monthly="87" data-annual="70">87</span>
+                        <span class="price-currency" data-ar=" درهم"> MAD</span>
+                        <span class="price-period" data-ar="/شهرياً">/mois</span>
+                    </div>
+                    <div class="plan-tagline-small" data-ar="للمسافرين الحقيقيين">Pour les vrais explorateurs</div>
+                </div>
+                <ul class="plan-features">
+                    <li>
+                        <div class="feat-icon">✓</div><span data-ar="كل ما في باقة المكتشف">Tout Explorateur
+                            inclus</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div><span
+                            data-ar="روبوت محادثة غير محدود وذو أولوية">Chatbot IA illimité &amp; prioritaire</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div><span
+                            data-ar="توصيات متقدمة بالذكاء الاصطناعي">Recommandations IA avancées</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div><span data-ar="مسارات سياحية بالذكاء الاصطناعي">Circuits
+                            touristiques par IA</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div><span data-ar="تنبيهات الفعاليات والمهرجانات">Alertes
+                            événements &amp; festivals</span>
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div><span data-ar="المفضلة والمسارات المحفوظة">Favoris &amp;
+                            itinéraires sauvegardés</span>
+                    </li>
+                </ul>
+                <div class="plan-cta">
+                    <button class="btn-plan" onclick="setTier('standard')" data-ar="💬 اشترك عبر واتساب">💬 S'abonner
+                        via WhatsApp</button>
+                    <p class="wa-hint" data-ar="الدفع بالتحويل · رد سريع">Paiement par virement · Réponse rapide</p>
+                </div>
+            </div>
+
+            <!-- ── PARTENAIRE : Riad de luxe / Marrakech ── -->
+            <div class="plan-card premium">
+                <div class="plan-hero">
+                    <img class="plan-hero-img" src="{{ cdn_url }}villes/casablanca.webp"
+                        alt="Casablanca — Hub économique du Maroc" onerror="this.style.display='none'">
+                    <div class="plan-hero-overlay">
+                        <div class="plan-hero-label" data-ar="الباقة المميزة">Pack Premium</div>
+                        <div class="plan-hero-title" data-ar="شريك">Partenaire</div>
+                    </div>
+                </div>
+                <div class="plan-price-block">
+                    <div class="plan-price">
+                        <span class="price-amount" data-monthly="495" data-annual="396">495</span>
+                        <span class="price-currency" data-ar=" درهم"> MAD</span>
+                        <span class="price-period" data-ar="/شهرياً">/mois</span>
+                    </div>
+                    <div class="plan-tagline-small" data-ar="للمحترفين">Pour les professionnels</div>
+                </div>
+                <ul class="plan-features">
+                    <li>
+                        <div class="feat-icon">✓</div>Tout Voyageur Pro inclus
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div>Page établissement mise en avant
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div>Badge "Partenaire Officiel"
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div>Statistiques de visibilité
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div>Lien de réservation direct
+                    </li>
+                    <li>
+                        <div class="feat-icon feat-star">★</div>Support prioritaire dédié
+                    </li>
+                </ul>
+                <div class="plan-cta">
+                    <button class="btn-plan" onclick="setTier('premium')" data-ar="💬 كن شريكاً">💬 Devenir
+                        partenaire</button>
+                    <p class="wa-hint" data-ar="الدفع بالتحويل · رد سريع">Paiement par virement · Réponse rapide</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══ COMPARAISON ══ -->
+    <div class="comparison-section">
+        <div class="section-heading">
+            <h2 data-ar="مقارنة <em>مفصلة</em>">Comparaison <em>détaillée</em></h2>
+            <div class="section-rule"></div>
+        </div>
+        <div class="table-wrapper">
+            <table class="comp-table">
+                <thead>
+                    <tr>
+                        <th style="width:40%;">Fonctionnalité</th>
+                        <th>Explorateur</th>
+                        <th>Voyageur Pro</th>
+                        <th>Partenaire</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Accès aux villes</td>
+                        <td><span class="check-yes">✓</span></td>
+                        <td><span class="check-yes">✓</span></td>
+                        <td><span class="check-yes">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Chatbot IA</td>
+                        <td>10 msg</td>
+                        <td><span class="check-yes">Illimité</span></td>
+                        <td><span class="check-yes">Illimité</span></td>
+                    </tr>
+                    <tr>
+                        <td>Recommandations avancées</td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-star">★</span></td>
+                        <td><span class="check-star">★</span></td>
+                    </tr>
+                    <tr>
+                        <td>Circuits personnalisés</td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-star">★</span></td>
+                        <td><span class="check-star">★</span></td>
+                    </tr>
+                    <tr>
+                        <td>Alertes événements</td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-star">★</span></td>
+                        <td><span class="check-star">★</span></td>
+                    </tr>
+                    <tr>
+                        <td>Favoris &amp; itinéraires</td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-star">★</span></td>
+                        <td><span class="check-star">★</span></td>
+                    </tr>
+                    <tr>
+                        <td>Page mise en avant</td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-star">★</span></td>
+                    </tr>
+                    <tr>
+                        <td>Statistiques</td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-star">★</span></td>
+                    </tr>
+                    <tr>
+                        <td>Support prioritaire</td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-no">—</span></td>
+                        <td><span class="check-star">★</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="pricing-footer">
+        <p data-ar="جميع الأسعار بالدرهم · بدون التزام · دفع آمن عن طريق التحويل">Tous les prix en <strong>MAD</strong>
+            · Sans engagement · Paiement sécurisé par virement</p>
+        <p style="margin-top:8px;" data-ar="© 2026 Morocco Secrets — دليل سياحي ذكي">© 2026 Morocco Secrets — Guide
+            touristique intelligent</p>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', function () {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        function toggleSidebar() {
+            var s = document.getElementById('mobileSidebar'), o = document.getElementById('sidebarOverlay'), b = document.getElementById('hamburgerBtn');
+            var isOpen = s.classList.contains('open');
+            s.classList.toggle('open'); o.classList.toggle('open'); b.classList.toggle('open');
+            document.body.style.overflow = !isOpen ? 'hidden' : '';
+        }
+        function closeSidebar() {
+            document.getElementById('mobileSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('open');
+            document.getElementById('hamburgerBtn').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSidebar(); });
+
+        function changeLang(lang) {
+            var sel = document.querySelector('.goog-te-combo');
+            if (sel && sel.value !== lang) { sel.value = lang; sel.dispatchEvent(new Event('change')); setTimeout(function () { closeSidebar(); }, 400); return; }
+            var d = window.location.hostname;
+            document.cookie = 'googtrans=/fr/' + lang + '; path=/; domain=' + d;
+            document.cookie = 'googtrans=/fr/' + lang + '; path=/';
+            closeSidebar(); window.location.reload();
+        }
+
+        var isAnnual = false;
+        function toggleBilling() {
+            isAnnual = !isAnnual;
+            document.getElementById('toggleSwitch').classList.toggle('annual', isAnnual);
+            document.getElementById('labelMonthly').classList.toggle('active', !isAnnual);
+            document.getElementById('labelAnnual').classList.toggle('active', isAnnual);
+            document.querySelectorAll('.price-amount').forEach(function (el) {
+                el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+            });
+        }
+
+        var WA = '212625902686';
+        var MSG = {
+            'explorer': "Bonjour Morocco Secrets\nJe souhaite activer le pack *Explorateur* (Gratuit).",
+            'standard': "Bonjour Morocco Secrets\nJe souhaite m'abonner au pack *Voyageur Pro* (87 MAD/mois).\nMerci de me confirmer les modalités de paiement !",
+            'premium': "Bonjour Morocco Secrets\nJe souhaite devenir *Partenaire Business* (495 MAD/mois).\nMerci de me contacter pour finaliser mon abonnement !"
+        };
+        function setTier(tier) {
+            if (tier === 'explorer') {
+                fetch('/set-tier/explorer').then(function (r) { return r.json(); })
+                    .then(function () { window.location.href = '/'; })
+                    .catch(function () { window.location.href = '/'; });
+                return;
+            }
+            window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(MSG[tier]), '_blank');
+        }
+
+        function startFreeExplorer() {
+            // 1. Ouvrir le chatbot s'il est fermé
+            const win = document.getElementById('chatWin');
+            if (win && !win.classList.contains('visible')) {
+                if (typeof window.toggleChat === 'function') {
+                    window.toggleChat();
+                }
+            }
+            // 2. Afficher le panneau d'authentification et l'onglet inscription
+            if (typeof window.showAuthTab === 'function') {
+                window.showAuthTab('register');
+            }
+        }
+
+        function revealCards() {
+            document.querySelectorAll('.plan-card').forEach(function (c) {
+                if (c.getBoundingClientRect().top < window.innerHeight - 80) c.classList.add('visible');
+            });
+        }
+        window.addEventListener('scroll', revealCards);
+        window.addEventListener('load', function () { setTimeout(revealCards, 100); });
+        revealCards();
+
+        function changeLanguage(langCode, langName) {
+            document.getElementById('currentLangText').innerText = langName;
+            document.querySelector('.custom-lang-list').classList.remove('show');
+
+            var select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = langCode === 'fr' ? '' : langCode;
+                select.dispatchEvent(new Event('change'));
+            } else {
+                // S'il ne le trouve pas immédiatement, essayer encore dans un délai
+                setTimeout(() => {
+                    var select = document.querySelector('.goog-te-combo');
+                    if (select) {
+                        select.value = langCode === 'fr' ? '' : langCode;
+                        select.dispatchEvent(new Event('change'));
+                    }
+                }, 500);
+            }
+            setTimeout(applyManualTranslation, 100);
+        }
+
+        function applyManualTranslation() {
+            function getCookie(name) {
+                let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+                return v ? v[2] : null;
+            }
+
+            let googtrans = getCookie('googtrans');
+            let lang = 'fr';
+            if (googtrans) {
+                let parts = googtrans.split('/');
+                lang = parts[parts.length - 1];
+            }
+
+            const isAr = (lang === 'ar');
+
+            document.querySelectorAll('[data-ar]').forEach(el => {
+                if (!el.hasAttribute('data-fr')) {
+                    el.setAttribute('data-fr', el.innerHTML);
+                }
+
+                if (isAr) {
+                    el.innerHTML = el.getAttribute('data-ar');
+                    el.classList.add('notranslate');
+                    el.setAttribute('dir', 'rtl');
+                } else {
+                    el.innerHTML = el.getAttribute('data-fr');
+                    el.classList.remove('notranslate');
+                    el.removeAttribute('dir');
+                }
+            });
+
+            if (isAr) {
+                document.body.classList.add('lang-ar');
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.body.setAttribute('dir', 'rtl');
+            } else {
+                document.body.classList.remove('lang-ar');
+                document.documentElement.removeAttribute('dir');
+                document.body.removeAttribute('dir');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyManualTranslation();
+            const observer = new MutationObserver((mutations) => {
+                applyManualTranslation();
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'lang'] });
+
+            // Custom lang selector toggle
+            var btn = document.querySelector('.custom-lang-btn');
+            var list = document.querySelector('.custom-lang-list');
+            if (btn && list) {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    list.classList.toggle('show');
+                });
+                document.addEventListener('click', function (e) {
+                    if (!list.contains(e.target) && !btn.contains(e.target)) {
+                        list.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
+
+    {% include 'manual_lang.html' %}
+    {% include 'chatbot_carre.html' %}
+
+</body>
+
+</html>

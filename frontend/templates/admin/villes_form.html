@@ -1,0 +1,233 @@
+{% extends "admin/base_admin.html" %}
+{% set active_nav = 'villes' %}
+{% block title %}{{ 'Modifier' if mode == 'edit' else 'Ajouter' }} une ville — Admin{% endblock %}
+{% block heading %}{{ 'Modifier' if mode == 'edit' else 'Ajouter' }} une ville{% endblock %}
+
+{% block head_extra %}
+<style>
+    .form-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 28px 32px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        max-width: 880px;
+    }
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 22px;
+    }
+    .field { display: flex; flex-direction: column; }
+    .field.full-width { grid-column: 1 / -1; }
+    .field label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+    .field input[type="text"],
+    .field input[type="number"],
+    .field input[type="url"],
+    .field input[type="file"],
+    .field select,
+    .field textarea {
+        padding: 10px 12px;
+        border: 1px solid #d8cfc2;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-family: inherit;
+        background: var(--beige);
+        transition: border-color 0.15s, background 0.15s;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+        background: var(--white);
+    }
+    .field input[readonly] {
+        background: #ece4d6;
+        color: var(--muted);
+        cursor: not-allowed;
+    }
+    .field textarea { resize: vertical; min-height: 120px; }
+    .field small {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 4px;
+    }
+    .field.error input,
+    .field.error select,
+    .field.error textarea {
+        border-color: var(--darkred);
+        background: #fdecec;
+    }
+    .error-msg {
+        font-size: 0.82rem;
+        color: var(--darkred);
+        margin-top: 4px;
+    }
+    .alert {
+        background: #fdecec;
+        color: var(--darkred);
+        border: 1px solid rgba(139, 0, 0, 0.2);
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin-bottom: 18px;
+        font-size: 0.9rem;
+    }
+    .current-image {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 8px;
+        padding: 10px;
+        background: var(--beige);
+        border-radius: 6px;
+        border: 1px dashed #d8cfc2;
+    }
+    .current-image img {
+        width: 96px;
+        height: 72px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+    .current-image .meta {
+        display: flex;
+        flex-direction: column;
+        font-size: 0.85rem;
+        color: var(--muted);
+    }
+    .current-image .meta strong { color: var(--text); }
+    .form-actions {
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+    .btn-cancel,
+    .btn-save {
+        padding: 10px 18px;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        font-family: inherit;
+        border: 1px solid var(--border);
+    }
+    .btn-cancel {
+        background: var(--white);
+        color: var(--muted);
+    }
+    .btn-cancel:hover {
+        background: var(--beige);
+        color: var(--text);
+    }
+    .btn-save {
+        background: var(--darkred);
+        color: var(--white);
+        border-color: var(--darkred);
+    }
+    .btn-save:hover { background: #6b0000; }
+    @media (max-width: 720px) {
+        .form-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<form class="form-card" method="post" enctype="multipart/form-data" novalidate>
+    {% if errors and errors._form %}
+    <div class="alert">{{ errors._form }}</div>
+    {% endif %}
+
+    <div class="form-grid">
+        <div class="field full-width {% if errors.nom_ville %}error{% endif %}">
+            <label for="nom_ville">Nom de la ville *</label>
+            <input type="text" id="nom_ville" name="nom_ville" maxlength="120" required
+                   value="{{ v.nom_ville or '' }}"
+                   {% if mode == 'edit' %}readonly{% endif %}>
+            {% if mode == 'edit' %}
+            <small>Verrouillé en édition (clé primaire). Pour renommer, supprimer puis recréer.</small>
+            {% endif %}
+            {% if errors.nom_ville %}<span class="error-msg">{{ errors.nom_ville }}</span>{% endif %}
+        </div>
+
+        <div class="field full-width {% if errors.slogan %}error{% endif %}">
+            <label for="slogan">Slogan</label>
+            <input type="text" id="slogan" name="slogan" maxlength="60"
+                   value="{{ v.slogan or '' }}"
+                   placeholder="Une phrase courte évocatrice (60 caractères max)">
+            {% if errors.slogan %}<span class="error-msg">{{ errors.slogan }}</span>{% endif %}
+        </div>
+
+        <div class="field full-width">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="6">{{ v.description or '' }}</textarea>
+        </div>
+
+        <div class="field">
+            <label for="type_ville">Type</label>
+            <select id="type_ville" name="type_ville">
+                <option value="">— Choisir —</option>
+                {% for opt in type_ville_options %}
+                <option value="{{ opt }}" {% if v.type_ville == opt %}selected{% endif %}>{{ opt }}</option>
+                {% endfor %}
+                {% if legacy_type_ville %}
+                <option value="{{ legacy_type_ville }}" selected>{{ legacy_type_ville }} (actuel — non standard)</option>
+                {% endif %}
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="google_maps_link">Lien Google Maps</label>
+            <input type="url" id="google_maps_link" name="google_maps_link" maxlength="500"
+                   value="{{ v.google_maps_link or '' }}"
+                   placeholder="https://maps.google.com/...">
+            {% if errors.google_maps_link %}<span class="error-msg">{{ errors.google_maps_link }}</span>{% endif %}
+        </div>
+
+        <div class="field {% if errors.latitude %}error{% endif %}">
+            <label for="latitude">Latitude</label>
+            <input type="number" id="latitude" name="latitude" step="any"
+                   value="{{ v.latitude or '' }}"
+                   placeholder="-90 à 90">
+            {% if errors.latitude %}<span class="error-msg">{{ errors.latitude }}</span>{% endif %}
+        </div>
+
+        <div class="field {% if errors.longitude %}error{% endif %}">
+            <label for="longitude">Longitude</label>
+            <input type="number" id="longitude" name="longitude" step="any"
+                   value="{{ v.longitude or '' }}"
+                   placeholder="-180 à 180">
+            {% if errors.longitude %}<span class="error-msg">{{ errors.longitude }}</span>{% endif %}
+        </div>
+
+        <div class="field full-width">
+            <label for="image">Image</label>
+            {% if v.image_path %}
+            <div class="current-image">
+                <img src="{{ cdn_url }}villes/{{ v.image_path }}" alt="{{ v.nom_ville }}"
+                     onerror="this.style.display='none';">
+                <div class="meta">
+                    <strong>Image actuelle</strong>
+                    <span>villes/{{ v.image_path }}</span>
+                    <span>Téléverser un nouveau fichier pour remplacer.</span>
+                </div>
+            </div>
+            {% endif %}
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <a href="{{ url_for('admin.villes_list') }}" class="btn-cancel">Annuler</a>
+        <button type="submit" class="btn-save">{{ 'Enregistrer' if mode == 'edit' else 'Créer' }}</button>
+    </div>
+</form>
+{% endblock %}

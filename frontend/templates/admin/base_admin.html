@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin — Morocco Secrets{% endblock %}</title>
+    <style>
+        :root {
+            --darkred: #8B0000;
+            --gold: #C9A84C;
+            --beige: #F5F0E8;
+            --white: #FFFFFF;
+            --text: #1f1a16;
+            --muted: #6c5e54;
+            --border: rgba(139, 0, 0, 0.12);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--beige);
+            color: var(--text);
+        }
+        .admin-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+        .sidebar {
+            background: var(--darkred);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 0;
+        }
+        .sidebar-brand {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            color: var(--gold);
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+        .sidebar-logo {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            padding: 12px 0;
+            flex: 1;
+        }
+        .sidebar-nav a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .sidebar-nav a:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .sidebar-nav a.active {
+            background: rgba(201, 168, 76, 0.15);
+            border-left-color: var(--gold);
+            color: var(--gold);
+        }
+        .sidebar-footer {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
+        .sidebar-footer a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .sidebar-footer a:hover { color: var(--gold); }
+        .main {
+            padding: 32px 40px;
+            min-width: 0;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--gold);
+            margin-bottom: 24px;
+        }
+        .page-header h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            color: var(--darkred);
+        }
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 22px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        @media (max-width: 720px) {
+            .admin-layout { grid-template-columns: 1fr; }
+            .sidebar { flex-direction: row; padding: 12px; align-items: center; }
+            .sidebar-brand { border: none; padding: 0 12px 0 0; }
+            .sidebar-nav { flex-direction: row; padding: 0; flex: 1; }
+            .sidebar-nav a { padding: 8px 12px; border-left: none; border-bottom: 3px solid transparent; }
+            .sidebar-nav a.active { border-left: none; border-bottom-color: var(--gold); }
+            .sidebar-footer { border: none; padding: 0 12px; }
+            .main { padding: 20px; }
+        }
+    </style>
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand" style="flex-direction: column; align-items: flex-start; padding: 20px 24px;">
+                <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo" class="sidebar-logo">
+                <span>Morocco Secrets</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('admin.dashboard') }}"
+                   class="{% if active_nav == 'dashboard' %}active{% endif %}">Dashboard</a>
+                <a href="{{ url_for('admin.villes_list') }}"
+                   class="{% if active_nav == 'villes' %}active{% endif %}">Villes</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="{{ url_for('admin.logout') }}">Logout</a>
+            </div>
+        </aside>
+        <main class="main">
+            <div class="page-header">
+                <h1>{% block heading %}{% endblock %}</h1>
+                {% block header_actions %}{% endblock %}
+            </div>
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>
