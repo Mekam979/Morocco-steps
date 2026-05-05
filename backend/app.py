@@ -5,6 +5,7 @@ Avec inscription/connexion par code email (vérification)
 
 from flask import Flask, render_template, abort, request, jsonify, session, send_from_directory
 from flask_mail import Mail, Message
+from werkzeug.exceptions import HTTPException
 import pymysql
 import requests
 import traceback
@@ -36,8 +37,14 @@ app.secret_key = os.getenv('SECRET_KEY', 'trippy_maroc_secret_key_2026')
 
 import sys, os
 sys.path.insert(0, os.path.dirname(__file__))
-from admin_routes import admin_bp
+from admin_routes import admin_bp, _ensure_google_maps_link_column
 app.register_blueprint(admin_bp)
+
+with app.app_context():
+    try:
+        _ensure_google_maps_link_column()
+    except Exception as e:
+        print(f"[startup] migration check failed: {e}")
 
 # ============================================================
 # CONFIGURATION EMAIL
@@ -263,6 +270,8 @@ def details_ville(nom):
             cur.execute("SELECT type FROM transports WHERE nom_ville = %s", (nom,))
             transports = cur.fetchall()
 
+    except HTTPException:
+        raise
     except Exception as e:
         print(f"Erreur details : {e}")
         abort(500)

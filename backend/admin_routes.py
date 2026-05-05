@@ -77,20 +77,6 @@ def _ensure_google_maps_link_column():
         conn.close()
 
 
-_migrated = False
-
-
-@admin_bp.before_request
-def _run_migrations():
-    global _migrated
-    if not _migrated:
-        try:
-            _ensure_google_maps_link_column()
-            _migrated = True
-        except Exception as e:
-            print(f"[admin] migration check failed: {e}")
-
-
 def admin_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
