@@ -1404,7 +1404,7 @@
     <div class="mobile-sidebar" id="mobileSidebar">
         <div class="sidebar-header">
             <div class="sidebar-brand-m" style="flex-direction: column; align-items: flex-start; gap: 12px; padding: 10px 0;">
-                <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo" class="nav-logo" style="height: 65px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
+                <img src="{{ logo_url }}" alt="Logo" class="nav-logo" style="height: 65px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
                 <span style="font-size: 1.4rem;">Morocco <em>Secrets</em></span>
             </div>
             <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
@@ -1439,7 +1439,7 @@
     <!-- ── NAV ── -->
     <nav class="nav" id="mainNav">
         <a href="/" class="nav-brand">
-            <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo" class="nav-logo">
+            <img src="{{ logo_url }}" alt="Logo" class="nav-logo">
             <span>Morocco <em>Secrets</em></span>
         </a>
         <div class="nav-links">

@@ -66,10 +66,11 @@ mail = Mail(app)
 CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME', 'darytb39v')
 CLOUDINARY_BASE = f"https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto/"
 CDN_URL = CLOUDINARY_BASE
+LOGO_URL = f"{CLOUDINARY_BASE}morocco-secrets/logo"
 
 @app.context_processor
 def inject_cloudinary():
-    return dict(cdn_url=CDN_URL)
+    return dict(cdn_url=CDN_URL, logo_url=LOGO_URL)
 
 
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
