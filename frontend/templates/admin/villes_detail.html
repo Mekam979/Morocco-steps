@@ -447,21 +447,65 @@
 
 <!-- Restaurants -->
 <div class="panel" data-panel="restaurants">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-restaurant">+ Ajouter un restaurant</button>
+    </div>
+
+    <form id="form-restaurant" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="rest-nom">Nom *</label>
+                <input type="text" id="rest-nom" name="nom" maxlength="150" required>
+            </div>
+            <div class="field full-width">
+                <label for="rest-description">Description</label>
+                <textarea id="rest-description" name="description" rows="4"></textarea>
+            </div>
+            <div class="field">
+                <label for="rest-specialites">Spécialités</label>
+                <input type="text" id="rest-specialites" name="specialites" maxlength="100"
+                       placeholder="Italien, Pizza, Méditerranéen...">
+            </div>
+            <div class="field">
+                <label for="rest-lien">Lien réservation</label>
+                <input type="url" id="rest-lien" name="lien" maxlength="255"
+                       placeholder="https://...">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-restaurant">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-restaurant">Créer</button>
+        </div>
+    </form>
+
     {% if restaurants %}
-    <table class="detail-table">
+    <table class="detail-table" id="restaurants-table">
         <thead><tr>
             <th>Nom</th>
             <th>Spécialités</th>
             <th>Description</th>
             <th>Lien</th>
+            <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
             {% for r in restaurants %}
-            <tr>
+            <tr data-id="{{ r.id }}"
+                data-nom="{{ r.nom or '' }}"
+                data-description="{{ r.description or '' }}"
+                data-specialites="{{ r.specialites or '' }}"
+                data-lien="{{ r.lien or '' }}">
                 <td><span class="item-name">{{ r.nom or '—' }}</span></td>
                 <td>{% if r.specialites %}<span class="badge-pill">{{ r.specialites }}</span>{% endif %}</td>
                 <td><span class="item-desc">{{ truncate_desc(r.description) }}</span></td>
                 <td>{% if r.lien %}<a class="item-link" href="{{ r.lien }}" target="_blank" rel="noopener">Réserver →</a>{% endif %}</td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.restaurants_delete', nom_ville=ville.nom_ville, id=r.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ r.nom }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -521,21 +565,71 @@
 
 <!-- Hébergements -->
 <div class="panel" data-panel="hebergements">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-hebergement">+ Ajouter un hébergement</button>
+    </div>
+
+    <form id="form-hebergement" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="hebe-nom">Nom *</label>
+                <input type="text" id="hebe-nom" name="nom" maxlength="500" required>
+            </div>
+            <div class="field">
+                <label for="hebe-etoiles">Étoiles</label>
+                <select id="hebe-etoiles" name="etoiles">
+                    <option value="">— Choisir —</option>
+                    <option value="1">1 étoile</option>
+                    <option value="2">2 étoiles</option>
+                    <option value="3">3 étoiles</option>
+                    <option value="4">4 étoiles</option>
+                    <option value="5">5 étoiles</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="hebe-lien">Lien réservation</label>
+                <input type="url" id="hebe-lien" name="lien" maxlength="255"
+                       placeholder="https://...">
+            </div>
+            <div class="field full-width">
+                <label for="hebe-avis">Avis</label>
+                <textarea id="hebe-avis" name="avis" rows="4"></textarea>
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-hebergement">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-hebergement">Créer</button>
+        </div>
+    </form>
+
     {% if hebergements %}
-    <table class="detail-table">
+    <table class="detail-table" id="hebergements-table">
         <thead><tr>
             <th>Nom</th>
             <th>Étoiles</th>
             <th>Avis</th>
             <th>Lien</th>
+            <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
             {% for h in hebergements %}
-            <tr>
+            <tr data-id="{{ h.id }}"
+                data-nom="{{ h.nom or '' }}"
+                data-etoiles="{{ h.etoiles or '' }}"
+                data-avis="{{ h.avis or '' }}"
+                data-lien="{{ h.lien or '' }}">
                 <td><span class="item-name">{{ h.nom or '—' }}</span></td>
                 <td>{% if h.etoiles %}<span class="badge-stars">{{ h.etoiles }}</span>{% endif %}</td>
                 <td><span class="item-desc">{{ truncate_desc(h.avis) }}</span></td>
                 <td>{% if h.lien %}<a class="item-link" href="{{ h.lien }}" target="_blank" rel="noopener">Réserver →</a>{% endif %}</td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.hebergements_delete', nom_ville=ville.nom_ville, id=h.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ h.nom }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -866,6 +960,133 @@
             showForm();
         });
         btnCancel.addEventListener('click', hideForm);
+    })();
+
+    // Restaurants inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/restaurants/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/restaurants/${id}/edit`;
+
+        const form = document.getElementById('form-restaurant');
+        const btnAdd = document.getElementById('btn-add-restaurant');
+        const btnCancel = document.getElementById('btn-cancel-restaurant');
+        const btnSave = document.getElementById('btn-save-restaurant');
+        const inputNom = document.getElementById('rest-nom');
+        const inputDesc = document.getElementById('rest-description');
+        const inputSpec = document.getElementById('rest-specialites');
+        const inputLien = document.getElementById('rest-lien');
+        const table = document.getElementById('restaurants-table');
+
+        function clearForm() {
+            form.reset();
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    inputSpec.value = tr.dataset.specialites || '';
+                    inputLien.value = tr.dataset.lien || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Hébergements inline form (with legacy-etoiles preservation)
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/hebergements/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/hebergements/${id}/edit`;
+        const CANONICAL_ETOILES = new Set(['', '1', '2', '3', '4', '5']);
+
+        const form = document.getElementById('form-hebergement');
+        const btnAdd = document.getElementById('btn-add-hebergement');
+        const btnCancel = document.getElementById('btn-cancel-hebergement');
+        const btnSave = document.getElementById('btn-save-hebergement');
+        const inputNom = document.getElementById('hebe-nom');
+        const selectEtoiles = document.getElementById('hebe-etoiles');
+        const inputAvis = document.getElementById('hebe-avis');
+        const inputLien = document.getElementById('hebe-lien');
+        const table = document.getElementById('hebergements-table');
+
+        function setEtoiles(value) {
+            // Remove any prior legacy option
+            const stale = selectEtoiles.querySelector('option[data-legacy="true"]');
+            if (stale) stale.remove();
+
+            if (CANONICAL_ETOILES.has(value)) {
+                selectEtoiles.value = value;
+            } else {
+                const opt = document.createElement('option');
+                opt.value = value;
+                opt.textContent = `${value} (actuel — non standard)`;
+                opt.dataset.legacy = 'true';
+                opt.selected = true;
+                selectEtoiles.appendChild(opt);
+            }
+        }
+
+        function clearForm() {
+            form.reset();
+            const stale = selectEtoiles.querySelector('option[data-legacy="true"]');
+            if (stale) stale.remove();
+            selectEtoiles.value = '';
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    setEtoiles(tr.dataset.etoiles || '');
+                    inputAvis.value = tr.dataset.avis || '';
+                    inputLien.value = tr.dataset.lien || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
     })();
 </script>
 {% endblock %}

@@ -755,3 +755,204 @@ def transports_delete(nom_ville, id):
         conn.close()
     flash("Transport supprimé.", "success")
     return _detail_redirect(nom_ville, "transport")
+
+
+# ---------------------------------------------------------------------------
+# Restaurants CRUD
+# ---------------------------------------------------------------------------
+
+
+def _validate_lien(raw):
+    """Returns (value_or_none, error_or_none)."""
+    if not raw:
+        return None, None
+    if not raw.startswith(("http://", "https://")):
+        return None, "Doit commencer par http:// ou https://."
+    if len(raw) > 255:
+        return None, "Trop long (max 255 caractères)."
+    return raw, None
+
+
+def _validate_restaurant(form):
+    nom = (form.get("nom") or "").strip()
+    description = (form.get("description") or "").strip() or None
+    specialites = (form.get("specialites") or "").strip()
+    lien_raw = (form.get("lien") or "").strip()
+
+    if not nom:
+        return None, "Le nom est requis."
+    if len(nom) > 150:
+        return None, "Le nom dépasse 150 caractères."
+    if specialites and len(specialites) > 100:
+        return None, "Spécialités dépasse 100 caractères."
+
+    lien, lerr = _validate_lien(lien_raw)
+    if lerr:
+        return None, lerr
+
+    return {
+        "nom": nom,
+        "description": description,
+        "specialites": specialites or None,
+        "lien": lien,
+    }, None
+
+
+@admin_bp.route("/villes/<nom_ville>/restaurants/new", methods=["POST"])
+@admin_required
+def restaurants_new(nom_ville):
+    data, err = _validate_restaurant(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "restaurants")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO restaurants (nom_ville, nom, description, "
+                "specialites, lien) VALUES (%s, %s, %s, %s, %s)",
+                (nom_ville, data["nom"], data["description"],
+                 data["specialites"], data["lien"]),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Restaurant ajouté.", "success")
+    return _detail_redirect(nom_ville, "restaurants")
+
+
+@admin_bp.route("/villes/<nom_ville>/restaurants/<int:id>/edit", methods=["POST"])
+@admin_required
+def restaurants_edit(nom_ville, id):
+    data, err = _validate_restaurant(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "restaurants")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE restaurants SET nom=%s, description=%s, "
+                "specialites=%s, lien=%s WHERE id=%s AND nom_ville=%s",
+                (data["nom"], data["description"], data["specialites"],
+                 data["lien"], id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Restaurant modifié.", "success")
+    return _detail_redirect(nom_ville, "restaurants")
+
+
+@admin_bp.route("/villes/<nom_ville>/restaurants/<int:id>/delete", methods=["POST"])
+@admin_required
+def restaurants_delete(nom_ville, id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "DELETE FROM restaurants WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Restaurant supprimé.", "success")
+    return _detail_redirect(nom_ville, "restaurants")
+
+
+# ---------------------------------------------------------------------------
+# Hébergements CRUD
+# ---------------------------------------------------------------------------
+
+
+def _validate_hebergement(form):
+    nom = (form.get("nom") or "").strip()
+    etoiles = (form.get("etoiles") or "").strip()
+    avis = (form.get("avis") or "").strip() or None
+    lien_raw = (form.get("lien") or "").strip()
+
+    if not nom:
+        return None, "Le nom est requis."
+    if len(nom) > 500:
+        return None, "Le nom dépasse 500 caractères."
+    if len(etoiles) > 20:
+        return None, "Étoiles dépasse 20 caractères."
+
+    lien, lerr = _validate_lien(lien_raw)
+    if lerr:
+        return None, lerr
+
+    return {
+        "nom": nom,
+        "etoiles": etoiles or None,
+        "avis": avis,
+        "lien": lien,
+    }, None
+
+
+@admin_bp.route("/villes/<nom_ville>/hebergements/new", methods=["POST"])
+@admin_required
+def hebergements_new(nom_ville):
+    data, err = _validate_hebergement(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "hebergements")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO hebergements (nom_ville, nom, etoiles, avis, lien) "
+                "VALUES (%s, %s, %s, %s, %s)",
+                (nom_ville, data["nom"], data["etoiles"],
+                 data["avis"], data["lien"]),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Hébergement ajouté.", "success")
+    return _detail_redirect(nom_ville, "hebergements")
+
+
+@admin_bp.route("/villes/<nom_ville>/hebergements/<int:id>/edit", methods=["POST"])
+@admin_required
+def hebergements_edit(nom_ville, id):
+    data, err = _validate_hebergement(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "hebergements")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE hebergements SET nom=%s, etoiles=%s, avis=%s, lien=%s "
+                "WHERE id=%s AND nom_ville=%s",
+                (data["nom"], data["etoiles"], data["avis"],
+                 data["lien"], id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Hébergement modifié.", "success")
+    return _detail_redirect(nom_ville, "hebergements")
+
+
+@admin_bp.route("/villes/<nom_ville>/hebergements/<int:id>/delete", methods=["POST"])
+@admin_required
+def hebergements_delete(nom_ville, id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "DELETE FROM hebergements WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Hébergement supprimé.", "success")
+    return _detail_redirect(nom_ville, "hebergements")
