@@ -545,3 +545,213 @@ def attractions_delete(nom_ville, id):
         conn.close()
     flash("Attraction supprimée.", "success")
     return _detail_redirect(nom_ville, "attractions")
+
+
+# ---------------------------------------------------------------------------
+# Spécialités CRUD (specialites_ville table)
+# ---------------------------------------------------------------------------
+
+
+def _validate_specialite(form):
+    nom_plat = (form.get("nom_plat") or "").strip()
+    if not nom_plat:
+        return None, "Le nom du plat est requis."
+    if len(nom_plat) > 200:
+        return None, "Trop long (max 200 caractères)."
+    return nom_plat, None
+
+
+@admin_bp.route("/villes/<nom_ville>/specialites/new", methods=["POST"])
+@admin_required
+def specialites_new(nom_ville):
+    nom_plat, err = _validate_specialite(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "specialites")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO specialites_ville (nom_ville, nom_plat) VALUES (%s, %s)",
+                (nom_ville, nom_plat),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Spécialité ajoutée.", "success")
+    return _detail_redirect(nom_ville, "specialites")
+
+
+@admin_bp.route("/villes/<nom_ville>/specialites/<int:id>/edit", methods=["POST"])
+@admin_required
+def specialites_edit(nom_ville, id):
+    nom_plat, err = _validate_specialite(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "specialites")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE specialites_ville SET nom_plat=%s "
+                "WHERE id=%s AND nom_ville=%s",
+                (nom_plat, id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Spécialité modifiée.", "success")
+    return _detail_redirect(nom_ville, "specialites")
+
+
+@admin_bp.route("/villes/<nom_ville>/specialites/<int:id>/delete", methods=["POST"])
+@admin_required
+def specialites_delete(nom_ville, id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "DELETE FROM specialites_ville WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Spécialité supprimée.", "success")
+    return _detail_redirect(nom_ville, "specialites")
+
+
+# ---------------------------------------------------------------------------
+# Événements CRUD (evenements table)
+# ---------------------------------------------------------------------------
+
+
+def _validate_evenement(form):
+    nom = (form.get("nom") or "").strip()
+    periode = (form.get("periode") or "").strip()
+    description = (form.get("description") or "").strip() or None
+    if not nom:
+        return None, None, None, "Le nom est requis."
+    if len(nom) > 100:
+        return None, None, None, "Le nom dépasse 100 caractères."
+    if len(periode) > 50:
+        return None, None, None, "La période dépasse 50 caractères."
+    return nom, (periode or None), description, None
+
+
+@admin_bp.route("/villes/<nom_ville>/evenements/new", methods=["POST"])
+@admin_required
+def evenements_new(nom_ville):
+    nom, periode, description, err = _validate_evenement(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "evenements")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO evenements (nom_ville, nom, periode, description) "
+                "VALUES (%s, %s, %s, %s)",
+                (nom_ville, nom, periode, description),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Événement ajouté.", "success")
+    return _detail_redirect(nom_ville, "evenements")
+
+
+@admin_bp.route("/villes/<nom_ville>/evenements/<int:id>/edit", methods=["POST"])
+@admin_required
+def evenements_edit(nom_ville, id):
+    nom, periode, description, err = _validate_evenement(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "evenements")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE evenements SET nom=%s, periode=%s, description=%s "
+                "WHERE id=%s AND nom_ville=%s",
+                (nom, periode, description, id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Événement modifié.", "success")
+    return _detail_redirect(nom_ville, "evenements")
+
+
+@admin_bp.route("/villes/<nom_ville>/evenements/<int:id>/delete", methods=["POST"])
+@admin_required
+def evenements_delete(nom_ville, id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "DELETE FROM evenements WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Événement supprimé.", "success")
+    return _detail_redirect(nom_ville, "evenements")
+
+
+# ---------------------------------------------------------------------------
+# Transport CRUD — add + delete only (no edit per spec)
+# ---------------------------------------------------------------------------
+
+
+def _validate_transport(form):
+    type_ = (form.get("type") or "").strip()
+    if not type_:
+        return None, "Le type est requis."
+    if len(type_) > 200:
+        return None, "Trop long (max 200 caractères)."
+    return type_, None
+
+
+@admin_bp.route("/villes/<nom_ville>/transports/new", methods=["POST"])
+@admin_required
+def transports_new(nom_ville):
+    type_, err = _validate_transport(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "transport")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO transports (nom_ville, type) VALUES (%s, %s)",
+                (nom_ville, type_),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Transport ajouté.", "success")
+    return _detail_redirect(nom_ville, "transport")
+
+
+@admin_bp.route("/villes/<nom_ville>/transports/<int:id>/delete", methods=["POST"])
+@admin_required
+def transports_delete(nom_ville, id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "DELETE FROM transports WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Transport supprimé.", "success")
+    return _detail_redirect(nom_ville, "transport")

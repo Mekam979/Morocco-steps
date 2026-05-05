@@ -401,12 +401,42 @@
 
 <!-- Spécialités Culinaires -->
 <div class="panel" data-panel="specialites">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-specialite">+ Ajouter une spécialité</button>
+    </div>
+
+    <form id="form-specialite" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="spec-nom-plat">Nom du plat *</label>
+                <input type="text" id="spec-nom-plat" name="nom_plat" maxlength="200" required>
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-specialite">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-specialite">Créer</button>
+        </div>
+    </form>
+
     {% if specialites %}
-    <table class="detail-table">
-        <thead><tr><th>Plat</th></tr></thead>
+    <table class="detail-table" id="specialites-table">
+        <thead><tr>
+            <th>Plat</th>
+            <th style="width:160px; text-align:right;">Actions</th>
+        </tr></thead>
         <tbody>
             {% for s in specialites %}
-            <tr><td><span class="item-name">{{ s.nom_plat or '—' }}</span></td></tr>
+            <tr data-id="{{ s.id }}" data-nom-plat="{{ s.nom_plat or '' }}">
+                <td><span class="item-name">{{ s.nom_plat or '—' }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.specialites_delete', nom_ville=ville.nom_ville, id=s.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ s.nom_plat }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
@@ -517,19 +547,57 @@
 
 <!-- Événements -->
 <div class="panel" data-panel="evenements">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-evenement">+ Ajouter un événement</button>
+    </div>
+
+    <form id="form-evenement" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field">
+                <label for="even-nom">Nom *</label>
+                <input type="text" id="even-nom" name="nom" maxlength="100" required>
+            </div>
+            <div class="field">
+                <label for="even-periode">Période</label>
+                <input type="text" id="even-periode" name="periode" maxlength="50"
+                       placeholder="Été, Mai-Juin, Annuel...">
+            </div>
+            <div class="field full-width">
+                <label for="even-description">Description</label>
+                <textarea id="even-description" name="description" rows="4"></textarea>
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-evenement">Annuler</button>
+            <button type="submit" class="btn-save" id="btn-save-evenement">Créer</button>
+        </div>
+    </form>
+
     {% if evenements %}
-    <table class="detail-table">
+    <table class="detail-table" id="evenements-table">
         <thead><tr>
             <th>Nom</th>
             <th>Période</th>
             <th>Description</th>
+            <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
             {% for e in evenements %}
-            <tr>
+            <tr data-id="{{ e.id }}"
+                data-nom="{{ e.nom or '' }}"
+                data-periode="{{ e.periode or '' }}"
+                data-description="{{ e.description or '' }}">
                 <td><span class="item-name">{{ e.nom or '—' }}</span></td>
                 <td>{% if e.periode %}<span class="badge-pill">{{ e.periode }}</span>{% endif %}</td>
                 <td><span class="item-desc">{{ truncate_desc(e.description) }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
+                    <form method="post"
+                          action="{{ url_for('admin.evenements_delete', nom_ville=ville.nom_ville, id=e.id) }}"
+                          onsubmit="return confirm('Supprimer « {{ e.nom }} » ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -541,12 +609,42 @@
 
 <!-- Transport -->
 <div class="panel" data-panel="transport">
+    <div class="panel-header">
+        <button type="button" class="btn-add-inline" id="btn-add-transport">+ Ajouter un transport</button>
+    </div>
+
+    <form id="form-transport" class="inline-form" method="post" action="" style="display:none;">
+        <div class="inline-form-grid">
+            <div class="field full-width">
+                <label for="trans-type">Type *</label>
+                <input type="text" id="trans-type" name="type" maxlength="200" required
+                       placeholder="Train, Bus, Taxi, Tramway...">
+            </div>
+        </div>
+        <div class="inline-form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-transport">Annuler</button>
+            <button type="submit" class="btn-save">Créer</button>
+        </div>
+    </form>
+
     {% if transports %}
     <table class="detail-table">
-        <thead><tr><th>Type</th></tr></thead>
+        <thead><tr>
+            <th>Type</th>
+            <th style="width:120px; text-align:right;">Actions</th>
+        </tr></thead>
         <tbody>
             {% for t in transports %}
-            <tr><td><span class="item-name">{{ t.type or '—' }}</span></td></tr>
+            <tr>
+                <td><span class="item-name">{{ t.type or '—' }}</span></td>
+                <td class="row-actions" style="text-align:right;">
+                    <form method="post"
+                          action="{{ url_for('admin.transports_delete', nom_ville=ville.nom_ville, id=t.id) }}"
+                          onsubmit="return confirm('Supprimer ce transport ?');">
+                        <button type="submit" class="btn-row-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
@@ -645,6 +743,129 @@
                 });
             });
         }
+    })();
+
+    // Spécialités inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/specialites/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/specialites/${id}/edit`;
+
+        const form = document.getElementById('form-specialite');
+        const btnAdd = document.getElementById('btn-add-specialite');
+        const btnCancel = document.getElementById('btn-cancel-specialite');
+        const btnSave = document.getElementById('btn-save-specialite');
+        const inputNomPlat = document.getElementById('spec-nom-plat');
+        const table = document.getElementById('specialites-table');
+
+        function clearForm() {
+            form.reset();
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNomPlat.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNomPlat.value = tr.dataset.nomPlat || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Événements inline form
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/evenements/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/evenements/${id}/edit`;
+
+        const form = document.getElementById('form-evenement');
+        const btnAdd = document.getElementById('btn-add-evenement');
+        const btnCancel = document.getElementById('btn-cancel-evenement');
+        const btnSave = document.getElementById('btn-save-evenement');
+        const inputNom = document.getElementById('even-nom');
+        const inputPeriode = document.getElementById('even-periode');
+        const inputDesc = document.getElementById('even-description');
+        const table = document.getElementById('evenements-table');
+
+        function clearForm() {
+            form.reset();
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
+        function showForm() {
+            form.style.display = 'block';
+            inputNom.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
+
+        btnAdd.addEventListener('click', () => {
+            clearForm();
+            form.action = newUrl;
+            btnSave.textContent = 'Créer';
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputNom.value = tr.dataset.nom || '';
+                    inputPeriode.value = tr.dataset.periode || '';
+                    inputDesc.value = tr.dataset.description || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Enregistrer';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
+    })();
+
+    // Transport inline form (add only — no edit)
+    (function () {
+        const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/transports/new`;
+
+        const form = document.getElementById('form-transport');
+        const btnAdd = document.getElementById('btn-add-transport');
+        const btnCancel = document.getElementById('btn-cancel-transport');
+        const inputType = document.getElementById('trans-type');
+
+        function showForm() {
+            form.style.display = 'block';
+            inputType.focus();
+            form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+        function hideForm() { form.style.display = 'none'; form.reset(); }
+
+        btnAdd.addEventListener('click', () => {
+            form.reset();
+            form.action = newUrl;
+            showForm();
+        });
+        btnCancel.addEventListener('click', hideForm);
     })();
 </script>
 {% endblock %}
