@@ -214,6 +214,14 @@ def index():
         if conn: conn.close()
     return render_template('villes.html', villes=villes, titre_filter="Toutes les villes du Maroc", cdn_url=CDN_URL)
 
+FILTER_PATTERNS = {
+    'CÔTIÈRES':    ['%côtière%', '%côtières%', '%cotiere%', '%cotieres%'],
+    'MONTAGNE':    ['%montagne%', '%montagneuse%'],
+    'CULTURELLES': ['%culturelle%', '%culturelles%'],
+    'SAHARIENNES': ['%saharienne%', '%sahariennes%'],
+    'AGRICOLES':   ['%agricole%', '%agricoles%'],
+}
+
 @app.route('/filter/<type_ville>')
 def filter_villes(type_ville):
     conn = None
@@ -221,11 +229,20 @@ def filter_villes(type_ville):
     try:
         conn = pymysql.connect(**DB_CONFIG)
         with conn.cursor() as cur:
-            cur.execute(
-                "SELECT nom_ville, slogan, description, type_ville, image_path "
-                "FROM villes WHERE type_ville = %s ORDER BY nom_ville",
-                (type_ville,)
-            )
+            patterns = FILTER_PATTERNS.get(type_ville.upper())
+            if patterns:
+                where = " OR ".join(["LOWER(type_ville) LIKE %s"] * len(patterns))
+                cur.execute(
+                    "SELECT nom_ville, slogan, description, type_ville, image_path "
+                    f"FROM villes WHERE {where} ORDER BY nom_ville",
+                    patterns,
+                )
+            else:
+                cur.execute(
+                    "SELECT nom_ville, slogan, description, type_ville, image_path "
+                    "FROM villes WHERE type_ville = %s ORDER BY nom_ville",
+                    (type_ville,),
+                )
             villes = cur.fetchall()
     except Exception as e:
         print(f"Erreur filtre : {e}")
@@ -648,6 +665,10 @@ def serve_video(filename):
 @app.route('/static/images/<path:filename>')
 def serve_image(filename):
     return send_from_directory(os.path.join(frontend_dir, 'static', 'images'), filename)
+
+@app.route('/static/logo/<path:filename>')
+def serve_logo(filename):
+    return send_from_directory(os.path.join(frontend_dir, 'static', 'logo'), filename)
 
 # ============================================================
 # TIERS & TESTS
