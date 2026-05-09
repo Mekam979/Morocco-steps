@@ -159,6 +159,7 @@ def get_chat_history(user_id, limit=30):
         conn.close()
 
 def count_today_messages(user_id):
+    """Old function using chat_messages logs (fallback or legacy)"""
     conn = get_db()
     if not conn: return 0
     try:
@@ -173,6 +174,48 @@ def count_today_messages(user_id):
         return 0
     finally:
         conn.close()
+
+def get_user_limit_data(user_id):
+    """Fetch daily limit data from users table"""
+    conn = get_db()
+    if not conn: return 0, None
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT message_count, last_message_date FROM users WHERE id = %s", (user_id,))
+            row = cur.fetchone()
+            if not row: return 0, None
+            
+            count = row.get('message_count', 0)
+            last_date = row.get('last_message_date')
+            
+            # Reset if it's a new day
+            today = datetime.now().date()
+            if last_date != today:
+                return 0, today
+            return count, today
+    except Exception as e:
+        print(f"Error get_user_limit_data: {e}")
+        return 0, None
+    finally:
+        conn.close()
+
+def increment_user_message_count(user_id, current_count, today):
+    """Increment message_count and update last_message_date"""
+    conn = get_db()
+    if not conn: return
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                UPDATE users 
+                SET message_count = %s, last_message_date = %s 
+                WHERE id = %s
+            """, (current_count + 1, today, user_id))
+            conn.commit()
+    except Exception as e:
+        print(f"Error increment_user_message_count: {e}")
+    finally:
+        conn.close()
+
 
 # ============================================================
 # EMAIL MASKING
@@ -232,9 +275,11 @@ FILTER_TITLES = {
     'AGRICOLES':   'Villes agricoles',
 }
 
-@app.route('/filter/<type_ville>')
+@app.route('/filter/<path:type_ville>')
 def filter_villes(type_ville):
     type_ville = unquote(type_ville)
+    if '%' in type_ville:
+        type_ville = unquote(type_ville)
     tv_upper = type_ville.upper()
     matched_key = None
     for key, pats in FILTER_PATTERNS.items():
@@ -269,15 +314,37 @@ def filter_villes(type_ville):
     titre = FILTER_TITLES.get(matched_key, type_ville)
     return render_template('villes.html', villes=villes, titre_filter=titre, cdn_url=CDN_URL)
 
-@app.route('/ville/<string:nom>')
+@app.route('/ville/<path:nom>')
 def details_ville(nom):
+    # ── Robust URL decoding for Vercel ──────────────────────────────────
+    # Vercel can pass PATH_INFO still percent-encoded. Decode up to twice
+    # to handle both single-encoded (%20) and double-encoded (%2520) cases.
+    nom = unquote(nom)
+    if '%' in nom:          # still has encoded chars → double-encoded
+        nom = unquote(nom)
+    nom = nom.strip('/')    # <path:> may capture a leading/trailing slash
+
     conn = None
     try:
         conn = pymysql.connect(**DB_CONFIG)
         with conn.cursor() as cur:
+            # ── Primary lookup: exact match ──────────────────────────────
             cur.execute("SELECT * FROM villes WHERE nom_ville = %s", (nom,))
             ville = cur.fetchone()
-            if not ville: abort(404)
+
+            # ── Fallback: case-insensitive match (handles casing drift) ──
+            if not ville:
+                cur.execute(
+                    "SELECT * FROM villes WHERE LOWER(nom_ville) = LOWER(%s)",
+                    (nom,)
+                )
+                ville = cur.fetchone()
+
+            if not ville:
+                abort(404)
+
+            # Use the canonical name from the DB for all sub-queries
+            nom = ville['nom_ville']
 
             cur.execute("SELECT nom, description, image_path FROM attractions WHERE nom_ville = %s", (nom,))
             attractions = cur.fetchall()
@@ -601,24 +668,26 @@ def chat():
 
         user_id   = session.get('user_id')
         user_tier = session.get('user_tier', 'explorer')
+        
+        used = 0
+        today = datetime.now().date()
 
         if not user_id:
             anon_count = session.get('anon_msg_count', 0)
             if anon_count >= ANON_LIMIT:
                 return jsonify({'response': None, 'need_register': True})
             session['anon_msg_count'] = anon_count + 1
+            used = session['anon_msg_count']
         elif user_tier == 'explorer':
-            count_today = count_today_messages(user_id)
-            if count_today >= TIER_LIMITS['explorer']:
-                return jsonify({'response': f'Limite atteinte. Passez au pack Voyageur Pro !', 'limit_reached': True})
+            used, today = get_user_limit_data(user_id)
+            if used >= 10:
+                return jsonify({'response': "Désolé, vous avez épuisé vos 10 messages pour aujourd'hui. Revenez demain !", 'limit_reached': True})
 
         limit_info = None
         if not user_id:
-            used = session.get('anon_msg_count', 0)
             limit_info = f"L'utilisateur est en mode anonyme. Message {used}/{ANON_LIMIT}. Rappelle-lui de s'inscrire pour ne pas perdre l'accès."
         elif user_tier == 'explorer':
-            used = count_today_messages(user_id)
-            remaining = int(TIER_LIMITS['explorer']) - used
+            remaining = 10 - used
             if remaining <= 2:
                 limit_info = f"Il reste {remaining} messages à l'utilisateur aujourd'hui. Suggère-lui de passer au pack Voyageur Pro."
 
@@ -630,22 +699,23 @@ def chat():
         if user_id:
             save_message(user_id, 'user', message, rag.get('ville_detec'))
             save_message(user_id, 'bot', response_text, rag.get('ville_detec'))
+            if user_tier == 'explorer':
+                increment_user_message_count(user_id, used, today)
+                used += 1
 
         ville_detec = rag.get('ville_detec')
         intent_detec = rag.get('intent_detec')
 
         result = {'response': response_text, 'ville': ville_detec, 'intent': intent_detec}
         if not user_id:
-            used = session.get('anon_msg_count', 0)
             remaining = ANON_LIMIT - used
             result['anon_remaining'] = remaining
             if remaining <= 0:
                 result['need_register'] = True
         elif user_tier == 'explorer':
-            used = count_today_messages(user_id)
             result['msg_count'] = used
         else:
-            result['msg_count'] = count_today_messages(user_id)
+            result['msg_count'] = used
         return jsonify(result)
     except Exception:
         traceback.print_exc()

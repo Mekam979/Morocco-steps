@@ -176,7 +176,7 @@
             <select id="type_ville" name="type_ville">
                 <option value="">— Choisir —</option>
                 {% for opt in type_ville_options %}
-                <option value="{{ opt }}" {% if v.type_ville == opt %}selected{% endif %}>{{ opt }}</option>
+                <option value="{{ opt }}" {% if v.type_ville and v.type_ville|lower == opt|lower %}selected{% endif %}>{{ opt }}</option>
                 {% endfor %}
                 {% if legacy_type_ville %}
                 <option value="{{ legacy_type_ville }}" selected>{{ legacy_type_ville }} (actuel — non standard)</option>

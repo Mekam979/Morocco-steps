@@ -386,7 +386,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.attractions_delete', nom_ville=ville.nom_ville, id=a.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ a.nom }} » ? Cette action est irréversible.');">
+                          onsubmit="return confirm('Supprimer « {{ a.nom | replace("'", "\\'") }} » ? Cette action est irréversible.');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -432,7 +432,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.specialites_delete', nom_ville=ville.nom_ville, id=s.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ s.nom_plat }} » ?');">
+                          onsubmit="return confirm('Supprimer « {{ s.nom_plat | replace("'", "\\'") }} » ?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -502,7 +502,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.restaurants_delete', nom_ville=ville.nom_ville, id=r.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ r.nom }} » ?');">
+                          onsubmit="return confirm('Supprimer « {{ r.nom | replace("'", "\\'") }} » ?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -568,7 +568,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.artisanat_delete', nom_ville=ville.nom_ville, id=a.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ a.nom_artisanat }} » ?');">
+                          onsubmit="return confirm('Supprimer « {{ a.nom_artisanat | replace("'", "\\'") }} » ?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -634,7 +634,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.vestimentaire_delete', nom_ville=ville.nom_ville, id=v.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ v.nom }} » ?');">
+                          onsubmit="return confirm('Supprimer « {{ v.nom | replace("'", "\\'") }} » ?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -710,7 +710,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.hebergements_delete', nom_ville=ville.nom_ville, id=h.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ h.nom }} » ?');">
+                          onsubmit="return confirm('Supprimer « {{ h.nom | replace("'", "\\'") }} » ?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -772,7 +772,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.evenements_delete', nom_ville=ville.nom_ville, id=e.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ e.nom }} » ?');">
+                          onsubmit="return confirm('Supprimer « {{ e.nom | replace("'", "\\'") }} » ?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>

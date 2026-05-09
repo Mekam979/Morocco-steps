@@ -160,7 +160,7 @@
                 <a class="edit" href="{{ url_for('admin.villes_edit', nom_ville=v.nom_ville) }}">Edit</a>
                 <form method="post"
                       action="{{ url_for('admin.villes_delete', nom_ville=v.nom_ville) }}"
-                      onsubmit="return confirm('Supprimer la ville {{ v.nom_ville }} ? Cette action est irréversible.');">
+                      onsubmit="return confirm('Supprimer la ville {{ v.nom_ville | replace("'", "\\'") }} ? Cette action est irréversible.');">
                     <button type="submit" class="delete">Delete</button>
                 </form>
             </td>

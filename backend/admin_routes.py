@@ -15,6 +15,7 @@ import os
 import secrets
 import unicodedata
 from functools import wraps
+from urllib.parse import unquote
 
 import cloudinary
 import cloudinary.exceptions
@@ -34,7 +35,13 @@ cloudinary.config(
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
-TYPE_VILLE_OPTIONS = ["CÔTIÈRES", "MONTAGNE", "CULTURELLES", "SAHARIENNES", "AGRICOLES"]
+TYPE_VILLE_OPTIONS = [
+    "Villes côtières",
+    "Villes sahariennes",
+    "Villes culturelles",
+    "Villes de montagne",
+    "Villes agricoles",
+]
 
 ACCENT_MAP = {
     "é": "e", "è": "e", "ê": "e", "ë": "e",
@@ -137,9 +144,13 @@ def villes_list():
 
 
 def _legacy_type_ville_for(value):
-    if value and value not in TYPE_VILLE_OPTIONS:
-        return value
-    return None
+    """Return value only if it is non-standard (not in TYPE_VILLE_OPTIONS, case-insensitive)."""
+    if not value:
+        return None
+    normalized = [opt.lower() for opt in TYPE_VILLE_OPTIONS]
+    if value.lower() in normalized:
+        return None  # it IS a known option — no legacy needed
+    return value
 
 
 def _validate_form(form, mode, current_nom=None):
@@ -286,6 +297,7 @@ def villes_new():
 @admin_bp.route("/villes/<nom_ville>/edit", methods=["GET", "POST"])
 @admin_required
 def villes_edit(nom_ville):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -348,6 +360,7 @@ def villes_edit(nom_ville):
 @admin_bp.route("/villes/<nom_ville>/detail")
 @admin_required
 def villes_detail(nom_ville):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -418,6 +431,7 @@ def villes_detail(nom_ville):
 @admin_bp.route("/villes/<nom_ville>/delete", methods=["POST"])
 @admin_required
 def villes_delete(nom_ville):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -446,6 +460,7 @@ def _validate_attraction(form):
 @admin_bp.route("/villes/<nom_ville>/attractions/new", methods=["POST"])
 @admin_required
 def attractions_new(nom_ville):
+    nom_ville = unquote(nom_ville)
     nom, description, err = _validate_attraction(request.form)
     if err:
         flash(err, "error")
@@ -477,6 +492,7 @@ def attractions_new(nom_ville):
 @admin_bp.route("/villes/<nom_ville>/attractions/<int:id>/edit", methods=["POST"])
 @admin_required
 def attractions_edit(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     nom, description, err = _validate_attraction(request.form)
     if err:
         flash(err, "error")
@@ -519,6 +535,7 @@ def attractions_edit(nom_ville, id):
 @admin_bp.route("/villes/<nom_ville>/attractions/<int:id>/delete", methods=["POST"])
 @admin_required
 def attractions_delete(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -550,6 +567,7 @@ def _validate_specialite(form):
 @admin_bp.route("/villes/<nom_ville>/specialites/new", methods=["POST"])
 @admin_required
 def specialites_new(nom_ville):
+    nom_ville = unquote(nom_ville)
     nom_plat, err = _validate_specialite(request.form)
     if err:
         flash(err, "error")
@@ -572,6 +590,7 @@ def specialites_new(nom_ville):
 @admin_bp.route("/villes/<nom_ville>/specialites/<int:id>/edit", methods=["POST"])
 @admin_required
 def specialites_edit(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     nom_plat, err = _validate_specialite(request.form)
     if err:
         flash(err, "error")
@@ -595,6 +614,7 @@ def specialites_edit(nom_ville, id):
 @admin_bp.route("/villes/<nom_ville>/specialites/<int:id>/delete", methods=["POST"])
 @admin_required
 def specialites_delete(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -630,6 +650,7 @@ def _validate_evenement(form):
 @admin_bp.route("/villes/<nom_ville>/evenements/new", methods=["POST"])
 @admin_required
 def evenements_new(nom_ville):
+    nom_ville = unquote(nom_ville)
     nom, periode, description, err = _validate_evenement(request.form)
     if err:
         flash(err, "error")
@@ -653,6 +674,7 @@ def evenements_new(nom_ville):
 @admin_bp.route("/villes/<nom_ville>/evenements/<int:id>/edit", methods=["POST"])
 @admin_required
 def evenements_edit(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     nom, periode, description, err = _validate_evenement(request.form)
     if err:
         flash(err, "error")
