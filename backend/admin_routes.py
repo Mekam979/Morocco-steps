@@ -229,13 +229,19 @@ def _upload_image_if_present(file_storage, slug, folder="villes"):
     if not file_storage or not file_storage.filename:
         return None, None
     try:
+        # Add a small random suffix to avoid browser caching of the same filename
+        import secrets
+        suffix = secrets.token_hex(3)
+        unique_slug = f"{slug}_{suffix}"
+        
         result = cloudinary.uploader.upload(
             file_storage,
-            public_id=f"{folder}/{slug}",
+            public_id=f"{folder}/{unique_slug}",
             overwrite=True,
             resource_type="image",
         )
-        return f"{slug}.{result.get('format', 'jpg')}", None
+        # We return the filename with extension
+        return f"{unique_slug}.{result.get('format', 'jpg')}", None
     except cloudinary.exceptions.Error as e:
         return None, str(e)
 
@@ -349,7 +355,7 @@ def villes_edit(nom_ville):
                 "WHERE nom_ville=%s",
                 (db["slogan"], db["description"], db["type_ville"],
                  db["latitude"], db["longitude"], image_path,
-                 db["google_maps_link"], nom_ville),
+                 db["google_maps_link"], row["nom_ville"]),  # Use authoritative name from DB
             )
         conn.commit()
     finally:
