@@ -332,11 +332,20 @@ def details_ville(nom):
             cur.execute("SELECT * FROM villes WHERE nom_ville = %s", (nom,))
             ville = cur.fetchone()
 
-            # ── Fallback: case-insensitive match (handles casing drift) ──
+            # ── Fallback 1: Case-insensitive match ───────────────────────
             if not ville:
                 cur.execute(
                     "SELECT * FROM villes WHERE LOWER(nom_ville) = LOWER(%s)",
                     (nom,)
+                )
+                ville = cur.fetchone()
+
+            # ── Fallback 2: Slug support (replace - and _ with spaces) ───
+            if not ville and ('-' in nom or '_' in nom):
+                nom_slug = nom.replace('-', ' ').replace('_', ' ')
+                cur.execute(
+                    "SELECT * FROM villes WHERE LOWER(nom_ville) = LOWER(%s)",
+                    (nom_slug,)
                 )
                 ville = cur.fetchone()
 
