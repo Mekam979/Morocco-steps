@@ -23,7 +23,7 @@ load_dotenv(dotenv_path=env_path)
 try:
     from rag_engine import rag_retrieve_and_augment
 except ImportError:
-    def rag_retrieve_and_augment(message):
+    def rag_retrieve_and_augment(message, limit_info=None):
         return {"system_prompt": "Expert Maroc", "user_prompt": message,
                 "has_context": False, "ville_detec": None, "intent_detec": None}
 
@@ -73,7 +73,7 @@ def inject_cloudinary():
     return dict(cdn_url=CDN_URL, logo_url=LOGO_URL)
 
 
-GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+GROQ_API_KEY = (os.getenv('GROQ_API_KEY') or '').strip()
 GROQ_MODEL   = "llama-3.3-70b-versatile"
 
 from db import DB_CONFIG
@@ -181,11 +181,11 @@ def get_user_limit_data(user_id):
     if not conn: return 0, None
     try:
         with conn.cursor() as cur:
-            cur.execute("SELECT message_count, last_message_date FROM users WHERE id = %s", (user_id,))
+            cur.execute("SELECT msg_count, last_message_date FROM users WHERE id = %s", (user_id,))
             row = cur.fetchone()
             if not row: return 0, None
             
-            count = row.get('message_count', 0)
+            count = row.get('msg_count', 0)
             last_date = row.get('last_message_date')
             
             # Reset if it's a new day
@@ -207,7 +207,7 @@ def increment_user_message_count(user_id, current_count, today):
         with conn.cursor() as cur:
             cur.execute("""
                 UPDATE users 
-                SET message_count = %s, last_message_date = %s 
+                SET msg_count = %s, last_message_date = %s 
                 WHERE id = %s
             """, (current_count + 1, today, user_id))
             conn.commit()
@@ -726,9 +726,10 @@ def chat():
         else:
             result['msg_count'] = used
         return jsonify(result)
-    except Exception:
+    except Exception as e:
+        print(f"CRITICAL CHAT ERROR: {e}")
         traceback.print_exc()
-        return jsonify({'response': "Erreur interne."})
+        return jsonify({'response': "Erreur interne. Veuillez réessayer plus tard."})
 
 @app.route('/chat/history')
 def chat_history():
@@ -788,6 +789,51 @@ def set_tier(tier):
         return jsonify({'status': 'success', 'tier': tier})
     return jsonify({'status': 'error'})
 
+@app.route('/api/search')
+def global_search():
+    query = request.args.get('q', '').strip()
+    if not query or len(query) < 2:
+        return jsonify({'results': []})
+    
+    conn = get_db()
+    if not conn:
+        return jsonify({'results': [], 'error': 'Database connection failed'})
+        
+    results = []
+    try:
+        with conn.cursor() as cur:
+            # 1. Search Villes (Cities)
+            cur.execute(
+                "SELECT nom_ville as title, 'ville' as type, slogan as subtitle, image_path "
+                "FROM villes WHERE nom_ville LIKE %s OR type_ville LIKE %s OR slogan LIKE %s LIMIT 5",
+                (f"%{query}%", f"%{query}%", f"%{query}%")
+            )
+            results.extend(cur.fetchall())
+            
+            # 2. Search Hotels (Hebergements)
+            cur.execute(
+                "SELECT h.nom as title, 'hotel' as type, v.nom_ville as subtitle, v.image_path "
+                "FROM hebergements h JOIN villes v ON h.nom_ville = v.nom_ville "
+                "WHERE h.nom LIKE %s LIMIT 5",
+                (f"%{query}%",)
+            )
+            results.extend(cur.fetchall())
+
+            # 3. Search Attractions
+            cur.execute(
+                "SELECT a.nom as title, 'attraction' as type, v.nom_ville as subtitle, v.image_path "
+                "FROM attractions a JOIN villes v ON a.nom_ville = v.nom_ville "
+                "WHERE a.nom LIKE %s LIMIT 5",
+                (f"%{query}%",)
+            )
+            results.extend(cur.fetchall())
+    except Exception as e:
+        print(f"Global search error: {e}")
+    finally:
+        conn.close()
+    
+    return jsonify({'results': results})
+
 @app.route('/test-db')
 def test_db():
     result = {'status': 'error', 'tables': []}
@@ -814,12 +860,6 @@ def test_db():
     return jsonify(result)
 
 if __name__ == '__main__':
-    print("=" * 55)
-    print("Trippy — Guide Touristique Maroc (avec vérification email)")
-    print("=" * 55)
-    print(f"  Modèle   : {GROQ_MODEL}")
-    print(f"  Anon     : {ANON_LIMIT} messages gratuits")
-    print(f"  Explorer : {int(TIER_LIMITS['explorer'])} messages/jour")
-    print("=" * 55)
-    # v1.0.1 - Vercel Deployment Force
-    app.run(debug=True, port=5001)
+    # Mode de développement local
+    port = int(os.getenv('PORT', 5001))
+    app.run(debug=False, host='0.0.0.0', port=port)

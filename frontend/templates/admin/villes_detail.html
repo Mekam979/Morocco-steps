@@ -5,8 +5,8 @@
 
 {% block header_actions %}
 <div style="display:flex; gap:10px;">
-    <a href="{{ url_for('admin.villes_list') }}" class="btn-back">← Retour</a>
-    <a href="{{ url_for('admin.villes_edit', nom_ville=ville.nom_ville) }}" class="btn-edit-fields">Modifier les champs</a>
+    <a href="{{ url_for('admin.villes_list') }}" class="btn-back">← Back</a>
+    <a href="{{ url_for('admin.villes_edit', nom_ville=ville.nom_ville) }}" class="btn-edit-fields">Edit City Info</a>
 </div>
 {% endblock %}
 
@@ -302,7 +302,7 @@
 
 {% macro thumb(image_path, folder) %}
     {% if image_path %}
-    <img class="item-thumb" src="{{ cdn_url }}{{ folder }}/{{ image_path }}" alt=""
+    <img class="item-thumb" src="{{ cdn_url }}{{ image_path }}" alt=""
          onerror="this.outerHTML='<div class=&quot;item-thumb-placeholder&quot;>🖼️</div>';">
     {% else %}
     <div class="item-thumb-placeholder">🖼️</div>
@@ -324,26 +324,26 @@
 
 <div class="tabs-bar" role="tablist">
     <button class="tab active" data-tab="attractions">Attractions <span class="tab-count">{{ attractions|length }}</span></button>
-    <button class="tab" data-tab="specialites">Spécialités <span class="tab-count">{{ specialites|length }}</span></button>
+    <button class="tab" data-tab="specialites">Specialties <span class="tab-count">{{ specialites|length }}</span></button>
     <button class="tab" data-tab="restaurants">Restaurants <span class="tab-count">{{ restaurants|length }}</span></button>
-    <button class="tab" data-tab="artisanat">Artisanat <span class="tab-count">{{ artisanat|length }}</span></button>
-    <button class="tab" data-tab="vestimentaire">Vestimentaire <span class="tab-count">{{ vestimentaire|length }}</span></button>
-    <button class="tab" data-tab="hebergements">Hébergements <span class="tab-count">{{ hebergements|length }}</span></button>
-    <button class="tab" data-tab="evenements">Événements <span class="tab-count">{{ evenements|length }}</span></button>
+    <button class="tab" data-tab="artisanat">artisanat <span class="tab-count">{{ artisanat|length }}</span></button>
+    <button class="tab" data-tab="vestimentaire">vestimentaire<span class="tab-count">{{ vestimentaire|length }}</span></button>
+    <button class="tab" data-tab="hebergements">hebergements <span class="tab-count">{{ hebergements|length }}</span></button>
+    <button class="tab" data-tab="evenements">Evenements<span class="tab-count">{{ evenements|length }}</span></button>
     <button class="tab" data-tab="transport">Transport <span class="tab-count">{{ transports|length }}</span></button>
 </div>
 
 <!-- Attractions -->
 <div class="panel active" data-panel="attractions">
     <div class="panel-header">
-        <button type="button" class="btn-add-inline" id="btn-add-attraction">+ Ajouter une attraction</button>
+        <button type="button" class="btn-add-inline" id="btn-add-attraction">+ Add Attraction</button>
     </div>
 
     <form id="form-attraction" class="inline-form" method="post"
           enctype="multipart/form-data" action="" style="display:none;">
         <div class="inline-form-grid">
             <div class="field full-width">
-                <label for="attr-nom">Nom *</label>
+                <label for="attr-nom">Name *</label>
                 <input type="text" id="attr-nom" name="nom" maxlength="120" required>
             </div>
             <div class="field full-width">
@@ -354,14 +354,14 @@
                 <label for="attr-image">Image</label>
                 <div class="current-image" id="attr-current-image" style="display:none;">
                     <img id="attr-current-img" src="" alt="">
-                    <span>Téléverser un fichier pour remplacer.</span>
+                    <span>Upload a file to replace.</span>
                 </div>
                 <input type="file" id="attr-image" name="image" accept="image/*">
             </div>
         </div>
         <div class="inline-form-actions">
-            <button type="button" class="btn-cancel" id="btn-cancel-attraction">Annuler</button>
-            <button type="submit" class="btn-save" id="btn-save-attraction">Enregistrer</button>
+            <button type="button" class="btn-cancel" id="btn-cancel-attraction">Cancel</button>
+            <button type="submit" class="btn-save" id="btn-save-attraction">Save</button>
         </div>
     </form>
 
@@ -369,7 +369,7 @@
     <table class="detail-table" id="attractions-table">
         <thead><tr>
             <th style="width:80px;">Image</th>
-            <th>Nom</th>
+            <th>Name</th>
             <th>Description</th>
             <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
@@ -395,33 +395,33 @@
         </tbody>
     </table>
     {% else %}
-    <div class="empty-card">Aucune entrée.</div>
+    <div class="empty-card">No entries found.</div>
     {% endif %}
 </div>
 
 <!-- Spécialités Culinaires -->
 <div class="panel" data-panel="specialites">
     <div class="panel-header">
-        <button type="button" class="btn-add-inline" id="btn-add-specialite">+ Ajouter une spécialité</button>
+        <button type="button" class="btn-add-inline" id="btn-add-specialite">+ Add Specialty</button>
     </div>
 
     <form id="form-specialite" class="inline-form" method="post" action="" style="display:none;">
         <div class="inline-form-grid">
             <div class="field full-width">
-                <label for="spec-nom-plat">Nom du plat *</label>
+                <label for="spec-nom-plat">Dish Name *</label>
                 <input type="text" id="spec-nom-plat" name="nom_plat" maxlength="200" required>
             </div>
         </div>
         <div class="inline-form-actions">
-            <button type="button" class="btn-cancel" id="btn-cancel-specialite">Annuler</button>
-            <button type="submit" class="btn-save" id="btn-save-specialite">Créer</button>
+            <button type="button" class="btn-cancel" id="btn-cancel-specialite">Cancel</button>
+            <button type="submit" class="btn-save" id="btn-save-specialite">Create</button>
         </div>
     </form>
 
     {% if specialites %}
     <table class="detail-table" id="specialites-table">
         <thead><tr>
-            <th>Plat</th>
+            <th>Dish</th>
             <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
@@ -432,7 +432,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.specialites_delete', nom_ville=ville.nom_ville, id=s.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ s.nom_plat | replace("'", "\\'") }} » ?');">
+                          onsubmit="return confirm('Delete \'{{ s.nom_plat | replace("'", "\\'") }}\'?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -441,20 +441,20 @@
         </tbody>
     </table>
     {% else %}
-    <div class="empty-card">Aucune entrée.</div>
+    <div class="empty-card">No entries found.</div>
     {% endif %}
 </div>
 
 <!-- Restaurants -->
 <div class="panel" data-panel="restaurants">
     <div class="panel-header">
-        <button type="button" class="btn-add-inline" id="btn-add-restaurant">+ Ajouter un restaurant</button>
+        <button type="button" class="btn-add-inline" id="btn-add-restaurant">+ Add Restaurant</button>
     </div>
 
     <form id="form-restaurant" class="inline-form" method="post" action="" style="display:none;">
         <div class="inline-form-grid">
             <div class="field full-width">
-                <label for="rest-nom">Nom *</label>
+                <label for="rest-nom">Name *</label>
                 <input type="text" id="rest-nom" name="nom" maxlength="150" required>
             </div>
             <div class="field full-width">
@@ -462,29 +462,29 @@
                 <textarea id="rest-description" name="description" rows="4"></textarea>
             </div>
             <div class="field">
-                <label for="rest-specialites">Spécialités</label>
+                <label for="rest-specialites">Specialties</label>
                 <input type="text" id="rest-specialites" name="specialites" maxlength="100"
-                       placeholder="Italien, Pizza, Méditerranéen...">
+                       placeholder="Italian, Pizza, Mediterranean...">
             </div>
             <div class="field">
-                <label for="rest-lien">Lien réservation</label>
+                <label for="rest-lien">Booking Link</label>
                 <input type="url" id="rest-lien" name="lien" maxlength="255"
                        placeholder="https://...">
             </div>
         </div>
         <div class="inline-form-actions">
-            <button type="button" class="btn-cancel" id="btn-cancel-restaurant">Annuler</button>
-            <button type="submit" class="btn-save" id="btn-save-restaurant">Créer</button>
+            <button type="button" class="btn-cancel" id="btn-cancel-restaurant">Cancel</button>
+            <button type="submit" class="btn-save" id="btn-save-restaurant">Create</button>
         </div>
     </form>
 
     {% if restaurants %}
     <table class="detail-table" id="restaurants-table">
         <thead><tr>
-            <th>Nom</th>
-            <th>Spécialités</th>
+            <th>Name</th>
+            <th>Specialties</th>
             <th>Description</th>
-            <th>Lien</th>
+            <th>Link</th>
             <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
@@ -502,7 +502,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.restaurants_delete', nom_ville=ville.nom_ville, id=r.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ r.nom | replace("'", "\\'") }} » ?');">
+                          onsubmit="return confirm('Delete \'{{ r.nom | replace("'", "\\'") }}\'?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -511,21 +511,21 @@
         </tbody>
     </table>
     {% else %}
-    <div class="empty-card">Aucune entrée.</div>
+    <div class="empty-card">No entries found.</div>
     {% endif %}
 </div>
 
 <!-- Artisanat -->
 <div class="panel" data-panel="artisanat">
     <div class="panel-header">
-        <button type="button" class="btn-add-inline" id="btn-add-artisanat">+ Ajouter un artisanat</button>
+        <button type="button" class="btn-add-inline" id="btn-add-artisanat">+ Add Craft</button>
     </div>
 
     <form id="form-artisanat" class="inline-form" method="post"
           enctype="multipart/form-data" action="" style="display:none;">
         <div class="inline-form-grid">
             <div class="field full-width">
-                <label for="arti-nom">Nom *</label>
+                <label for="arti-nom">Name *</label>
                 <input type="text" id="arti-nom" name="nom_artisanat" maxlength="200" required>
             </div>
             <div class="field full-width">
@@ -536,14 +536,14 @@
                 <label for="arti-image">Image</label>
                 <div class="current-image" id="arti-current-image" style="display:none;">
                     <img id="arti-current-img" src="" alt="">
-                    <span>Téléverser un fichier pour remplacer.</span>
+                    <span>Upload a file to replace.</span>
                 </div>
                 <input type="file" id="arti-image" name="image" accept="image/*">
             </div>
         </div>
         <div class="inline-form-actions">
-            <button type="button" class="btn-cancel" id="btn-cancel-artisanat">Annuler</button>
-            <button type="submit" class="btn-save" id="btn-save-artisanat">Créer</button>
+            <button type="button" class="btn-cancel" id="btn-cancel-artisanat">Cancel</button>
+            <button type="submit" class="btn-save" id="btn-save-artisanat">Create</button>
         </div>
     </form>
 
@@ -568,7 +568,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.artisanat_delete', nom_ville=ville.nom_ville, id=a.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ a.nom_artisanat | replace("'", "\\'") }} » ?');">
+                          onsubmit="return confirm('Delete \'{{ a.nom_artisanat | replace("'", "\\'") }}\'?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -577,21 +577,22 @@
         </tbody>
     </table>
     {% else %}
-    <div class="empty-card">Aucune entrée.</div>
+    <div class="empty-card">No entries found.</div>
     {% endif %}
 </div>
+
 
 <!-- Vestimentaire -->
 <div class="panel" data-panel="vestimentaire">
     <div class="panel-header">
-        <button type="button" class="btn-add-inline" id="btn-add-vestimentaire">+ Ajouter un vêtement</button>
+        <button type="button" class="btn-add-inline" id="btn-add-vestimentaire">+ Add Clothing Item</button>
     </div>
 
     <form id="form-vestimentaire" class="inline-form" method="post"
           enctype="multipart/form-data" action="" style="display:none;">
         <div class="inline-form-grid">
             <div class="field full-width">
-                <label for="vest-nom">Nom *</label>
+                <label for="vest-nom">Name *</label>
                 <input type="text" id="vest-nom" name="nom" maxlength="100" required>
             </div>
             <div class="field full-width">
@@ -602,14 +603,14 @@
                 <label for="vest-image">Image</label>
                 <div class="current-image" id="vest-current-image" style="display:none;">
                     <img id="vest-current-img" src="" alt="">
-                    <span>Téléverser un fichier pour remplacer.</span>
+                    <span>Upload a file to replace.</span>
                 </div>
                 <input type="file" id="vest-image" name="image" accept="image/*">
             </div>
         </div>
         <div class="inline-form-actions">
-            <button type="button" class="btn-cancel" id="btn-cancel-vestimentaire">Annuler</button>
-            <button type="submit" class="btn-save" id="btn-save-vestimentaire">Créer</button>
+            <button type="button" class="btn-cancel" id="btn-cancel-vestimentaire">Cancel</button>
+            <button type="submit" class="btn-save" id="btn-save-vestimentaire">Create</button>
         </div>
     </form>
 
@@ -634,7 +635,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.vestimentaire_delete', nom_ville=ville.nom_ville, id=v.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ v.nom | replace("'", "\\'") }} » ?');">
+                          onsubmit="return confirm('Delete \'{{ v.nom | replace("'", "\\'") }}\'?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -643,56 +644,56 @@
         </tbody>
     </table>
     {% else %}
-    <div class="empty-card">Aucune entrée.</div>
+    <div class="empty-card">No entries found.</div>
     {% endif %}
 </div>
 
 <!-- Hébergements -->
 <div class="panel" data-panel="hebergements">
     <div class="panel-header">
-        <button type="button" class="btn-add-inline" id="btn-add-hebergement">+ Ajouter un hébergement</button>
+        <button type="button" class="btn-add-inline" id="btn-add-hebergement">+ Add Accommodation</button>
     </div>
 
     <form id="form-hebergement" class="inline-form" method="post" action="" style="display:none;">
         <div class="inline-form-grid">
             <div class="field full-width">
-                <label for="hebe-nom">Nom *</label>
+                <label for="hebe-nom">Name *</label>
                 <input type="text" id="hebe-nom" name="nom" maxlength="500" required>
             </div>
             <div class="field">
-                <label for="hebe-etoiles">Étoiles</label>
+                <label for="hebe-etoiles">Stars</label>
                 <select id="hebe-etoiles" name="etoiles">
-                    <option value="">— Choisir —</option>
-                    <option value="1">1 étoile</option>
-                    <option value="2">2 étoiles</option>
-                    <option value="3">3 étoiles</option>
-                    <option value="4">4 étoiles</option>
-                    <option value="5">5 étoiles</option>
+                    <option value="">— Choose —</option>
+                    <option value="1">1 star</option>
+                    <option value="2">2 stars</option>
+                    <option value="3">3 stars</option>
+                    <option value="4">4 stars</option>
+                    <option value="5">5 stars</option>
                 </select>
             </div>
             <div class="field">
-                <label for="hebe-lien">Lien réservation</label>
+                <label for="hebe-lien">Booking Link</label>
                 <input type="url" id="hebe-lien" name="lien" maxlength="255"
                        placeholder="https://...">
             </div>
             <div class="field full-width">
-                <label for="hebe-avis">Avis</label>
+                <label for="hebe-avis">Reviews</label>
                 <textarea id="hebe-avis" name="avis" rows="4"></textarea>
             </div>
         </div>
         <div class="inline-form-actions">
-            <button type="button" class="btn-cancel" id="btn-cancel-hebergement">Annuler</button>
-            <button type="submit" class="btn-save" id="btn-save-hebergement">Créer</button>
+            <button type="button" class="btn-cancel" id="btn-cancel-hebergement">Cancel</button>
+            <button type="submit" class="btn-save" id="btn-save-hebergement">Create</button>
         </div>
     </form>
 
     {% if hebergements %}
     <table class="detail-table" id="hebergements-table">
         <thead><tr>
-            <th>Nom</th>
-            <th>Étoiles</th>
-            <th>Avis</th>
-            <th>Lien</th>
+            <th>Name</th>
+            <th>Stars</th>
+            <th>Reviews</th>
+            <th>Link</th>
             <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
@@ -710,7 +711,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.hebergements_delete', nom_ville=ville.nom_ville, id=h.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ h.nom | replace("'", "\\'") }} » ?');">
+                          onsubmit="return confirm('Delete \'{{ h.nom | replace("'", "\\'") }}\'?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -719,43 +720,52 @@
         </tbody>
     </table>
     {% else %}
-    <div class="empty-card">Aucune entrée.</div>
+    <div class="empty-card">No entries found.</div>
     {% endif %}
 </div>
 
 <!-- Événements -->
 <div class="panel" data-panel="evenements">
     <div class="panel-header">
-        <button type="button" class="btn-add-inline" id="btn-add-evenement">+ Ajouter un événement</button>
+        <button type="button" class="btn-add-inline" id="btn-add-evenement">+ Add Event</button>
     </div>
 
-    <form id="form-evenement" class="inline-form" method="post" action="" style="display:none;">
+    <form id="form-evenement" class="inline-form" method="post" enctype="multipart/form-data" action="" style="display:none;">
         <div class="inline-form-grid">
             <div class="field">
-                <label for="even-nom">Nom *</label>
+                <label for="even-nom">Name *</label>
                 <input type="text" id="even-nom" name="nom" maxlength="100" required>
             </div>
             <div class="field">
-                <label for="even-periode">Période</label>
+                <label for="even-periode">Period</label>
                 <input type="text" id="even-periode" name="periode" maxlength="50"
-                       placeholder="Été, Mai-Juin, Annuel...">
+                       placeholder="Summer, May-June, Annual...">
             </div>
             <div class="field full-width">
                 <label for="even-description">Description</label>
                 <textarea id="even-description" name="description" rows="4"></textarea>
             </div>
+            <div class="field full-width">
+                <label for="even-image">Image</label>
+                <div class="current-image" id="even-current-image" style="display:none;">
+                    <img id="even-current-img" src="" alt="">
+                    <span>Upload a file to replace.</span>
+                </div>
+                <input type="file" id="even-image" name="image" accept="image/*">
+            </div>
         </div>
         <div class="inline-form-actions">
-            <button type="button" class="btn-cancel" id="btn-cancel-evenement">Annuler</button>
-            <button type="submit" class="btn-save" id="btn-save-evenement">Créer</button>
+            <button type="button" class="btn-cancel" id="btn-cancel-evenement">Cancel</button>
+            <button type="submit" class="btn-save" id="btn-save-evenement">Create</button>
         </div>
     </form>
 
     {% if evenements %}
     <table class="detail-table" id="evenements-table">
         <thead><tr>
-            <th>Nom</th>
-            <th>Période</th>
+            <th style="width:80px;">Image</th>
+            <th>Name</th>
+            <th>Period</th>
             <th>Description</th>
             <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
@@ -764,7 +774,9 @@
             <tr data-id="{{ e.id }}"
                 data-nom="{{ e.nom or '' }}"
                 data-periode="{{ e.periode or '' }}"
-                data-description="{{ e.description or '' }}">
+                data-description="{{ e.description or '' }}"
+                data-image-path="{{ e.image_path or '' }}">
+                <td>{{ thumb(e.image_path, 'evenements') }}</td>
                 <td><span class="item-name">{{ e.nom or '—' }}</span></td>
                 <td>{% if e.periode %}<span class="badge-pill">{{ e.periode }}</span>{% endif %}</td>
                 <td><span class="item-desc">{{ truncate_desc(e.description) }}</span></td>
@@ -772,7 +784,7 @@
                     <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.evenements_delete', nom_ville=ville.nom_ville, id=e.id) }}"
-                          onsubmit="return confirm('Supprimer « {{ e.nom | replace("'", "\\'") }} » ?');">
+                          onsubmit="return confirm('Delete \'{{ e.nom | replace("'", "\\'") }}\'?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -781,14 +793,14 @@
         </tbody>
     </table>
     {% else %}
-    <div class="empty-card">Aucune entrée.</div>
+    <div class="empty-card">No entries found.</div>
     {% endif %}
 </div>
 
 <!-- Transport -->
 <div class="panel" data-panel="transport">
     <div class="panel-header">
-        <button type="button" class="btn-add-inline" id="btn-add-transport">+ Ajouter un transport</button>
+        <button type="button" class="btn-add-inline" id="btn-add-transport">+ Add Transport</button>
     </div>
 
     <form id="form-transport" class="inline-form" method="post" action="" style="display:none;">
@@ -800,25 +812,26 @@
             </div>
         </div>
         <div class="inline-form-actions">
-            <button type="button" class="btn-cancel" id="btn-cancel-transport">Annuler</button>
-            <button type="submit" class="btn-save">Créer</button>
+            <button type="button" class="btn-cancel" id="btn-cancel-transport">Cancel</button>
+            <button type="submit" class="btn-save" id="btn-save-transport">Create</button>
         </div>
     </form>
 
     {% if transports %}
-    <table class="detail-table">
+    <table class="detail-table" id="transport-table">
         <thead><tr>
             <th>Type</th>
-            <th style="width:120px; text-align:right;">Actions</th>
+            <th style="width:160px; text-align:right;">Actions</th>
         </tr></thead>
         <tbody>
             {% for t in transports %}
-            <tr>
+            <tr data-id="{{ t.id }}" data-type="{{ t.type or '' }}">
                 <td><span class="item-name">{{ t.type or '—' }}</span></td>
                 <td class="row-actions" style="text-align:right;">
+                    <button type="button" class="btn-row-edit">Edit</button>
                     <form method="post"
                           action="{{ url_for('admin.transports_delete', nom_ville=ville.nom_ville, id=t.id) }}"
-                          onsubmit="return confirm('Supprimer ce transport ?');">
+                          onsubmit="return confirm('Delete this transport?');">
                         <button type="submit" class="btn-row-delete">Delete</button>
                     </form>
                 </td>
@@ -827,7 +840,7 @@
         </tbody>
     </table>
     {% else %}
-    <div class="empty-card">Aucune entrée.</div>
+    <div class="empty-card">No entries found.</div>
     {% endif %}
 </div>
 
@@ -911,11 +924,11 @@
                     inputNom.value = tr.dataset.nom || '';
                     inputDesc.value = tr.dataset.description || '';
                     if (tr.dataset.imagePath) {
-                        currentImg.src = `${CDN}attractions/${tr.dataset.imagePath}`;
+                        currentImg.src = `${CDN}${tr.dataset.imagePath}`;
                         currentWrap.style.display = 'flex';
                     }
                     form.action = editUrl(tr.dataset.id);
-                    btnSave.textContent = 'Enregistrer';
+                    btnSave.textContent = 'Save';
                     tr.classList.add('editing');
                     showForm();
                 });
@@ -962,7 +975,7 @@
                     clearForm();
                     inputNomPlat.value = tr.dataset.nomPlat || '';
                     form.action = editUrl(tr.dataset.id);
-                    btnSave.textContent = 'Enregistrer';
+                    btnSave.textContent = 'Save';
                     tr.classList.add('editing');
                     showForm();
                 });
@@ -970,9 +983,10 @@
         }
     })();
 
-    // Événements inline form
+    // Events inline form
     (function () {
         const NOM_VILLE = {{ ville.nom_ville | tojson }};
+        const CDN = {{ cdn_url | tojson }};
         const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/evenements/new`;
         const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/evenements/${id}/edit`;
 
@@ -983,10 +997,15 @@
         const inputNom = document.getElementById('even-nom');
         const inputPeriode = document.getElementById('even-periode');
         const inputDesc = document.getElementById('even-description');
+        const inputFile = document.getElementById('even-image');
+        const currentWrap = document.getElementById('even-current-image');
+        const currentImg = document.getElementById('even-current-img');
         const table = document.getElementById('evenements-table');
 
         function clearForm() {
             form.reset();
+            currentWrap.style.display = 'none';
+            currentImg.src = '';
             if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
         }
         function showForm() {
@@ -999,7 +1018,7 @@
         btnAdd.addEventListener('click', () => {
             clearForm();
             form.action = newUrl;
-            btnSave.textContent = 'Créer';
+            btnSave.textContent = 'Create';
             showForm();
         });
         btnCancel.addEventListener('click', hideForm);
@@ -1012,8 +1031,12 @@
                     inputNom.value = tr.dataset.nom || '';
                     inputPeriode.value = tr.dataset.periode || '';
                     inputDesc.value = tr.dataset.description || '';
+                    if (tr.dataset.imagePath) {
+                        currentImg.src = `${CDN}${tr.dataset.imagePath}`;
+                        currentWrap.style.display = 'flex';
+                    }
                     form.action = editUrl(tr.dataset.id);
-                    btnSave.textContent = 'Enregistrer';
+                    btnSave.textContent = 'Save';
                     tr.classList.add('editing');
                     showForm();
                 });
@@ -1021,29 +1044,51 @@
         }
     })();
 
-    // Transport inline form (add only — no edit)
+    // Transport inline form
     (function () {
         const NOM_VILLE = {{ ville.nom_ville | tojson }};
         const newUrl = `/admin/villes/${encodeURIComponent(NOM_VILLE)}/transports/new`;
+        const editUrl = (id) => `/admin/villes/${encodeURIComponent(NOM_VILLE)}/transports/${id}/edit`;
 
         const form = document.getElementById('form-transport');
         const btnAdd = document.getElementById('btn-add-transport');
         const btnCancel = document.getElementById('btn-cancel-transport');
+        const btnSave = document.getElementById('btn-save-transport');
         const inputType = document.getElementById('trans-type');
+        const table = document.getElementById('transport-table');
 
+        function clearForm() {
+            form.reset();
+            if (table) table.querySelectorAll('tr.editing').forEach(r => r.classList.remove('editing'));
+        }
         function showForm() {
             form.style.display = 'block';
             inputType.focus();
             form.scrollIntoView({behavior: 'smooth', block: 'nearest'});
         }
-        function hideForm() { form.style.display = 'none'; form.reset(); }
+        function hideForm() { form.style.display = 'none'; clearForm(); }
 
         btnAdd.addEventListener('click', () => {
-            form.reset();
+            clearForm();
             form.action = newUrl;
+            btnSave.textContent = 'Create';
             showForm();
         });
         btnCancel.addEventListener('click', hideForm);
+
+        if (table) {
+            table.querySelectorAll('.btn-row-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tr = e.target.closest('tr');
+                    clearForm();
+                    inputType.value = tr.dataset.type || '';
+                    form.action = editUrl(tr.dataset.id);
+                    btnSave.textContent = 'Save';
+                    tr.classList.add('editing');
+                    showForm();
+                });
+            });
+        }
     })();
 
     // Restaurants inline form
@@ -1091,7 +1136,7 @@
                     inputSpec.value = tr.dataset.specialites || '';
                     inputLien.value = tr.dataset.lien || '';
                     form.action = editUrl(tr.dataset.id);
-                    btnSave.textContent = 'Enregistrer';
+                    btnSave.textContent = 'Save';
                     tr.classList.add('editing');
                     showForm();
                 });
@@ -1146,11 +1191,11 @@
                     inputNom.value = tr.dataset.nomArtisanat || '';
                     inputDesc.value = tr.dataset.description || '';
                     if (tr.dataset.imagePath) {
-                        currentImg.src = `${CDN}artisanat/${tr.dataset.imagePath}`;
+                        currentImg.src = `${CDN}${tr.dataset.imagePath}`;
                         currentWrap.style.display = 'flex';
                     }
                     form.action = editUrl(tr.dataset.id);
-                    btnSave.textContent = 'Enregistrer';
+                    btnSave.textContent = 'Save';
                     tr.classList.add('editing');
                     showForm();
                 });
@@ -1205,11 +1250,11 @@
                     inputNom.value = tr.dataset.nom || '';
                     inputDesc.value = tr.dataset.description || '';
                     if (tr.dataset.imagePath) {
-                        currentImg.src = `${CDN}vestimentaire/${tr.dataset.imagePath}`;
+                        currentImg.src = `${CDN}${tr.dataset.imagePath}`;
                         currentWrap.style.display = 'flex';
                     }
                     form.action = editUrl(tr.dataset.id);
-                    btnSave.textContent = 'Enregistrer';
+                    btnSave.textContent = 'Save';
                     tr.classList.add('editing');
                     showForm();
                 });
@@ -1244,7 +1289,7 @@
             } else {
                 const opt = document.createElement('option');
                 opt.value = value;
-                opt.textContent = `${value} (actuel — non standard)`;
+                opt.textContent = `${value} (current — non standard)`;
                 opt.dataset.legacy = 'true';
                 opt.selected = true;
                 selectEtoiles.appendChild(opt);
@@ -1283,7 +1328,7 @@
                     inputAvis.value = tr.dataset.avis || '';
                     inputLien.value = tr.dataset.lien || '';
                     form.action = editUrl(tr.dataset.id);
-                    btnSave.textContent = 'Enregistrer';
+                    btnSave.textContent = 'Save';
                     tr.classList.add('editing');
                     showForm();
                 });

@@ -143,7 +143,7 @@
             <td>
                 {% if v.image_path %}
                 <img class="ville-thumb"
-                     src="{{ cdn_url }}villes/{{ v.image_path }}"
+                     src="{{ cdn_url }}{{ v.image_path }}"
                      alt="{{ v.nom_ville }}"
                      onerror="this.outerHTML='<div class=&quot;ville-thumb-placeholder&quot;>🖼️</div>';">
                 {% else %}
@@ -160,7 +160,7 @@
                 <a class="edit" href="{{ url_for('admin.villes_edit', nom_ville=v.nom_ville) }}">Edit</a>
                 <form method="post"
                       action="{{ url_for('admin.villes_delete', nom_ville=v.nom_ville) }}"
-                      onsubmit="return confirm('Supprimer la ville {{ v.nom_ville | replace("'", "\\'") }} ? Cette action est irréversible.');">
+                      onsubmit="return confirm('Delete city {{ v.nom_ville | replace("'", "\\'") }}? This action is irreversible.');">
                     <button type="submit" class="delete">Delete</button>
                 </form>
             </td>
@@ -170,7 +170,7 @@
 </table>
 {% else %}
 <div class="card empty-state">
-    Aucune ville.
+    No cities found.
 </div>
 {% endif %}
 {% endblock %}

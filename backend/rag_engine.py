@@ -11,7 +11,9 @@ Fonctionnement :
 import pymysql
 import re
 import os
+import traceback
 from difflib import SequenceMatcher
+from db import DB_CONFIG
 
 
 # ============================================================
@@ -19,16 +21,11 @@ from difflib import SequenceMatcher
 # ============================================================
 
 def get_db_connection():
-    return pymysql.connect(
-        host=os.getenv('DB_HOST', 'localhost'),
-        port=int(os.getenv('DB_PORT', 3306)),
-        user=os.getenv('DB_USER', 'root'),
-        password=os.getenv('DB_PASSWORD', ''),
-        db=os.getenv('DB_NAME', 'tourisme_maroc'),
-        cursorclass=pymysql.cursors.DictCursor,
-        charset='utf8mb4',
-        ssl={'verify_cert': False}
-    )
+    try:
+        return pymysql.connect(**DB_CONFIG)
+    except Exception as e:
+        print(f"RAG DB Connection Error: {e}")
+        return None
 
 
 # ============================================================
@@ -110,17 +107,18 @@ def retrieve_context(message: str) -> dict:
     """
     Interroge MySQL et retourne les données pertinentes.
     """
-    conn = get_db_connection()
     context = {
         'ville':     None,
         'intent':    'general',
         'data':      {},
         'all_villes': []
     }
+    conn = get_db_connection()
+    if not conn:
+        return context
 
     try:
         with conn.cursor() as cur:
-
             # Liste de toutes les villes (pour la détection + suggestions)
             cur.execute("SELECT nom_ville FROM villes")
             villes_list = [r['nom_ville'] for r in cur.fetchall()]
@@ -218,6 +216,9 @@ def retrieve_context(message: str) -> dict:
                     cur.execute("SELECT DISTINCT type_ville FROM villes")
                     context['data']['types'] = cur.fetchall()
 
+    except Exception as e:
+        print(f"RAG Retrieval Error: {e}")
+        traceback.print_exc()
     finally:
         conn.close()
 

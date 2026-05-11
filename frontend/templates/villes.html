@@ -11,9 +11,6 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-
-
-
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -222,7 +219,6 @@
         }
 
         /* ══ NAV ══ */
-        /* ── NAVIGATION UNIFIÉE (Style Details + Scroll) ── */
         .nav {
             position: fixed;
             top: 0;
@@ -347,7 +343,6 @@
             padding-left: 22px;
         }
 
-
         /* ════ HAMBURGER + SIDEBAR MOBILE ════ */
         .hamburger {
             display: none;
@@ -371,30 +366,19 @@
             transform-origin: center;
         }
 
-        .hamburger span:nth-child(1) {
-            width: 24px;
-        }
-
-        .hamburger span:nth-child(2) {
-            width: 16px;
-            opacity: 0.65;
-        }
-
-        .hamburger span:nth-child(3) {
-            width: 24px;
-        }
+        .hamburger span:nth-child(1) { width: 24px; }
+        .hamburger span:nth-child(2) { width: 16px; opacity: 0.65; }
+        .hamburger span:nth-child(3) { width: 24px; }
 
         .hamburger.open span:nth-child(1) {
             transform: translateY(7px) rotate(45deg);
             opacity: 1;
             width: 24px;
         }
-
         .hamburger.open span:nth-child(2) {
             opacity: 0;
             transform: scaleX(0);
         }
-
         .hamburger.open span:nth-child(3) {
             transform: translateY(-7px) rotate(-45deg);
             opacity: 1;
@@ -409,9 +393,7 @@
             z-index: 2050;
         }
 
-        .sidebar-overlay.open {
-            display: block;
-        }
+        .sidebar-overlay.open { display: block; }
 
         .mobile-sidebar {
             position: fixed;
@@ -429,9 +411,7 @@
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .mobile-sidebar.open {
-            transform: translateX(0);
-        }
+        .mobile-sidebar.open { transform: translateX(0); }
 
         .sidebar-header {
             padding: 22px 24px;
@@ -467,9 +447,7 @@
             transition: color 0.2s;
         }
 
-        .sidebar-close:hover {
-            color: white;
-        }
+        .sidebar-close:hover { color: white; }
 
         .sidebar-links {
             flex: 1;
@@ -494,17 +472,13 @@
             transition: all 0.3s;
         }
 
-        .sidebar-links a i {
-            opacity: 0.6;
-            width: 20px;
-        }
+        .sidebar-links a i { opacity: 0.6; width: 20px; }
 
         .sidebar-links a:hover {
             background: rgba(255, 255, 255, 0.08);
             color: var(--desert-gold);
         }
 
-        /* ── Langue custom sidebar ── */
         .sidebar-lang {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding: 14px 16px 20px;
@@ -665,9 +639,7 @@
             white-space: nowrap;
         }
 
-        .filter-tab:first-child {
-            border-left: 1px solid rgba(255, 255, 255, 0.12);
-        }
+        .filter-tab:first-child { border-left: 1px solid rgba(255, 255, 255, 0.12); }
 
         .filter-tab:hover {
             color: white;
@@ -677,6 +649,90 @@
         .filter-tab.active {
             color: white;
             background: rgba(255, 255, 255, 0.18);
+        }
+
+        /* ══ SEARCH BAR ══ */
+        .search-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* ══ FIX AUTOFILL : input search ══ */
+        #citySearch {
+            width: 100%;
+            padding: 18px 20px 18px 55px;
+            border-radius: 50px;
+            border: 1px solid rgba(107, 29, 29, 0.2);
+            background: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: var(--grona);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            outline: none;
+            transition: all 0.3s;
+            /* Désactiver TOTALEMENT l'autofill navigateur */
+            -webkit-user-select: text;
+        }
+
+        /* Neutraliser l'autofill Chrome (couleur jaune + email injecté) */
+        #citySearch:-webkit-autofill,
+        #citySearch:-webkit-autofill:hover,
+        #citySearch:-webkit-autofill:focus,
+        #citySearch:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px white inset !important;
+            -webkit-text-fill-color: var(--grona) !important;
+            background-color: white !important;
+            transition: background-color 9999s ease-in-out 0s;
+        }
+
+        #citySearch::placeholder {
+            color: rgba(107, 29, 29, 0.35);
+            font-style: italic;
+            font-size: 0.88rem;
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.02em;
+        }
+
+        #citySearch:focus {
+            box-shadow: 0 10px 30px rgba(107, 29, 29, 0.15);
+            border-color: var(--grona);
+        }
+
+        /* Supprimer l'icône X native du type="search" sur webkit */
+        #citySearch::-webkit-search-decoration,
+        #citySearch::-webkit-search-cancel-button,
+        #citySearch::-webkit-search-results-button,
+        #citySearch::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            color: var(--grona);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #searchBadge {
+            position: absolute;
+            right: 20px;
+            background: var(--grona);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            display: none;
         }
 
         /* ══ SECTION ══ */
@@ -724,15 +780,8 @@
             gap: 3px;
         }
 
-        .city-card:nth-child(1) {
-            grid-row: span 2;
-        }
+        .city-card:nth-child(1) { grid-row: span 2; }
 
-        /* ════════════════════════════════════════
-           CITY CARD — Style Trippy interactif
-           PC  : smiya visible, slogan+buttons au hover
-           Mobile : smiya+slogan+buttons toujours visibles
-           ════════════════════════════════════════ */
         .city-card {
             position: relative;
             overflow: hidden;
@@ -756,9 +805,7 @@
             transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.6s;
         }
 
-        .city-card:nth-child(1) img {
-            min-height: 600px;
-        }
+        .city-card:nth-child(1) img { min-height: 600px; }
 
         .city-card:hover img {
             transform: scale(1.07);
@@ -790,9 +837,7 @@
             z-index: 2;
         }
 
-        .city-card:hover::after {
-            opacity: 1;
-        }
+        .city-card:hover::after { opacity: 1; }
 
         .city-body {
             position: absolute;
@@ -813,7 +858,6 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        /* smiya — TOUJOURS visible */
         .city-name {
             font-family: 'Playfair Display', serif;
             font-size: 1.9rem;
@@ -826,15 +870,10 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
-        .city-card:nth-child(1) .city-name {
-            font-size: 2.8rem;
-        }
+        .city-card:nth-child(1) .city-name { font-size: 2.8rem; }
 
-        .city-card:hover .city-name {
-            color: var(--desert-light);
-        }
+        .city-card:hover .city-name { color: var(--desert-light); }
 
-        /* règle dorée */
         .city-rule {
             width: 0;
             height: 1px;
@@ -844,11 +883,8 @@
             transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .city-card:hover .city-rule {
-            width: 40px;
-        }
+        .city-card:hover .city-rule { width: 40px; }
 
-        /* slogan — TOUJOURS visible */
         .city-slogan {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
@@ -863,7 +899,6 @@
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
         }
 
-        /* boutons — cachés sur PC, révélés au hover */
         .city-cta {
             display: flex;
             align-items: center;
@@ -913,56 +948,102 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        .cta-secondary:hover {
-            color: var(--desert-gold);
-        }
+        .cta-secondary:hover { color: var(--desert-gold); }
 
-        /* ════════════════════════════════════════
-           MOBILE : boutons cachés jusqu'au touch
-           au touch : on affiche, clic photo = détail
-           ════════════════════════════════════════ */
+        /* ════ MOBILE TOUCH ════ */
         @media (hover: none) {
-            .city-card img {
-                filter: brightness(0.55) saturate(0.85);
-            }
+            .city-card img { filter: brightness(0.55) saturate(0.85); }
 
             .city-card-overlay {
                 background: linear-gradient(0deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.18) 100%);
             }
 
-            .city-card::after {
-                opacity: 1;
-            }
+            .city-card::after { opacity: 1; }
+            .city-rule { width: 32px !important; }
 
-            .city-rule {
-                width: 32px !important;
-            }
-
-            /* boutons cachés par défaut sur mobile */
             .city-cta {
                 max-height: 0 !important;
                 opacity: 0 !important;
                 pointer-events: none;
             }
 
-            /* revealed seulement après touch (classe .touched ajoutée en JS) */
             .city-card.touched .city-cta {
                 max-height: 48px !important;
                 opacity: 1 !important;
                 pointer-events: auto;
             }
 
-            .city-card.touched .city-rule {
-                width: 40px !important;
-            }
+            .city-card.touched .city-rule { width: 40px !important; }
 
-            .city-card.touched img {
-                filter: brightness(0.45) saturate(0.7);
-            }
+            .city-card.touched img { filter: brightness(0.45) saturate(0.7); }
 
             .city-card.touched .city-card-overlay {
                 background: linear-gradient(0deg, rgba(0, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.15) 100%);
             }
+        }
+
+        /* ══ SEARCH RESULTS DROPDOWN ══ */
+        .search-results-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            border: 1px solid rgba(107, 29, 29, 0.1);
+            padding: 10px;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--grona);
+            transition: all 0.2s;
+        }
+
+        .search-result-item:hover {
+            background: #fdf7f0;
+            transform: translateX(5px);
+        }
+
+        .result-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .result-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .result-subtitle {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        .result-type {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--desert-gold);
+            font-weight: 800;
+            margin-bottom: 2px;
         }
 
         /* ══ EMPTY STATE ══ */
@@ -1023,82 +1104,33 @@
 
         /* ══ RESPONSIVE ══ */
         @media (max-width: 1024px) {
-            .cities-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .cities-grid { grid-template-columns: repeat(2, 1fr); }
 
             .city-card:nth-child(1) {
                 grid-row: span 1;
                 min-height: 400px;
             }
 
-            .city-card:nth-child(1) .city-name {
-                font-size: 2.1rem;
-            }
+            .city-card:nth-child(1) .city-name { font-size: 2.1rem; }
 
-            .nav {
-                padding: 15px 36px;
-            }
-
-            .nav.scrolled {
-                padding: 10px 36px;
-            }
+            .nav { padding: 15px 36px; }
+            .nav.scrolled { padding: 10px 36px; }
         }
 
         @media (max-width: 768px) {
-            .hamburger {
-                display: flex !important;
-            }
-
-            .nav-links {
-                display: none !important;
-            }
-
-            .nav {
-                padding: 15px 20px;
-            }
-
-            .nav.scrolled {
-                padding: 10px 20px;
-            }
-
-            .nav-brand {
-                font-size: 1.2rem;
-            }
-
-            .page-hero {
-                padding: 130px 24px 70px;
-            }
-
-            .page-hero h1 {
-                font-size: 2.4rem;
-            }
-
-            .cities-section {
-                padding: 40px 24px 70px;
-            }
-
-            .cities-grid {
-                grid-template-columns: 1fr;
-                gap: 3px;
-            }
-
-            .city-card {
-                aspect-ratio: 4/3;
-            }
-
-            .city-card:nth-child(1) {
-                min-height: 320px;
-            }
-
-            .filter-tab {
-                padding: 14px 16px;
-                font-size: 0.6rem;
-            }
-
-            .footer-ornament {
-                padding: 0 24px 60px;
-            }
+            .hamburger { display: flex !important; }
+            .nav-links { display: none !important; }
+            .nav { padding: 15px 20px; }
+            .nav.scrolled { padding: 10px 20px; }
+            .nav-brand { font-size: 1.2rem; }
+            .page-hero { padding: 130px 24px 70px; }
+            .page-hero h1 { font-size: 2.4rem; }
+            .cities-section { padding: 40px 24px 70px; }
+            .cities-grid { grid-template-columns: 1fr; gap: 3px; }
+            .city-card { aspect-ratio: 4/3; }
+            .city-card:nth-child(1) { min-height: 320px; }
+            .filter-tab { padding: 14px 16px; font-size: 0.6rem; }
+            .footer-ornament { padding: 0 24px 60px; }
         }
     </style>
 </head>
@@ -1107,22 +1139,20 @@
 
     <!-- SIDEBAR MOBILE -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-    <!-- SIDEBAR PANNEAU -->
     <div class="mobile-sidebar" id="mobileSidebar">
         <div class="sidebar-header">
-            <div class="sidebar-brand-m" style="flex-direction: column; align-items: flex-start; gap: 12px; padding: 10px 0;">
-                <img src="{{ logo_url }}" alt="Logo" class="nav-logo" style="height: 65px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
+            <div class="sidebar-brand-m"
+                style="flex-direction: column; align-items: flex-start; gap: 12px; padding: 10px 0;">
+                <img src="{{ logo_url }}" alt="Logo" class="nav-logo"
+                    style="height: 65px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
                 <span style="font-size: 1.4rem;">Morocco <em>Secrets</em></span>
             </div>
             <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="sidebar-links">
-            <a href="/" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-house'></i>الرئيسية"><i
-                    class="fa-solid fa-house"></i>Accueil</a>
-            <a href="/villes" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-map'></i>المدن"><i
-                    class="fa-solid fa-map"></i>Villes</a>
-            <a href="/pricing" onclick="closeSidebar()" data-ar="<i class='fa-solid fa-tag'></i>العروض"><i
-                    class="fa-solid fa-tag"></i>Offres</a>
+            <a href="/" onclick="closeSidebar()"><i class="fa-solid fa-house"></i>Accueil</a>
+            <a href="/villes" onclick="closeSidebar()"><i class="fa-solid fa-map"></i>Villes</a>
+            <a href="/pricing" onclick="closeSidebar()"><i class="fa-solid fa-tag"></i>Offres</a>
         </div>
         <div class="sidebar-lang">
             <div class="sidebar-lang-label">Langue</div>
@@ -1150,22 +1180,21 @@
             <span>Morocco <em>Secrets</em></span>
         </a>
         <div class="nav-links">
-            <a href="/" class="nav-link" data-ar="الرئيسية">Accueil</a>
+            <a href="/" class="nav-link">Accueil</a>
             <div class="nav-item">
-                <a href="/villes" class="nav-link"
-                    data-ar="المدن <i class='fa-solid fa-chevron-down' style='font-size: 0.75em; margin-left: 4px; opacity: 0.8;'></i>">Villes
-                    <i class="fa-solid fa-chevron-down"
-                        style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i></a>
+                <a href="/villes" class="nav-link">Villes
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i>
+                </a>
                 <div class="dropdown-menu">
-                    <a href="/villes" data-ar="كل المدن">Toutes les villes</a>
-                    <a href="/filter/cotieres" data-ar="ساحلية">Côtières</a>
-                    <a href="/filter/sahariennes" data-ar="صحراوية">Sahariennes</a>
-                    <a href="/filter/montagne" data-ar="جبلية">Montagne</a>
-                    <a href="/filter/culturelles" data-ar="ثقافية">Culturelles</a>
-                    <a href="/filter/agricoles" data-ar="فلاحية">Agricoles</a>
+                    <a href="/villes">Toutes les villes</a>
+                    <a href="/filter/cotieres">Côtières</a>
+                    <a href="/filter/sahariennes">Sahariennes</a>
+                    <a href="/filter/montagne">Montagne</a>
+                    <a href="/filter/culturelles">Culturelles</a>
+                    <a href="/filter/agricoles">Agricoles</a>
                 </div>
             </div>
-            <a href="/pricing" class="nav-link" data-ar="العروض">Offres</a>
+            <a href="/pricing" class="nav-link">Offres</a>
 
             <div id="gt_nav_slot">
                 <div id="google_translate_element"></div>
@@ -1190,8 +1219,6 @@
                     <li onclick="changeLanguage('ko', 'KO')">🇰🇷 Coréen</li>
                 </ul>
             </div>
-
-
         </div>
         <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menu">
             <span></span><span></span><span></span>
@@ -1202,19 +1229,13 @@
     <div class="page-hero" style="background-image: url('
         {%- if titre_filter == 'Toutes les villes du Maroc' -%}
             {{ cdn_url }}villes/maroc_bg.png
-        {%- elif "côtières" in titre_filter.lower() -%}
-            {{ cdn_url }}villes/coast.jpg
-        {%- elif "sahariennes" in titre_filter.lower() -%}
-            {{ cdn_url }}villes/sahara.jpg
-        {%- elif "montagne" in titre_filter.lower() -%}
-            {{ cdn_url }}villes/mountain.jpg
-        {%- elif "culturelles" in titre_filter.lower() -%}
-            {{ cdn_url }}villes/culture.jpg
-        {%- elif "agricoles" in titre_filter.lower() -%}
-            {{ cdn_url }}villes/agricole.jpg
-        {%- else -%}
-            {{ cdn_url }}villes/maroc_bg.png
-        {%- endif -%} ');">
+        {%- elif "côtières" in titre_filter.lower() -%} {{ cdn_url }}villes/coast.jpg
+        {%- elif "sahariennes" in titre_filter.lower() -%} {{ cdn_url }}villes/sahara.jpg
+        {%- elif "montagne" in titre_filter.lower() -%} {{ cdn_url }}villes/mountain.jpg
+        {%- elif "culturelles" in titre_filter.lower() -%} {{ cdn_url }}villes/culture.jpg
+        {%- elif "agricoles" in titre_filter.lower() -%} {{ cdn_url }}villes/agricole.jpg
+        {%- else -%} {{ cdn_url }}villes/maroc_bg.png
+        {%- endif -%}');">
         <div class="hero-content">
             <div class="hero-eyebrow">
                 <span></span>
@@ -1222,114 +1243,138 @@
                 <span></span>
             </div>
             <h1>
-                {% if titre_filter == 'Toutes les villes du Maroc' %} 
-                    <span data-ar="كل المدن">Toutes les <em>Villes</em></span>
-        {% elif 'côtières' in titre_filter %}
-        <span data-ar="المدن الساحلية">Villes <em>Côtières</em></span>
-        {% elif 'sahariennes' in titre_filter %}
-        <span data-ar="المدن الصحراوية">Villes <em>Sahariennes</em></span>
-        {% elif 'montagne' in titre_filter %}
-        <span data-ar="مدن الجبل">Villes de <em>Montagne</em></span>
-        {% elif 'culturelles' in titre_filter %}
-        <span data-ar="مدن ثقافية">Villes <em>Culturelles</em></span>
-        {% elif 'agricoles' in titre_filter %}
-        <span data-ar="مدن فلاحية">Villes <em>Agricoles</em></span>
-        {% else %}
-        {{ titre_filter }}
-        {% endif %}
-        </h1>
-        <p class="hero-sub" data-ar="{{ villes | length }} وجهة للاكتشاف">
-            {% if villes %}
-            {{ villes | length }} destination{% if villes | length > 1 %}s{% endif %} à découvrir
-            {% else %}
-            Aucune destination trouvée
-            {% endif %}
-        </p>
-        <div class="hero-line"></div>
-    </div>
+                {% if titre_filter == 'Toutes les villes du Maroc' %}
+                    <span>Toutes les <em>Villes</em></span>
+                {% elif 'côtières' in titre_filter %}
+                    <span>Villes <em>Côtières</em></span>
+                {% elif 'sahariennes' in titre_filter %}
+                    <span>Villes <em>Sahariennes</em></span>
+                {% elif 'montagne' in titre_filter %}
+                    <span>Villes de <em>Montagne</em></span>
+                {% elif 'culturelles' in titre_filter %}
+                    <span>Villes <em>Culturelles</em></span>
+                {% elif 'agricoles' in titre_filter %}
+                    <span>Villes <em>Agricoles</em></span>
+                {% else %}
+                    {{ titre_filter }}
+                {% endif %}
+            </h1>
+            <p class="hero-sub">
+                {% if villes %}
+                    {{ villes | length }} destination{% if villes | length > 1 %}s{% endif %} à découvrir
+                {% else %}
+                    Aucune destination trouvée
+                {% endif %}
+            </p>
+            <div class="hero-line"></div>
+        </div>
     </div>
 
     <!-- FILTER BAR -->
     {% set city_map = {
-    "Agadir": "أكادير", "Al Hoceima": "الحسيمة", "Asilah": "أصيلة", "Azrou": "أزرو",
-    "Berkane": "بركان", "Casablanca": "الدار البيضاء", "Chefchaouen": "شفشاون",
-    "Dakhla": "الداخلة", "El Jadida": "الجديدة", "Essaouira": "الصويرة", "Fès": "فاس",
-    "Haut Atlas": "الأطلس الكبير", "Ifrane": "إفران", "Imlil": "إمليل",
-    "Kelaat M'Gouna": "قلعة مكونة ", "Kénitra": "القنيطرة", "Laâyoune": "العيون",
-    "Marrakech": "مراكش", "Meknès": "مكناس", "Merzouga": "مرزوكة",
-    "Moyen Atlas": "الأطلس المتوسط", "Nador": "الناظور", "Oualidia": "الوليدية",
-    "Ouarzazate": "ورزازات", "Oujda": "وجدة", "Oukaïmeden": "أوكايمدن",
-    "Rabat": "الرباط", "Safi": "آسفي", "Saïdia": "السعيدية", "Tanger": "طنجة",
-    "Taourirt": "تاوريرت", "Taroudant": "تارودانت", "Taza": "تازة",
-    "Tétouan": "تطوان", "Zagora": "زاكورة"
+        "Agadir": "أكادير", "Al Hoceima": "الحسيمة", "Asilah": "أصيلة", "Azrou": "أزرو",
+        "Berkane": "بركان", "Casablanca": "الدار البيضاء", "Chefchaouen": "شفشاون",
+        "Dakhla": "الداخلة", "El Jadida": "الجديدة", "Essaouira": "الصويرة", "Fès": "فاس",
+        "Haut Atlas": "الأطلس الكبير", "Ifrane": "إفران", "Imlil": "إمليل",
+        "Kelaat M'Gouna": "قلعة مكونة", "Kénitra": "القنيطرة", "Laâyoune": "العيون",
+        "Marrakech": "مراكش", "Meknès": "مكناس", "Merzouga": "مرزوكة",
+        "Moyen Atlas": "الأطلس المتوسط", "Nador": "الناظور", "Oualidia": "الوليدية",
+        "Ouarzazate": "ورزازات", "Oujda": "وجدة", "Oukaïmeden": "أوكايمدن",
+        "Rabat": "الرباط", "Safi": "آسفي", "Saïdia": "السعيدية", "Tanger": "طنجة",
+        "Taourirt": "تاوريرت", "Taroudant": "تارودانت", "Taza": "تازة",
+        "Tétouan": "تطوان", "Zagora": "زاكورة"
     } %}
+
     <div class="filter-bar">
-        <a href="/villes" class="filter-tab {% if titre_filter == 'Toutes les villes du Maroc' %}active{% endif %}"
-            data-ar="الكل">Toutes</a>
-        <a href="/filter/cotieres" class="filter-tab {% if 'côtières' in titre_filter %}active{% endif %}"
-            data-ar="ساحلية">Côtières</a>
-        <a href="/filter/sahariennes" class="filter-tab {% if 'sahariennes' in titre_filter %}active{% endif %}"
-            data-ar="صحراوية">Sahariennes</a>
-        <a href="/filter/montagne" class="filter-tab {% if 'montagne' in titre_filter %}active{% endif %}"
-            data-ar="جبلية">Montagne</a>
-        <a href="/filter/culturelles" class="filter-tab {% if 'culturelles' in titre_filter %}active{% endif %}"
-            data-ar="ثقافية">Culturelles</a>
-        <a href="/filter/agricoles" class="filter-tab {% if 'agricoles' in titre_filter %}active{% endif %}"
-            data-ar="فلاحية">Agricoles</a>
+        <a href="/villes" class="filter-tab {% if titre_filter == 'Toutes les villes du Maroc' %}active{% endif %}">Toutes</a>
+        <a href="/filter/cotieres" class="filter-tab {% if 'côtières' in titre_filter %}active{% endif %}">Côtières</a>
+        <a href="/filter/sahariennes" class="filter-tab {% if 'sahariennes' in titre_filter %}active{% endif %}">Sahariennes</a>
+        <a href="/filter/montagne" class="filter-tab {% if 'montagne' in titre_filter %}active{% endif %}">Montagne</a>
+        <a href="/filter/culturelles" class="filter-tab {% if 'culturelles' in titre_filter %}active{% endif %}">Culturelles</a>
+        <a href="/filter/agricoles" class="filter-tab {% if 'agricoles' in titre_filter %}active{% endif %}">Agricoles</a>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SEARCH BAR — FIXED (no autofill/email)
+         ══════════════════════════════════════════ -->
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+
+            <!--
+                CORRECTIONS ANTI-AUTOFILL :
+                1. type="search"          → les navigateurs ne remplissent pas les champs search avec des emails
+                2. autocomplete="off"     → désactiver la suggestion navigateur
+                3. name="ms-city-search"  → nom unique qui ne ressemble à aucun champ credential connu
+                4. data-form-type="other" → bloque LastPass et Bitwarden
+                5. readonly + onfocus     → astuce pour bloquer le remplissage anticipé Chrome
+            -->
+            <input
+                type="search"
+                id="citySearch"
+                name="ms-city-search"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                data-form-type="other"
+                data-lpignore="true"
+                data-1p-ignore="true"
+                placeholder="Rechercher une ville, destination, hôtel..."
+                readonly
+                onfocus="this.removeAttribute('readonly');"
+            >
+
+            <div id="searchBadge">RÉSULTATS</div>
+        </div>
+
+        <!-- Dropdown résultats API -->
+        <div id="searchResultsDropdown" class="search-results-dropdown"></div>
     </div>
 
     <!-- CITIES GRID -->
     <section class="cities-section">
         <div class="section-header">
-            <span class="section-label" data-ar="وجهاتنا">Nos destinations</span>
+            <span class="section-label">Nos destinations</span>
             <div class="section-rule"></div>
-            <span class="section-count">
+            <span class="section-count" id="cityCount">
                 {% if villes %}
-                {{ villes | length }} ville{% if villes | length > 1 %}s{% endif %}
+                    {{ villes | length }} ville{% if villes | length > 1 %}s{% endif %}
                 {% else %}
-                0 ville
+                    0 ville
                 {% endif %}
             </span>
         </div>
 
         {% if villes and villes|length > 0 %}
-        <div class="cities-grid">
+        <div class="cities-grid" id="citiesGrid">
             {% for ville in villes %}
-
             <div class="city-card">
-
-                <img src="{{ cdn_url }}villes/{{ ville['image_path'] or 'default.jpg' }}"
-                    alt="{{ ville['nom_ville'] }}" loading="lazy"
+                <img src="{{ cdn_url }}{{ ville['image_path'] or 'villes/default.jpg' }}"
+                    alt="{{ ville['nom_ville'] }}"
+                    loading="lazy"
                     onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/852E1E/FFFFFF?text={{ ville['nom_ville']|urlencode }}'">
 
                 <div class="city-card-overlay"></div>
 
                 <div class="city-body">
-                    <p class="city-tag" data-ar="مدينة مغربية">{{ ville['type_ville'] if ville['type_ville'] else 'Ville
-                        marocaine' }}</p>
-                    <h2 class="city-name"
-                        data-ar="{{ city_map[ville['nom_ville']] if ville['nom_ville'] in city_map else ville['nom_ville'] }}">
-                        {{ ville['nom_ville'] }}</h2>
+                    <p class="city-tag">{{ ville['type_ville'] if ville['type_ville'] else 'Ville marocaine' }}</p>
+                    <h2 class="city-name">{{ ville['nom_ville'] }}</h2>
                     <div class="city-rule"></div>
-
-                    <p class="city-slogan"
-                        data-ar="مرحباً بكم في {{ city_map[ville['nom_ville']] if ville['nom_ville'] in city_map else ville['nom_ville'] }}">
+                    <p class="city-slogan">
                         {% if ville['slogan'] and ville['slogan']|length > 0 %}
-                        "{{ ville['slogan'] }}"
+                            "{{ ville['slogan'] }}"
                         {% else %}
-                        "Bienvenue à {{ ville['nom_ville'] }}"
+                            "Bienvenue à {{ ville['nom_ville'] }}"
                         {% endif %}
                     </p>
-
                     <div class="city-cta">
-                        <a href="{{ url_for('details_ville', nom=ville['nom_ville']) }}" class="cta-primary"
-                            data-ar="اكتشف">Découvrir</a>
-                        <a href="https://www.google.com/maps/search/{{ ville['nom_ville'] }}+Maroc" target="_blank"
-                            rel="noopener noreferrer" class="cta-secondary" data-ar="↗ الخريطة">↗ Carte</a>
+                        <a href="{{ url_for('details_ville', nom=ville['nom_ville']) }}" class="cta-primary">Découvrir</a>
+                        <a href="https://www.google.com/maps/search/{{ ville['nom_ville'] }}+Maroc"
+                            target="_blank" rel="noopener noreferrer" class="cta-secondary">↗ Carte</a>
                     </div>
                 </div>
             </div>
-
             {% endfor %}
         </div>
 
@@ -1352,12 +1397,32 @@
     </div>
 
     <script>
-        /* ── Nav scroll ── */
-        window.addEventListener('scroll', () => {
+        /* ══════════════════════════════════════════════════════════
+           FIX AUTOFILL — Force clear email/credential injections
+           Le navigateur Chrome peut injecter un email APRÈS le
+           DOMContentLoaded, d'où le double setTimeout.
+           ══════════════════════════════════════════════════════════ */
+        (function clearSearchAutofill() {
+            function wipeSearch() {
+                var s = document.getElementById('citySearch');
+                if (s && s.value && s.value.indexOf('@') !== -1) {
+                    // Email detected → wipe it
+                    s.value = '';
+                }
+            }
+            // Immédiat
+            document.addEventListener('DOMContentLoaded', wipeSearch);
+            // Délayé (Chrome autofill arrive après 100–300ms)
+            setTimeout(wipeSearch, 150);
+            setTimeout(wipeSearch, 500);
+        })();
+
+        /* ══ Nav scroll ══ */
+        window.addEventListener('scroll', function () {
             document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        /* ── Sidebar ── */
+        /* ══ Sidebar ══ */
         function toggleSidebar() {
             var s = document.getElementById('mobileSidebar');
             var o = document.getElementById('sidebarOverlay');
@@ -1368,15 +1433,19 @@
             b.classList.toggle('open');
             document.body.style.overflow = !isOpen ? 'hidden' : '';
         }
+
         function closeSidebar() {
             document.getElementById('mobileSidebar').classList.remove('open');
             document.getElementById('sidebarOverlay').classList.remove('open');
             document.getElementById('hamburgerBtn').classList.remove('open');
             document.body.style.overflow = '';
         }
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSidebar(); });
 
-        /* ── Langue ── */
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeSidebar();
+        });
+
+        /* ══ Langue ══ */
         function changeLang(lang) {
             if (!lang) return;
             var sel = document.querySelector('.goog-te-combo');
@@ -1393,13 +1462,18 @@
             window.location.reload();
         }
 
-        /* ── Mobile touch : reveal buttons on first touch, navigate on second touch or photo tap ── */
+        function changeLanguage(lang, label) {
+            document.getElementById('currentLangText').textContent = label;
+            document.querySelector('.custom-lang-list').classList.remove('show');
+            changeLang(lang);
+        }
+
+        /* ══ Mobile touch ══ */
         document.addEventListener('DOMContentLoaded', function () {
             if (window.matchMedia('(hover: none)').matches) {
                 document.querySelectorAll('.city-card').forEach(function (card) {
                     var detailUrl = card.querySelector('.cta-primary') ? card.querySelector('.cta-primary').href : null;
 
-                    /* Clic sur la photo (img) => naviguer directement vers le détail */
                     var img = card.querySelector('img');
                     if (img && detailUrl) {
                         img.addEventListener('click', function (e) {
@@ -1408,10 +1482,8 @@
                         });
                     }
 
-                    /* Touch sur la carte (hors boutons) => révéler les boutons */
                     card.addEventListener('touchstart', function () {
                         if (!card.classList.contains('touched')) {
-                            /* Fermer les autres cartes */
                             document.querySelectorAll('.city-card.touched').forEach(function (c) {
                                 if (c !== card) c.classList.remove('touched');
                             });
@@ -1420,70 +1492,123 @@
                     }, { passive: true });
                 });
 
-                /* Tap en dehors d'une carte → ferme tout */
                 document.addEventListener('touchstart', function (e) {
                     if (!e.target.closest('.city-card')) {
-                        document.querySelectorAll('.city-card.touched').forEach(function (c) { c.classList.remove('touched'); });
+                        document.querySelectorAll('.city-card.touched').forEach(function (c) {
+                            c.classList.remove('touched');
+                        });
                     }
                 }, { passive: true });
             }
         });
 
-        /* ── Debug console ── */
+        /* ══ Real-time Search ══ */
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('🏙️ Villes chargées :', {{ villes| length }});
-        {% if villes and villes | length > 0 %}
-        console.log('📋 Première ville :', {{ villes[0]| tojson }});
-        {% else %}
-        console.warn('⚠️ Aucune ville trouvée dans la base de données');
-        {% endif %}
-        });
+            var searchInput = document.getElementById('citySearch');
+            var cityCards = document.querySelectorAll('.city-card');
+            var cityCount = document.getElementById('cityCount');
+            var searchBadge = document.getElementById('searchBadge');
+            var resultsDropdown = document.getElementById('searchResultsDropdown');
 
-        // ── Sidebar mobile ──
-        function toggleSidebar() {
-            var s = document.getElementById('mobileSidebar');
-            var o = document.getElementById('sidebarOverlay');
-            var b = document.getElementById('hamburgerBtn');
-            var isOpen = s.classList.contains('open');
-            s.classList.toggle('open');
-            o.classList.toggle('open');
-            b.classList.toggle('open');
-            document.body.style.overflow = !isOpen ? 'hidden' : '';
-        }
-        function closeSidebar() {
-            document.getElementById('mobileSidebar').classList.remove('open');
-            document.getElementById('sidebarOverlay').classList.remove('open');
-            document.getElementById('hamburgerBtn').classList.remove('open');
-            document.body.style.overflow = '';
-        }
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSidebar(); });
-
-        window.addEventListener('scroll', function () {
-            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        function changeLang(lang) {
-            var sel = document.querySelector('.goog-te-combo');
-            if (sel && sel.value !== lang) {
-                sel.value = lang;
-                sel.dispatchEvent(new Event('change'));
-                setTimeout(function () { closeSidebar(); }, 400);
-                return;
+            // Sécurité supplémentaire : vider si email détecté au chargement
+            if (searchInput && searchInput.value && searchInput.value.indexOf('@') !== -1) {
+                searchInput.value = '';
             }
-            var d = window.location.hostname;
-            document.cookie = 'googtrans=/fr/' + lang + '; path=/; domain=' + d;
-            document.cookie = 'googtrans=/fr/' + lang + '; path=/';
-            closeSidebar();
-            window.location.reload();
-        }
+
+            if (!searchInput) return;
+
+            var debounceTimer;
+
+            searchInput.addEventListener('input', function (e) {
+                var query = e.target.value.toLowerCase().trim();
+                var visibleCount = 0;
+
+                // Filtrage local en temps réel
+                cityCards.forEach(function (card) {
+                    var cityName = (card.querySelector('.city-name') || {}).textContent || '';
+                    var citySlogan = (card.querySelector('.city-slogan') || {}).textContent || '';
+                    var cityTag = (card.querySelector('.city-tag') || {}).textContent || '';
+
+                    var matches = !query ||
+                        cityName.toLowerCase().includes(query) ||
+                        citySlogan.toLowerCase().includes(query) ||
+                        cityTag.toLowerCase().includes(query);
+
+                    card.style.display = matches ? 'block' : 'none';
+                    if (matches) visibleCount++;
+                });
+
+                if (cityCount) {
+                    cityCount.textContent = visibleCount + ' ville' + (visibleCount > 1 ? 's' : '');
+                }
+
+                if (query.length > 0) {
+                    searchBadge.style.display = 'block';
+                    searchBadge.textContent = visibleCount + ' EN PAGE';
+                } else {
+                    searchBadge.style.display = 'none';
+                    resultsDropdown.style.display = 'none';
+                }
+
+                // Recherche API globale (debounced)
+                clearTimeout(debounceTimer);
+                if (query.length >= 2) {
+                    debounceTimer = setTimeout(function () {
+                        fetch('/api/search?q=' + encodeURIComponent(query))
+                            .then(function (res) { return res.json(); })
+                            .then(function (data) {
+                                if (data.results && data.results.length > 0) {
+                                    resultsDropdown.innerHTML = '';
+                                    data.results.forEach(function (res) {
+                                        var item = document.createElement('a');
+                                        item.href = res.type === 'ville'
+                                            ? '/ville/' + encodeURIComponent(res.title)
+                                            : '/ville/' + encodeURIComponent(res.subtitle || res.title);
+                                        item.className = 'search-result-item';
+                                        item.innerHTML =
+                                            '<img src="{{ cdn_url }}' + (res.image_path || 'villes/default.jpg') + '" class="result-img" onerror="this.src=\'/static/images/default.jpg\'">' +
+                                            '<div class="result-info">' +
+                                            '<span class="result-type">' + res.type + '</span>' +
+                                            '<span class="result-title">' + res.title + '</span>' +
+                                            '<span class="result-subtitle">' + (res.subtitle || '') + '</span>' +
+                                            '</div>';
+                                        resultsDropdown.appendChild(item);
+                                    });
+                                    resultsDropdown.style.display = 'block';
+                                } else {
+                                    resultsDropdown.style.display = 'none';
+                                }
+                            })
+                            .catch(function () {
+                                resultsDropdown.style.display = 'none';
+                            });
+                    }, 300);
+                } else {
+                    resultsDropdown.style.display = 'none';
+                }
+            });
+
+            // Fermer dropdown au clic extérieur
+            document.addEventListener('click', function (e) {
+                if (!searchInput.contains(e.target) && !resultsDropdown.contains(e.target)) {
+                    resultsDropdown.style.display = 'none';
+                }
+            });
+
+            // Debug console
+            console.log('🏙️ Villes chargées :', {{ villes | length }});
+            {% if villes and villes | length > 0 %}
+            console.log('📋 Première ville :', {{ villes[0] | tojson }});
+            {% else %}
+            console.warn('⚠️ Aucune ville trouvée dans la base de données');
+            {% endif %}
+        });
     </script>
 
     <!-- CHATBOT -->
     {% include 'chatbot_carre.html' %}
 
-
     {% include 'manual_lang.html' %}
 
 </body>
-
 </html>

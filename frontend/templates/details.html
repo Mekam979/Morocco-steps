@@ -498,7 +498,7 @@
             height: 50vh;
             min-height: 470px;
             background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
-            url('{{ cdn_url }}villes/{{ ville.image_path }}') center/cover no-repeat;
+            url('{{ cdn_url }}{{ ville.image_path }}') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1162,7 +1162,7 @@
             {% for att in attractions %}
             <div class="att-thumb {% if loop.first %}active{% endif %}" data-i="{{ loop.index0 }}">
                 {% if att.image_path %}
-                <img src="{{ cdn_url }}attractions/{{ att.image_path }}" alt="{{ att.nom }}"
+                <img src="{{ cdn_url }}{{ att.image_path }}" alt="{{ att.nom }}"
                     onerror="this.parentElement.style.background='rgba(197,157,95,0.3)';">
                 {% else %}
                 <div class="img-placeholder" style="font-size:1.1rem;">🖼️</div>
@@ -1178,7 +1178,7 @@
         {
             nom: {{ att.nom | tojson }},
             desc: {{ att.description | tojson }},
-            img: {% if att.image_path %}"{{ cdn_url }}attractions/{{ att.image_path }}"{% else %}""{% endif %}
+            img: {% if att.image_path %}"{{ cdn_url }}{{ att.image_path }}"{% else %}""{% endif %}
         } {% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
@@ -1231,7 +1231,7 @@
             <div class="magazine-card"
                 style="padding: 20px; text-align: center; border-bottom: 4px solid var(--desert-gold);">
                 {% if art.image_path %}
-                <img src="{{ cdn_url }}artisanat/{{ art.image_path }}" onerror="this.src='{{ cdn_url }}villes/default.jpg'"
+                <img src="{{ cdn_url }}{{ art.image_path }}" onerror="this.src='{{ cdn_url }}villes/default.jpg'"
                     style="width:100%; height:220px; object-fit:cover; border-radius: 15px; margin-bottom: 15px;">
                 {% else %}
                 <div class="img-placeholder" style="height:220px; border-radius:15px; margin-bottom:15px;">🖼️</div>
@@ -1253,7 +1253,7 @@
             {% for vest in vetements %}
             <div style="text-align: center;">
                 {% if vest.image_path %}
-                <img src="{{ cdn_url }}vestimentaire/{{ vest.image_path }}"
+                <img src="{{ cdn_url }}{{ vest.image_path }}"
                     onerror="this.src='{{ cdn_url }}villes/default.jpg'" class="img-mode">
                 {% else %}
                 <div class="img-placeholder img-mode">🖼️</div>

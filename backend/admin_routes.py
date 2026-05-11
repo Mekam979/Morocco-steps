@@ -36,11 +36,11 @@ cloudinary.config(
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 TYPE_VILLE_OPTIONS = [
-    "Villes côtières",
-    "Villes sahariennes",
-    "Villes culturelles",
-    "Villes de montagne",
-    "Villes agricoles",
+    "Coastal Cities",
+    "Sahara Cities",
+    "Cultural Cities",
+    "Mountain Cities",
+    "Agricultural Cities",
 ]
 
 ACCENT_MAP = {
@@ -105,7 +105,7 @@ def login():
         if expected and secrets.compare_digest(submitted, expected):
             session["admin"] = True
             return redirect(url_for("admin.dashboard"))
-        error = "Mot de passe incorrect."
+        error = "Incorrect password."
 
     return render_template("admin/login.html", error=error)
 
@@ -169,9 +169,9 @@ def _validate_form(form, mode, current_nom=None):
 
     if mode == "new":
         if not raw["nom_ville"]:
-            errors["nom_ville"] = "Nom requis."
+            errors["nom_ville"] = "Name required."
         elif len(raw["nom_ville"]) > 120:
-            errors["nom_ville"] = "Maximum 120 caractères."
+            errors["nom_ville"] = "Maximum 120 characters."
         else:
             conn = get_connection()
             try:
@@ -181,12 +181,12 @@ def _validate_form(form, mode, current_nom=None):
                         (raw["nom_ville"],),
                     )
                     if cur.fetchone():
-                        errors["nom_ville"] = "Une ville avec ce nom existe déjà."
+                        errors["nom_ville"] = "A city with this name already exists."
             finally:
                 conn.close()
 
     if len(raw["slogan"]) > 60:
-        errors["slogan"] = "Maximum 60 caractères."
+        errors["slogan"] = "Maximum 60 characters."
 
     if raw["latitude"]:
         try:
@@ -194,7 +194,7 @@ def _validate_form(form, mode, current_nom=None):
             if not -90 <= lat <= 90:
                 errors["latitude"] = "Doit être entre -90 et 90."
         except ValueError:
-            errors["latitude"] = "Doit être un nombre valide."
+            errors["latitude"] = "Must be a valid number."
 
     if raw["longitude"]:
         try:
@@ -202,12 +202,12 @@ def _validate_form(form, mode, current_nom=None):
             if not -180 <= lon <= 180:
                 errors["longitude"] = "Doit être entre -180 et 180."
         except ValueError:
-            errors["longitude"] = "Doit être un nombre valide."
+            errors["longitude"] = "Must be a valid number."
 
     if raw["google_maps_link"] and not raw["google_maps_link"].startswith(
         ("http://", "https://")
     ):
-        errors["google_maps_link"] = "Doit commencer par http:// ou https://."
+        errors["google_maps_link"] = "Must start with http:// or https://."
 
     return raw, errors
 
@@ -240,8 +240,8 @@ def _upload_image_if_present(file_storage, slug, folder="villes"):
             overwrite=True,
             resource_type="image",
         )
-        # We return the filename with extension
-        return f"{unique_slug}.{result.get('format', 'jpg')}", None
+        # We return the full public_id with extension to include the folder in the DB path
+        return f"{folder}/{unique_slug}.{result.get('format', 'jpg')}", None
     except cloudinary.exceptions.Error as e:
         return None, str(e)
 
@@ -280,7 +280,7 @@ def villes_new():
     slug = slugify(raw["nom_ville"])
     image_path, upload_err = _upload_image_if_present(request.files.get("image"), slug)
     if upload_err:
-        errors["_form"] = f"Erreur d'upload Cloudinary : {upload_err}"
+        errors["_form"] = f"Cloudinary upload error: {upload_err}"
         return _render_form("new", raw, errors)
 
     db = _to_db(raw)
@@ -341,7 +341,7 @@ def villes_edit(nom_ville):
         request.files.get("image"), slug
     )
     if upload_err:
-        errors["_form"] = f"Erreur d'upload Cloudinary : {upload_err}"
+        errors["_form"] = f"Cloudinary upload error: {upload_err}"
         return _render_form("edit", raw, errors, image_path=row["image_path"])
     image_path = new_image_path or row["image_path"]
 
@@ -491,7 +491,7 @@ def attractions_new(nom_ville):
         conn.commit()
     finally:
         conn.close()
-    flash("Attraction ajoutée.", "success")
+    flash("Attraction added.", "success")
     return _detail_redirect(nom_ville, "attractions")
 
 
@@ -534,7 +534,7 @@ def attractions_edit(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Attraction modifiée.", "success")
+    flash("Attraction modified.", "success")
     return _detail_redirect(nom_ville, "attractions")
 
 
@@ -552,7 +552,7 @@ def attractions_delete(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Attraction supprimée.", "success")
+    flash("Attraction deleted.", "success")
     return _detail_redirect(nom_ville, "attractions")
 
 
@@ -564,9 +564,9 @@ def attractions_delete(nom_ville, id):
 def _validate_specialite(form):
     nom_plat = (form.get("nom_plat") or "").strip()
     if not nom_plat:
-        return None, "Le nom du plat est requis."
+        return None, "Dish name is required."
     if len(nom_plat) > 200:
-        return None, "Trop long (max 200 caractères)."
+        return None, "Too long (max 200 characters)."
     return nom_plat, None
 
 
@@ -589,7 +589,7 @@ def specialites_new(nom_ville):
         conn.commit()
     finally:
         conn.close()
-    flash("Spécialité ajoutée.", "success")
+    flash("Specialty added.", "success")
     return _detail_redirect(nom_ville, "specialites")
 
 
@@ -613,7 +613,7 @@ def specialites_edit(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Spécialité modifiée.", "success")
+    flash("Specialty modified.", "success")
     return _detail_redirect(nom_ville, "specialites")
 
 
@@ -631,7 +631,7 @@ def specialites_delete(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Spécialité supprimée.", "success")
+    flash("Specialty deleted.", "success")
     return _detail_redirect(nom_ville, "specialites")
 
 
@@ -645,11 +645,11 @@ def _validate_evenement(form):
     periode = (form.get("periode") or "").strip()
     description = (form.get("description") or "").strip() or None
     if not nom:
-        return None, None, None, "Le nom est requis."
+        return None, None, None, "Name is required."
     if len(nom) > 100:
-        return None, None, None, "Le nom dépasse 100 caractères."
+        return None, None, None, "Name exceeds 100 characters."
     if len(periode) > 50:
-        return None, None, None, "La période dépasse 50 caractères."
+        return None, None, None, "Period exceeds 50 characters."
     return nom, (periode or None), description, None
 
 
@@ -662,18 +662,26 @@ def evenements_new(nom_ville):
         flash(err, "error")
         return _detail_redirect(nom_ville, "evenements")
 
+    slug = slugify(nom)
+    image_path, upload_err = _upload_image_if_present(
+        request.files.get("image"), slug, folder="evenements"
+    )
+    if upload_err:
+        flash(f"Cloudinary upload error: {upload_err}", "error")
+        return _detail_redirect(nom_ville, "evenements")
+
     conn = get_connection()
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO evenements (nom_ville, nom, periode, description) "
-                "VALUES (%s, %s, %s, %s)",
-                (nom_ville, nom, periode, description),
+                "INSERT INTO evenements (nom_ville, nom, periode, description, image_path) "
+                "VALUES (%s, %s, %s, %s, %s)",
+                (nom_ville, nom, periode, description, image_path),
             )
         conn.commit()
     finally:
         conn.close()
-    flash("Événement ajouté.", "success")
+    flash("Event added.", "success")
     return _detail_redirect(nom_ville, "evenements")
 
 
@@ -690,20 +698,39 @@ def evenements_edit(nom_ville, id):
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "UPDATE evenements SET nom=%s, periode=%s, description=%s "
+                "SELECT image_path FROM evenements WHERE id=%s AND nom_ville=%s",
+                (id, nom_ville)
+            )
+            current = cur.fetchone()
+            if not current:
+                flash("Event not found.", "error")
+                return _detail_redirect(nom_ville, "evenements")
+
+            slug = slugify(nom)
+            new_image, upload_err = _upload_image_if_present(
+                request.files.get("image"), slug, folder="evenements"
+            )
+            if upload_err:
+                flash(f"Cloudinary upload error: {upload_err}", "error")
+                return _detail_redirect(nom_ville, "evenements")
+            image_path = new_image or current["image_path"]
+
+            cur.execute(
+                "UPDATE evenements SET nom=%s, periode=%s, description=%s, image_path=%s "
                 "WHERE id=%s AND nom_ville=%s",
-                (nom, periode, description, id, nom_ville),
+                (nom, periode, description, image_path, id, nom_ville),
             )
         conn.commit()
     finally:
         conn.close()
-    flash("Événement modifié.", "success")
+    flash("Event modified.", "success")
     return _detail_redirect(nom_ville, "evenements")
 
 
 @admin_bp.route("/villes/<nom_ville>/evenements/<int:id>/delete", methods=["POST"])
 @admin_required
 def evenements_delete(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -714,7 +741,7 @@ def evenements_delete(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Événement supprimé.", "success")
+    flash("Event deleted.", "success")
     return _detail_redirect(nom_ville, "evenements")
 
 
@@ -726,15 +753,16 @@ def evenements_delete(nom_ville, id):
 def _validate_transport(form):
     type_ = (form.get("type") or "").strip()
     if not type_:
-        return None, "Le type est requis."
+        return None, "Type is required."
     if len(type_) > 200:
-        return None, "Trop long (max 200 caractères)."
+        return None, "Too long (max 200 characters)."
     return type_, None
 
 
 @admin_bp.route("/villes/<nom_ville>/transports/new", methods=["POST"])
 @admin_required
 def transports_new(nom_ville):
+    nom_ville = unquote(nom_ville)
     type_, err = _validate_transport(request.form)
     if err:
         flash(err, "error")
@@ -750,13 +778,37 @@ def transports_new(nom_ville):
         conn.commit()
     finally:
         conn.close()
-    flash("Transport ajouté.", "success")
+    flash("Transport added.", "success")
+    return _detail_redirect(nom_ville, "transport")
+
+
+@admin_bp.route("/villes/<nom_ville>/transports/<int:id>/edit", methods=["POST"])
+@admin_required
+def transports_edit(nom_ville, id):
+    nom_ville = unquote(nom_ville)
+    type_, err = _validate_transport(request.form)
+    if err:
+        flash(err, "error")
+        return _detail_redirect(nom_ville, "transport")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE transports SET type=%s WHERE id=%s AND nom_ville=%s",
+                (type_, id, nom_ville),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    flash("Transport modified.", "success")
     return _detail_redirect(nom_ville, "transport")
 
 
 @admin_bp.route("/villes/<nom_ville>/transports/<int:id>/delete", methods=["POST"])
 @admin_required
 def transports_delete(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -767,7 +819,7 @@ def transports_delete(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Transport supprimé.", "success")
+    flash("Transport deleted.", "success")
     return _detail_redirect(nom_ville, "transport")
 
 
@@ -780,11 +832,12 @@ def _validate_lien(raw):
     """Returns (value_or_none, error_or_none)."""
     if not raw:
         return None, None
-    if not raw.startswith(("http://", "https://")):
-        return None, "Doit commencer par http:// ou https://."
-    if len(raw) > 255:
-        return None, "Trop long (max 255 caractères)."
-    return raw, None
+    val = raw.strip()
+    if not val.startswith(("http://", "https://")):
+        val = "https://" + val
+    if len(val) > 1000:
+        return None, "Too long (max 1000 characters)."
+    return val, None
 
 
 def _validate_restaurant(form):
@@ -794,11 +847,11 @@ def _validate_restaurant(form):
     lien_raw = (form.get("lien") or "").strip()
 
     if not nom:
-        return None, "Le nom est requis."
+        return None, "Name is required."
     if len(nom) > 150:
-        return None, "Le nom dépasse 150 caractères."
+        return None, "Name exceeds 150 characters."
     if specialites and len(specialites) > 100:
-        return None, "Spécialités dépasse 100 caractères."
+        return None, "Specialties exceed 100 characters."
 
     lien, lerr = _validate_lien(lien_raw)
     if lerr:
@@ -815,6 +868,7 @@ def _validate_restaurant(form):
 @admin_bp.route("/villes/<nom_ville>/restaurants/new", methods=["POST"])
 @admin_required
 def restaurants_new(nom_ville):
+    nom_ville = unquote(nom_ville)
     data, err = _validate_restaurant(request.form)
     if err:
         flash(err, "error")
@@ -832,13 +886,14 @@ def restaurants_new(nom_ville):
         conn.commit()
     finally:
         conn.close()
-    flash("Restaurant ajouté.", "success")
+    flash("Restaurant added.", "success")
     return _detail_redirect(nom_ville, "restaurants")
 
 
 @admin_bp.route("/villes/<nom_ville>/restaurants/<int:id>/edit", methods=["POST"])
 @admin_required
 def restaurants_edit(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     data, err = _validate_restaurant(request.form)
     if err:
         flash(err, "error")
@@ -856,13 +911,14 @@ def restaurants_edit(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Restaurant modifié.", "success")
+    flash("Restaurant modified.", "success")
     return _detail_redirect(nom_ville, "restaurants")
 
 
 @admin_bp.route("/villes/<nom_ville>/restaurants/<int:id>/delete", methods=["POST"])
 @admin_required
 def restaurants_delete(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -873,7 +929,7 @@ def restaurants_delete(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Restaurant supprimé.", "success")
+    flash("Restaurant deleted.", "success")
     return _detail_redirect(nom_ville, "restaurants")
 
 
@@ -889,11 +945,11 @@ def _validate_hebergement(form):
     lien_raw = (form.get("lien") or "").strip()
 
     if not nom:
-        return None, "Le nom est requis."
+        return None, "Name is required."
     if len(nom) > 500:
-        return None, "Le nom dépasse 500 caractères."
+        return None, "Name exceeds 500 characters."
     if len(etoiles) > 20:
-        return None, "Étoiles dépasse 20 caractères."
+        return None, "Stars exceeds 20 characters."
 
     lien, lerr = _validate_lien(lien_raw)
     if lerr:
@@ -910,6 +966,7 @@ def _validate_hebergement(form):
 @admin_bp.route("/villes/<nom_ville>/hebergements/new", methods=["POST"])
 @admin_required
 def hebergements_new(nom_ville):
+    nom_ville = unquote(nom_ville)
     data, err = _validate_hebergement(request.form)
     if err:
         flash(err, "error")
@@ -927,13 +984,14 @@ def hebergements_new(nom_ville):
         conn.commit()
     finally:
         conn.close()
-    flash("Hébergement ajouté.", "success")
+    flash("Accommodation added.", "success")
     return _detail_redirect(nom_ville, "hebergements")
 
 
 @admin_bp.route("/villes/<nom_ville>/hebergements/<int:id>/edit", methods=["POST"])
 @admin_required
 def hebergements_edit(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     data, err = _validate_hebergement(request.form)
     if err:
         flash(err, "error")
@@ -951,13 +1009,14 @@ def hebergements_edit(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Hébergement modifié.", "success")
+    flash("Accommodation modified.", "success")
     return _detail_redirect(nom_ville, "hebergements")
 
 
 @admin_bp.route("/villes/<nom_ville>/hebergements/<int:id>/delete", methods=["POST"])
 @admin_required
 def hebergements_delete(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -968,7 +1027,7 @@ def hebergements_delete(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Hébergement supprimé.", "success")
+    flash("Accommodation deleted.", "success")
     return _detail_redirect(nom_ville, "hebergements")
 
 
@@ -981,15 +1040,16 @@ def _validate_artisanat(form):
     nom = (form.get("nom_artisanat") or "").strip()
     description = (form.get("description") or "").strip() or None
     if not nom:
-        return None, None, "Le nom est requis."
+        return None, None, "Name is required."
     if len(nom) > 200:
-        return None, None, "Le nom dépasse 200 caractères."
+        return None, None, "Name exceeds 200 characters."
     return nom, description, None
 
 
 @admin_bp.route("/villes/<nom_ville>/artisanat/new", methods=["POST"])
 @admin_required
 def artisanat_new(nom_ville):
+    nom_ville = unquote(nom_ville)
     nom, description, err = _validate_artisanat(request.form)
     if err:
         flash(err, "error")
@@ -1000,7 +1060,7 @@ def artisanat_new(nom_ville):
         request.files.get("image"), slug, folder="artisanat"
     )
     if upload_err:
-        flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+        flash(f"Cloudinary upload error: {upload_err}", "error")
         return _detail_redirect(nom_ville, "artisanat")
 
     conn = get_connection()
@@ -1014,13 +1074,14 @@ def artisanat_new(nom_ville):
         conn.commit()
     finally:
         conn.close()
-    flash("Artisanat ajouté.", "success")
+    flash("Craft added.", "success")
     return _detail_redirect(nom_ville, "artisanat")
 
 
 @admin_bp.route("/villes/<nom_ville>/artisanat/<int:id>/edit", methods=["POST"])
 @admin_required
 def artisanat_edit(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     nom, description, err = _validate_artisanat(request.form)
     if err:
         flash(err, "error")
@@ -1036,7 +1097,7 @@ def artisanat_edit(nom_ville, id):
             )
             current = cur.fetchone()
             if not current:
-                flash("Artisanat introuvable.", "error")
+                flash("Craft not found.", "error")
                 return _detail_redirect(nom_ville, "artisanat")
 
             slug = slugify(nom)
@@ -1044,7 +1105,7 @@ def artisanat_edit(nom_ville, id):
                 request.files.get("image"), slug, folder="artisanat"
             )
             if upload_err:
-                flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+                flash(f"Cloudinary upload error: {upload_err}", "error")
                 return _detail_redirect(nom_ville, "artisanat")
             image_path = new_image or current["image_path"]
 
@@ -1056,13 +1117,14 @@ def artisanat_edit(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Artisanat modifié.", "success")
+    flash("Craft modified.", "success")
     return _detail_redirect(nom_ville, "artisanat")
 
 
 @admin_bp.route("/villes/<nom_ville>/artisanat/<int:id>/delete", methods=["POST"])
 @admin_required
 def artisanat_delete(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -1073,7 +1135,7 @@ def artisanat_delete(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Artisanat supprimé.", "success")
+    flash("Craft deleted.", "success")
     return _detail_redirect(nom_ville, "artisanat")
 
 
@@ -1086,15 +1148,16 @@ def _validate_vestimentaire(form):
     nom = (form.get("nom") or "").strip()
     description = (form.get("description") or "").strip() or None
     if not nom:
-        return None, None, "Le nom est requis."
+        return None, None, "Name is required."
     if len(nom) > 100:
-        return None, None, "Le nom dépasse 100 caractères."
+        return None, None, "Name exceeds 100 characters."
     return nom, description, None
 
 
 @admin_bp.route("/villes/<nom_ville>/vestimentaire/new", methods=["POST"])
 @admin_required
 def vestimentaire_new(nom_ville):
+    nom_ville = unquote(nom_ville)
     nom, description, err = _validate_vestimentaire(request.form)
     if err:
         flash(err, "error")
@@ -1105,7 +1168,7 @@ def vestimentaire_new(nom_ville):
         request.files.get("image"), slug, folder="vestimentaire"
     )
     if upload_err:
-        flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+        flash(f"Cloudinary upload error: {upload_err}", "error")
         return _detail_redirect(nom_ville, "vestimentaire")
 
     conn = get_connection()
@@ -1119,13 +1182,14 @@ def vestimentaire_new(nom_ville):
         conn.commit()
     finally:
         conn.close()
-    flash("Vêtement ajouté.", "success")
+    flash("Clothing item added.", "success")
     return _detail_redirect(nom_ville, "vestimentaire")
 
 
 @admin_bp.route("/villes/<nom_ville>/vestimentaire/<int:id>/edit", methods=["POST"])
 @admin_required
 def vestimentaire_edit(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     nom, description, err = _validate_vestimentaire(request.form)
     if err:
         flash(err, "error")
@@ -1141,7 +1205,7 @@ def vestimentaire_edit(nom_ville, id):
             )
             current = cur.fetchone()
             if not current:
-                flash("Vêtement introuvable.", "error")
+                flash("Clothing item not found.", "error")
                 return _detail_redirect(nom_ville, "vestimentaire")
 
             slug = slugify(nom)
@@ -1149,7 +1213,7 @@ def vestimentaire_edit(nom_ville, id):
                 request.files.get("image"), slug, folder="vestimentaire"
             )
             if upload_err:
-                flash(f"Erreur d'upload Cloudinary : {upload_err}", "error")
+                flash(f"Cloudinary upload error: {upload_err}", "error")
                 return _detail_redirect(nom_ville, "vestimentaire")
             image_path = new_image or current["image_path"]
 
@@ -1161,13 +1225,14 @@ def vestimentaire_edit(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Vêtement modifié.", "success")
+    flash("Clothing item modified.", "success")
     return _detail_redirect(nom_ville, "vestimentaire")
 
 
 @admin_bp.route("/villes/<nom_ville>/vestimentaire/<int:id>/delete", methods=["POST"])
 @admin_required
 def vestimentaire_delete(nom_ville, id):
+    nom_ville = unquote(nom_ville)
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -1179,5 +1244,103 @@ def vestimentaire_delete(nom_ville, id):
         conn.commit()
     finally:
         conn.close()
-    flash("Vêtement supprimé.", "success")
+    flash("Clothing item deleted.", "success")
     return _detail_redirect(nom_ville, "vestimentaire")
+
+
+# ---------------------------------------------------------------------------
+# Users Management
+# ---------------------------------------------------------------------------
+
+@admin_bp.route("/users")
+@admin_required
+def users_list():
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, nom, email, email_verified, created_at, tier, 
+                       msg_count, is_active, payment_status, pack_expiry_date
+                FROM users 
+                ORDER BY created_at DESC
+            """)
+            users = cur.fetchall()
+    finally:
+        conn.close()
+    return render_template("admin/users_list.html", users=users)
+
+@admin_bp.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
+@admin_required
+def user_edit(user_id):
+    conn = get_connection()
+    try:
+        if request.method == "POST":
+            tier = request.form.get("tier")
+            msg_count = int(request.form.get("msg_count", 0))
+            is_active = request.form.get("is_active") == "1"
+            payment_status = request.form.get("payment_status")
+            payment_ref = request.form.get("payment_ref")
+            admin_notes = request.form.get("admin_notes")
+            
+            with conn.cursor() as cur:
+                cur.execute("""
+                    UPDATE users SET tier=%s, msg_count=%s, is_active=%s, 
+                                   payment_status=%s, payment_ref=%s, admin_notes=%s
+                    WHERE id=%s
+                """, (tier, msg_count, is_active, payment_status, payment_ref, admin_notes, user_id))
+            conn.commit()
+            flash("User updated successfully.", "success")
+            return redirect(url_for("admin.users_list"))
+            
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+            user = cur.fetchone()
+    finally:
+        conn.close()
+    
+    if not user:
+        flash("User not found.", "error")
+        return redirect(url_for("admin.users_list"))
+        
+    return render_template("admin/user_form.html", user=user)
+
+@admin_bp.route("/users/<int:user_id>/verify", methods=["POST"])
+@admin_required
+def user_verify_manual(user_id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("UPDATE users SET email_verified=TRUE WHERE id=%s", (user_id,))
+        conn.commit()
+    finally:
+        conn.close()
+    flash("User email verified manually.", "success")
+    return redirect(url_for("admin.users_list"))
+
+@admin_bp.route("/users/<int:user_id>/toggle-status", methods=["POST"])
+@admin_required
+def user_toggle_status(user_id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("UPDATE users SET is_active = NOT is_active WHERE id=%s", (user_id,))
+        conn.commit()
+    finally:
+        conn.close()
+    flash("User status toggled.", "success")
+    return redirect(url_for("admin.users_list"))
+
+@admin_bp.route("/users/<int:user_id>/delete", methods=["POST"])
+@admin_required
+def user_delete(user_id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            # Delete related messages first
+            cur.execute("DELETE FROM chat_messages WHERE user_id=%s", (user_id,))
+            cur.execute("DELETE FROM users WHERE id=%s", (user_id,))
+        conn.commit()
+    finally:
+        conn.close()
+    flash("User and their messages deleted.", "success")
+    return redirect(url_for("admin.users_list"))

@@ -4,3 +4,4 @@ PyMySQL
 requests
 python-dotenv
 cloudinary
+gunicorn

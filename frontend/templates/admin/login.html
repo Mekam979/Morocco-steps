@@ -99,9 +99,9 @@
     <form class="login-card" method="post" action="{{ url_for('admin.login') }}">
         <h1>Morocco Secrets</h1>
         <div class="subtitle">Admin</div>
-        <label for="password">Mot de passe</label>
+        <label for="password">Password</label>
         <input type="password" id="password" name="password" autofocus required autocomplete="current-password">
-        <button type="submit">Se connecter</button>
+        <button type="submit">Login</button>
         {% if error %}<div class="error">{{ error }}</div>{% endif %}
     </form>
 </body>

@@ -1,0 +1,125 @@
+{% extends "admin/base_admin.html" %}
+{% set active_nav = 'users' %}
+{% block title %}Users — Morocco Secrets Admin{% endblock %}
+{% block heading %}Users Management{% endblock %}
+
+{% block head_extra %}
+<style>
+    .users-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .users-table thead th {
+        text-align: left;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        padding: 14px 18px;
+        border-bottom: 2px solid var(--gold);
+        background: var(--beige);
+    }
+    .users-table tbody td {
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+        font-size: 0.9rem;
+    }
+    .users-table tbody tr:hover {
+        background: rgba(201, 168, 76, 0.06);
+    }
+    .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    .badge-explorer { background: #e0e0e0; color: #616161; }
+    .badge-standard { background: #e3f2fd; color: #1976d2; }
+    .badge-premium { background: #fff3e0; color: #f57c00; }
+    .badge-pro { background: #f3e5f5; color: #7b1fa2; }
+    .badge-vip { background: #fffde7; color: #fbc02d; }
+    
+    .status-active { color: #2e7d32; }
+    .status-suspended { color: #d32f2f; }
+    
+    .actions form { display: inline; margin: 0; }
+    .btn-action {
+        background: none;
+        border: 1px solid var(--border);
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        color: var(--text);
+        margin-right: 4px;
+    }
+    .btn-action:hover { background: var(--beige); }
+    .btn-delete { color: #d32f2f; }
+    .btn-delete:hover { background: #ffebee; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card" style="padding: 0; overflow: hidden;">
+    <table class="users-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Pack</th>
+                <th>Messages</th>
+                <th>Registered</th>
+                <th style="text-align: right;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td><strong>{{ u.nom }}</strong></td>
+                <td>
+                    {{ u.email }}
+                    {% if u.email_verified %}
+                    <span title="Verified" style="color: #2e7d32;">✓</span>
+                    {% else %}
+                    <span title="Not Verified" style="color: #d32f2f;">✗</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if u.is_active %}
+                    <span class="status-active">Active</span>
+                    {% else %}
+                    <span class="status-suspended">Suspended</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="badge badge-{{ u.tier | lower }}">{{ u.tier | capitalize }}</span>
+                </td>
+                <td>{{ u.msg_count }}</td>
+                <td>{{ u.created_at.strftime('%Y-%m-%d') if u.created_at else '-' }}</td>
+                <td style="text-align: right;" class="actions">
+                    <a href="{{ url_for('admin.user_edit', user_id=u.id) }}" class="btn-action">Edit</a>
+                    <form action="{{ url_for('admin.user_toggle_status', user_id=u.id) }}" method="POST">
+                        <button type="submit" class="btn-action">
+                            {% if u.is_active %}Suspend{% else %}Activate{% endif %}
+                        </button>
+                    </form>
+                    <form action="{{ url_for('admin.user_delete', user_id=u.id) }}" method="POST" onsubmit="return confirm('Delete user {{ u.nom }}? This will also delete all their messages.');">
+                        <button type="submit" class="btn-action btn-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "admin/base_admin.html" %}
+{% set active_nav = 'users' %}
+{% block title %}Edit User — Morocco Secrets Admin{% endblock %}
+{% block heading %}Edit User: {{ user.nom }}{% endblock %}
+
+{% block head_extra %}
+<style>
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--darkred); }
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-family: inherit;
+    }
+    .btn-save {
+        background: var(--darkred);
+        color: var(--white);
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .btn-save:hover { background: #6b0000; }
+    .section-title {
+        border-bottom: 1px solid var(--gold);
+        margin: 30px 0 20px;
+        padding-bottom: 10px;
+        color: var(--darkred);
+        font-size: 1.2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <form method="POST">
+        <div class="section-title">General Information</div>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-control" value="{{ user.nom }}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" value="{{ user.email }}" readonly>
+        </div>
+        
+        <div class="section-title">Account Status</div>
+        <div class="form-group">
+            <label>Status</label>
+            <select name="is_active" class="form-control">
+                <option value="1" {% if user.is_active %}selected{% endif %}>Active</option>
+                <option value="0" {% if not user.is_active %}selected{% endif %}>Suspended</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Email Verification</label>
+            {% if user.email_verified %}
+            <span style="color: #2e7d32; font-weight: 600;">Verified</span>
+            {% else %}
+            <span style="color: #d32f2f; font-weight: 600;">Not Verified</span>
+            <button type="submit" form="form-verify" class="btn-action" style="margin-left: 10px;">Verify Manually</button>
+            {% endif %}
+        </div>
+
+        <div class="section-title">Subscription & Limits</div>
+        <div class="form-group">
+            <label>Current Pack (Tier)</label>
+            <select name="tier" class="form-control">
+                <option value="explorer" {% if user.tier == 'explorer' %}selected{% endif %}>Explorer</option>
+                <option value="standard" {% if user.tier == 'standard' %}selected{% endif %}>Standard</option>
+                <option value="premium" {% if user.tier == 'premium' %}selected{% endif %}>Premium</option>
+                <option value="pro" {% if user.tier == 'pro' %}selected{% endif %}>Pro</option>
+                <option value="vip" {% if user.tier == 'vip' %}selected{% endif %}>VIP</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Messages Sent Today</label>
+            <input type="number" name="msg_count" class="form-control" value="{{ user.msg_count }}">
+            <small>Resetting this to 0 allows the user to send more messages today.</small>
+        </div>
+
+        <div class="section-title">Payment Information</div>
+        <div class="form-group">
+            <label>Payment Status</label>
+            <select name="payment_status" class="form-control">
+                <option value="Unpaid" {% if user.payment_status == 'Unpaid' %}selected{% endif %}>Unpaid</option>
+                <option value="Paid" {% if user.payment_status == 'Paid' %}selected{% endif %}>Paid</option>
+                <option value="Pending" {% if user.payment_status == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="Refunded" {% if user.payment_status == 'Refunded' %}selected{% endif %}>Refunded</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Payment Reference / Transaction ID</label>
+            <input type="text" name="payment_ref" class="form-control" value="{{ user.payment_ref or '' }}">
+        </div>
+        <div class="form-group">
+            <label>Admin Notes</label>
+            <textarea name="admin_notes" class="form-control" rows="4">{{ user.admin_notes or '' }}</textarea>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button type="submit" class="btn-save">Save Changes</button>
+            <a href="{{ url_for('admin.users_list') }}" style="margin-left: 15px; color: var(--muted); text-decoration: none;">Cancel</a>
+        </div>
+    </form>
+
+    <form id="form-verify" action="{{ url_for('admin.user_verify_manual', user_id=user.id) }}" method="POST"></form>
+</div>
+{% endblock %}
