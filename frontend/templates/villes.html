@@ -24,7 +24,6 @@
         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <style>
-        /* --- CUSTOM UI TRANSLATE --- */
         .custom-lang-selector {
             position: relative;
             display: inline-block;
@@ -99,7 +98,6 @@
             display: none !important;
         }
 
-        /* --- PREMIUM GOOGLE TRANSLATE --- */
         .goog-te-gadget {
             color: transparent !important;
             font-size: 0 !important;
@@ -145,7 +143,6 @@
             border-radius: 20px !important;
             cursor: pointer !important;
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             outline: none !important;
             transition: all 0.3s ease !important;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -180,16 +177,10 @@
             --identity-dark: #4d1515;
             --identity-light: #8b2626;
             --arch: #f2e6d9;
-            --arch-light: #fefcf9;
             --arch-dark: #e1caa9;
-            --terre: #7B672A;
-            --terre-dark: #5A4A1A;
             --desert: #c59d5f;
             --desert-light: #dbbd8e;
-            --sky: #73B3EF;
-            --sky-light: #B8D8F8;
             --ocean: #0668D3;
-            --ocean-dark: #044A9A;
             --text-primary: #6b1d1d;
             --text-secondary: #5A4A1A;
             --text-light: #FFFFFF;
@@ -205,7 +196,6 @@
             background-color: var(--soft-beige);
             color: var(--grona);
             font-family: 'Montserrat', sans-serif;
-            scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
@@ -343,7 +333,7 @@
             padding-left: 22px;
         }
 
-        /* ════ HAMBURGER + SIDEBAR MOBILE ════ */
+        /* ════ HAMBURGER ════ */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -354,7 +344,6 @@
             border: none;
             z-index: 1200;
             -webkit-tap-highlight-color: transparent;
-            position: relative;
         }
 
         .hamburger span {
@@ -366,25 +355,37 @@
             transform-origin: center;
         }
 
-        .hamburger span:nth-child(1) { width: 24px; }
-        .hamburger span:nth-child(2) { width: 16px; opacity: 0.65; }
-        .hamburger span:nth-child(3) { width: 24px; }
+        .hamburger span:nth-child(1) {
+            width: 24px;
+        }
+
+        .hamburger span:nth-child(2) {
+            width: 16px;
+            opacity: 0.65;
+        }
+
+        .hamburger span:nth-child(3) {
+            width: 24px;
+        }
 
         .hamburger.open span:nth-child(1) {
             transform: translateY(7px) rotate(45deg);
             opacity: 1;
             width: 24px;
         }
+
         .hamburger.open span:nth-child(2) {
             opacity: 0;
             transform: scaleX(0);
         }
+
         .hamburger.open span:nth-child(3) {
             transform: translateY(-7px) rotate(-45deg);
             opacity: 1;
             width: 24px;
         }
 
+        /* ════ SIDEBAR ════ */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -393,7 +394,9 @@
             z-index: 2050;
         }
 
-        .sidebar-overlay.open { display: block; }
+        .sidebar-overlay.open {
+            display: block;
+        }
 
         .mobile-sidebar {
             position: fixed;
@@ -411,7 +414,9 @@
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .mobile-sidebar.open { transform: translateX(0); }
+        .mobile-sidebar.open {
+            transform: translateX(0);
+        }
 
         .sidebar-header {
             padding: 22px 24px;
@@ -429,7 +434,6 @@
             font-size: 1.25rem;
             font-weight: 900;
             color: white;
-            letter-spacing: -0.01em;
         }
 
         .sidebar-brand-m em {
@@ -447,7 +451,9 @@
             transition: color 0.2s;
         }
 
-        .sidebar-close:hover { color: white; }
+        .sidebar-close:hover {
+            color: white;
+        }
 
         .sidebar-links {
             flex: 1;
@@ -472,7 +478,10 @@
             transition: all 0.3s;
         }
 
-        .sidebar-links a i { opacity: 0.6; width: 20px; }
+        .sidebar-links a i {
+            opacity: 0.6;
+            width: 20px;
+        }
 
         .sidebar-links a:hover {
             background: rgba(255, 255, 255, 0.08);
@@ -577,7 +586,6 @@
             width: 44px;
             height: 1px;
             background: var(--desert-gold);
-            opacity: 1;
             display: inline-block;
         }
 
@@ -586,7 +594,6 @@
             font-size: clamp(2.8rem, 5.5vw, 4.5rem);
             font-weight: 900;
             color: #FFFFFF;
-            letter-spacing: -0.01em;
             line-height: 1.08;
             margin-bottom: 18px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -622,7 +629,6 @@
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 0;
             background: var(--grona);
         }
 
@@ -639,7 +645,9 @@
             white-space: nowrap;
         }
 
-        .filter-tab:first-child { border-left: 1px solid rgba(255, 255, 255, 0.12); }
+        .filter-tab:first-child {
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+        }
 
         .filter-tab:hover {
             color: white;
@@ -664,7 +672,6 @@
             align-items: center;
         }
 
-        /* ══ FIX AUTOFILL : input search ══ */
         #citySearch {
             width: 100%;
             padding: 18px 20px 18px 55px;
@@ -677,11 +684,9 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             outline: none;
             transition: all 0.3s;
-            /* Désactiver TOTALEMENT l'autofill navigateur */
             -webkit-user-select: text;
         }
 
-        /* Neutraliser l'autofill Chrome (couleur jaune + email injecté) */
         #citySearch:-webkit-autofill,
         #citySearch:-webkit-autofill:hover,
         #citySearch:-webkit-autofill:focus,
@@ -705,7 +710,6 @@
             border-color: var(--grona);
         }
 
-        /* Supprimer l'icône X native du type="search" sur webkit */
         #citySearch::-webkit-search-decoration,
         #citySearch::-webkit-search-cancel-button,
         #citySearch::-webkit-search-results-button,
@@ -780,7 +784,9 @@
             gap: 3px;
         }
 
-        .city-card:nth-child(1) { grid-row: span 2; }
+        .city-card:nth-child(1) {
+            grid-row: span 2;
+        }
 
         .city-card {
             position: relative;
@@ -805,7 +811,9 @@
             transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.6s;
         }
 
-        .city-card:nth-child(1) img { min-height: 600px; }
+        .city-card:nth-child(1) img {
+            min-height: 600px;
+        }
 
         .city-card:hover img {
             transform: scale(1.07);
@@ -837,7 +845,9 @@
             z-index: 2;
         }
 
-        .city-card:hover::after { opacity: 1; }
+        .city-card:hover::after {
+            opacity: 1;
+        }
 
         .city-body {
             position: absolute;
@@ -865,14 +875,17 @@
             color: #FFFFFF;
             letter-spacing: 0.03em;
             line-height: 1;
-            margin-bottom: 0;
             transition: color 0.3s;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
-        .city-card:nth-child(1) .city-name { font-size: 2.8rem; }
+        .city-card:nth-child(1) .city-name {
+            font-size: 2.8rem;
+        }
 
-        .city-card:hover .city-name { color: var(--desert-light); }
+        .city-card:hover .city-name {
+            color: var(--desert-light);
+        }
 
         .city-rule {
             width: 0;
@@ -883,17 +896,17 @@
             transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .city-card:hover .city-rule { width: 40px; }
+        .city-card:hover .city-rule {
+            width: 40px;
+        }
 
         .city-slogan {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
             font-size: 1.15rem;
-            font-weight: 400;
             color: rgba(255, 255, 255, 0.95);
             max-height: 65px;
             overflow: hidden;
-            opacity: 1;
             margin-bottom: 14px;
             line-height: 1.4;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
@@ -948,18 +961,26 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        .cta-secondary:hover { color: var(--desert-gold); }
+        .cta-secondary:hover {
+            color: var(--desert-gold);
+        }
 
-        /* ════ MOBILE TOUCH ════ */
         @media (hover: none) {
-            .city-card img { filter: brightness(0.55) saturate(0.85); }
+            .city-card img {
+                filter: brightness(0.55) saturate(0.85);
+            }
 
             .city-card-overlay {
                 background: linear-gradient(0deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.18) 100%);
             }
 
-            .city-card::after { opacity: 1; }
-            .city-rule { width: 32px !important; }
+            .city-card::after {
+                opacity: 1;
+            }
+
+            .city-rule {
+                width: 32px !important;
+            }
 
             .city-cta {
                 max-height: 0 !important;
@@ -973,16 +994,20 @@
                 pointer-events: auto;
             }
 
-            .city-card.touched .city-rule { width: 40px !important; }
+            .city-card.touched .city-rule {
+                width: 40px !important;
+            }
 
-            .city-card.touched img { filter: brightness(0.45) saturate(0.7); }
+            .city-card.touched img {
+                filter: brightness(0.45) saturate(0.7);
+            }
 
             .city-card.touched .city-card-overlay {
                 background: linear-gradient(0deg, rgba(0, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.15) 100%);
             }
         }
 
-        /* ══ SEARCH RESULTS DROPDOWN ══ */
+        /* ══ SEARCH DROPDOWN ══ */
         .search-results-dropdown {
             position: absolute;
             top: calc(100% + 10px);
@@ -1104,48 +1129,91 @@
 
         /* ══ RESPONSIVE ══ */
         @media (max-width: 1024px) {
-            .cities-grid { grid-template-columns: repeat(2, 1fr); }
+            .cities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
 
             .city-card:nth-child(1) {
                 grid-row: span 1;
                 min-height: 400px;
             }
 
-            .city-card:nth-child(1) .city-name { font-size: 2.1rem; }
+            .city-card:nth-child(1) .city-name {
+                font-size: 2.1rem;
+            }
 
-            .nav { padding: 15px 36px; }
-            .nav.scrolled { padding: 10px 36px; }
+            .nav {
+                padding: 15px 36px;
+            }
+
+            .nav.scrolled {
+                padding: 10px 36px;
+            }
         }
 
         @media (max-width: 768px) {
-            .hamburger { display: flex !important; }
-            .nav-links { display: none !important; }
-            .nav { padding: 15px 20px; }
-            .nav.scrolled { padding: 10px 20px; }
-            .nav-brand { font-size: 1.2rem; }
-            .page-hero { padding: 130px 24px 70px; }
-            .page-hero h1 { font-size: 2.4rem; }
-            .cities-section { padding: 40px 24px 70px; }
-            .cities-grid { grid-template-columns: 1fr; gap: 3px; }
-            .city-card { aspect-ratio: 4/3; }
-            .city-card:nth-child(1) { min-height: 320px; }
-            .filter-tab { padding: 14px 16px; font-size: 0.6rem; }
-            .footer-ornament { padding: 0 24px 60px; }
+            .hamburger {
+                display: flex !important;
+            }
+
+            .nav-links {
+                display: none !important;
+            }
+
+            .nav {
+                padding: 15px 20px;
+            }
+
+            .nav.scrolled {
+                padding: 10px 20px;
+            }
+
+            .page-hero {
+                padding: 130px 24px 70px;
+            }
+
+            .page-hero h1 {
+                font-size: 2.4rem;
+            }
+
+            .cities-section {
+                padding: 40px 24px 70px;
+            }
+
+            .cities-grid {
+                grid-template-columns: 1fr;
+                gap: 3px;
+            }
+
+            .city-card {
+                aspect-ratio: 4/3;
+            }
+
+            .city-card:nth-child(1) {
+                min-height: 320px;
+            }
+
+            .filter-tab {
+                padding: 14px 16px;
+                font-size: 0.6rem;
+            }
+
+            .footer-ornament {
+                padding: 0 24px 60px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- SIDEBAR MOBILE -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <div class="mobile-sidebar" id="mobileSidebar">
         <div class="sidebar-header">
-            <div class="sidebar-brand-m"
-                style="flex-direction: column; align-items: flex-start; gap: 12px; padding: 10px 0;">
+            <div class="sidebar-brand-m" style="flex-direction:column;align-items:flex-start;gap:12px;padding:10px 0;">
                 <img src="{{ logo_url }}" alt="Logo" class="nav-logo"
-                    style="height: 65px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
-                <span style="font-size: 1.4rem;">Morocco <em>Secrets</em></span>
+                    style="height:65px;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
+                <span style="font-size:1.4rem;">Morocco <em>Secrets</em></span>
             </div>
             <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -1173,7 +1241,6 @@
         </div>
     </div>
 
-    <!-- NAV -->
     <nav class="nav" id="mainNav">
         <a href="/" class="nav-brand">
             <img src="{{ logo_url }}" alt="Logo" class="nav-logo">
@@ -1182,9 +1249,8 @@
         <div class="nav-links">
             <a href="/" class="nav-link">Accueil</a>
             <div class="nav-item">
-                <a href="/villes" class="nav-link">Villes
-                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75em; margin-left: 4px; opacity: 0.8;"></i>
-                </a>
+                <a href="/villes" class="nav-link">Villes <i class="fa-solid fa-chevron-down"
+                        style="font-size:0.75em;margin-left:4px;opacity:0.8;"></i></a>
                 <div class="dropdown-menu">
                     <a href="/villes">Toutes les villes</a>
                     <a href="/filter/cotieres">Côtières</a>
@@ -1195,7 +1261,6 @@
                 </div>
             </div>
             <a href="/pricing" class="nav-link">Offres</a>
-
             <div id="gt_nav_slot">
                 <div id="google_translate_element"></div>
             </div>
@@ -1203,20 +1268,20 @@
                 <div class="custom-lang-btn">
                     <i class="fa-solid fa-globe"></i>
                     <span id="currentLangText">FR</span>
-                    <i class="fa-solid fa-chevron-down" style="font-size: 0.7em;"></i>
+                    <i class="fa-solid fa-chevron-down" style="font-size:0.7em;"></i>
                 </div>
                 <ul class="custom-lang-list">
-                    <li onclick="changeLanguage('fr', 'FR')">🇫🇷 Français</li>
-                    <li onclick="changeLanguage('en', 'EN')">🇬🇧 Anglais</li>
-                    <li onclick="changeLanguage('es', 'ES')">🇪🇸 Espagnol</li>
-                    <li onclick="changeLanguage('ar', 'AR')">🇲🇦 Arabe</li>
-                    <li onclick="changeLanguage('de', 'DE')">🇩🇪 Allemand</li>
-                    <li onclick="changeLanguage('it', 'IT')">🇮🇹 Italien</li>
-                    <li onclick="changeLanguage('pt', 'PT')">🇵🇹 Portugais</li>
-                    <li onclick="changeLanguage('ru', 'RU')">🇷🇺 Russe</li>
-                    <li onclick="changeLanguage('zh-CN', 'ZH')">🇨🇳 Chinois</li>
-                    <li onclick="changeLanguage('ja', 'JA')">🇯🇵 Japonais</li>
-                    <li onclick="changeLanguage('ko', 'KO')">🇰🇷 Coréen</li>
+                    <li onclick="changeLanguage('fr','FR')">🇫🇷 Français</li>
+                    <li onclick="changeLanguage('en','EN')">🇬🇧 Anglais</li>
+                    <li onclick="changeLanguage('es','ES')">🇪🇸 Espagnol</li>
+                    <li onclick="changeLanguage('ar','AR')">🇲🇦 Arabe</li>
+                    <li onclick="changeLanguage('de','DE')">🇩🇪 Allemand</li>
+                    <li onclick="changeLanguage('it','IT')">🇮🇹 Italien</li>
+                    <li onclick="changeLanguage('pt','PT')">🇵🇹 Portugais</li>
+                    <li onclick="changeLanguage('ru','RU')">🇷🇺 Russe</li>
+                    <li onclick="changeLanguage('zh-CN','ZH')">🇨🇳 Chinois</li>
+                    <li onclick="changeLanguage('ja','JA')">🇯🇵 Japonais</li>
+                    <li onclick="changeLanguage('ko','KO')">🇰🇷 Coréen</li>
                 </ul>
             </div>
         </div>
@@ -1225,17 +1290,24 @@
         </button>
     </nav>
 
-    <!-- HERO -->
-    <div class="page-hero" style="background-image: url('
-        {%- if titre_filter == 'Toutes les villes du Maroc' -%}
-            {{ cdn_url }}villes/maroc_bg.png
-        {%- elif "côtières" in titre_filter.lower() -%} {{ cdn_url }}villes/coast.jpg
-        {%- elif "sahariennes" in titre_filter.lower() -%} {{ cdn_url }}villes/sahara.jpg
-        {%- elif "montagne" in titre_filter.lower() -%} {{ cdn_url }}villes/mountain.jpg
-        {%- elif "culturelles" in titre_filter.lower() -%} {{ cdn_url }}villes/culture.jpg
-        {%- elif "agricoles" in titre_filter.lower() -%} {{ cdn_url }}villes/agricole.jpg
-        {%- else -%} {{ cdn_url }}villes/maroc_bg.png
-        {%- endif -%}');">
+    <!-- ══ HERO — Jinja2 séparé du style ══ -->
+    {% if titre_filter == 'Toutes les villes du Maroc' %}
+    {% set hero_bg = cdn_url ~ 'villes/maroc_bg.png' %}
+    {% elif 'côtières' in titre_filter.lower() %}
+    {% set hero_bg = cdn_url ~ 'villes/coast.jpg' %}
+    {% elif 'sahariennes' in titre_filter.lower() %}
+    {% set hero_bg = cdn_url ~ 'villes/sahara.jpg' %}
+    {% elif 'montagne' in titre_filter.lower() %}
+    {% set hero_bg = cdn_url ~ 'villes/mountain.jpg' %}
+    {% elif 'culturelles' in titre_filter.lower() %}
+    {% set hero_bg = cdn_url ~ 'villes/culture.jpg' %}
+    {% elif 'agricoles' in titre_filter.lower() %}
+    {% set hero_bg = cdn_url ~ 'villes/agricole.jpg' %}
+    {% else %}
+    {% set hero_bg = cdn_url ~ 'villes/maroc_bg.png' %}
+    {% endif %}
+
+    <div class="page-hero" style="background-image: url('{{ hero_bg }}');">
         <div class="hero-content">
             <div class="hero-eyebrow">
                 <span></span>
@@ -1244,26 +1316,26 @@
             </div>
             <h1>
                 {% if titre_filter == 'Toutes les villes du Maroc' %}
-                    <span>Toutes les <em>Villes</em></span>
+                <span>Toutes les <em>Villes</em></span>
                 {% elif 'côtières' in titre_filter %}
-                    <span>Villes <em>Côtières</em></span>
+                <span>Villes <em>Côtières</em></span>
                 {% elif 'sahariennes' in titre_filter %}
-                    <span>Villes <em>Sahariennes</em></span>
+                <span>Villes <em>Sahariennes</em></span>
                 {% elif 'montagne' in titre_filter %}
-                    <span>Villes de <em>Montagne</em></span>
+                <span>Villes de <em>Montagne</em></span>
                 {% elif 'culturelles' in titre_filter %}
-                    <span>Villes <em>Culturelles</em></span>
+                <span>Villes <em>Culturelles</em></span>
                 {% elif 'agricoles' in titre_filter %}
-                    <span>Villes <em>Agricoles</em></span>
+                <span>Villes <em>Agricoles</em></span>
                 {% else %}
-                    {{ titre_filter }}
+                {{ titre_filter }}
                 {% endif %}
             </h1>
             <p class="hero-sub">
                 {% if villes %}
-                    {{ villes | length }} destination{% if villes | length > 1 %}s{% endif %} à découvrir
+                {{ villes | length }} destination{% if villes | length > 1 %}s{% endif %} à découvrir
                 {% else %}
-                    Aucune destination trouvée
+                Aucune destination trouvée
                 {% endif %}
             </p>
             <div class="hero-line"></div>
@@ -1271,64 +1343,29 @@
     </div>
 
     <!-- FILTER BAR -->
-    {% set city_map = {
-        "Agadir": "أكادير", "Al Hoceima": "الحسيمة", "Asilah": "أصيلة", "Azrou": "أزرو",
-        "Berkane": "بركان", "Casablanca": "الدار البيضاء", "Chefchaouen": "شفشاون",
-        "Dakhla": "الداخلة", "El Jadida": "الجديدة", "Essaouira": "الصويرة", "Fès": "فاس",
-        "Haut Atlas": "الأطلس الكبير", "Ifrane": "إفران", "Imlil": "إمليل",
-        "Kelaat M'Gouna": "قلعة مكونة", "Kénitra": "القنيطرة", "Laâyoune": "العيون",
-        "Marrakech": "مراكش", "Meknès": "مكناس", "Merzouga": "مرزوكة",
-        "Moyen Atlas": "الأطلس المتوسط", "Nador": "الناظور", "Oualidia": "الوليدية",
-        "Ouarzazate": "ورزازات", "Oujda": "وجدة", "Oukaïmeden": "أوكايمدن",
-        "Rabat": "الرباط", "Safi": "آسفي", "Saïdia": "السعيدية", "Tanger": "طنجة",
-        "Taourirt": "تاوريرت", "Taroudant": "تارودانت", "Taza": "تازة",
-        "Tétouan": "تطوان", "Zagora": "زاكورة"
-    } %}
-
     <div class="filter-bar">
-        <a href="/villes" class="filter-tab {% if titre_filter == 'Toutes les villes du Maroc' %}active{% endif %}">Toutes</a>
+        <a href="/villes"
+            class="filter-tab {% if titre_filter == 'Toutes les villes du Maroc' %}active{% endif %}">Toutes</a>
         <a href="/filter/cotieres" class="filter-tab {% if 'côtières' in titre_filter %}active{% endif %}">Côtières</a>
-        <a href="/filter/sahariennes" class="filter-tab {% if 'sahariennes' in titre_filter %}active{% endif %}">Sahariennes</a>
+        <a href="/filter/sahariennes"
+            class="filter-tab {% if 'sahariennes' in titre_filter %}active{% endif %}">Sahariennes</a>
         <a href="/filter/montagne" class="filter-tab {% if 'montagne' in titre_filter %}active{% endif %}">Montagne</a>
-        <a href="/filter/culturelles" class="filter-tab {% if 'culturelles' in titre_filter %}active{% endif %}">Culturelles</a>
-        <a href="/filter/agricoles" class="filter-tab {% if 'agricoles' in titre_filter %}active{% endif %}">Agricoles</a>
+        <a href="/filter/culturelles"
+            class="filter-tab {% if 'culturelles' in titre_filter %}active{% endif %}">Culturelles</a>
+        <a href="/filter/agricoles"
+            class="filter-tab {% if 'agricoles' in titre_filter %}active{% endif %}">Agricoles</a>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         SEARCH BAR — FIXED (no autofill/email)
-         ══════════════════════════════════════════ -->
+    <!-- SEARCH BAR -->
     <div class="search-container">
         <div class="search-box">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-
-            <!--
-                CORRECTIONS ANTI-AUTOFILL :
-                1. type="search"          → les navigateurs ne remplissent pas les champs search avec des emails
-                2. autocomplete="off"     → désactiver la suggestion navigateur
-                3. name="ms-city-search"  → nom unique qui ne ressemble à aucun champ credential connu
-                4. data-form-type="other" → bloque LastPass et Bitwarden
-                5. readonly + onfocus     → astuce pour bloquer le remplissage anticipé Chrome
-            -->
-            <input
-                type="search"
-                id="citySearch"
-                name="ms-city-search"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-                data-form-type="other"
-                data-lpignore="true"
-                data-1p-ignore="true"
-                placeholder="Rechercher une ville, destination, hôtel..."
-                readonly
-                onfocus="this.removeAttribute('readonly');"
-            >
-
+            <input type="search" id="citySearch" name="ms-city-search" autocomplete="off" autocorrect="off"
+                autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true"
+                data-1p-ignore="true" placeholder="Rechercher une ville, destination, hôtel..." readonly
+                onfocus="this.removeAttribute('readonly');">
             <div id="searchBadge">RÉSULTATS</div>
         </div>
-
-        <!-- Dropdown résultats API -->
         <div id="searchResultsDropdown" class="search-results-dropdown"></div>
     </div>
 
@@ -1339,9 +1376,9 @@
             <div class="section-rule"></div>
             <span class="section-count" id="cityCount">
                 {% if villes %}
-                    {{ villes | length }} ville{% if villes | length > 1 %}s{% endif %}
+                {{ villes | length }} ville{% if villes | length > 1 %}s{% endif %}
                 {% else %}
-                    0 ville
+                0 ville
                 {% endif %}
             </span>
         </div>
@@ -1350,28 +1387,26 @@
         <div class="cities-grid" id="citiesGrid">
             {% for ville in villes %}
             <div class="city-card">
-                <img src="{{ cdn_url }}{{ ville['image_path'] or 'villes/default.jpg' }}"
-                    alt="{{ ville['nom_ville'] }}"
+                <img src="{{ cdn_url }}{{ ville['image_path'] or 'villes/default.jpg' }}" alt="{{ ville['nom_ville'] }}"
                     loading="lazy"
                     onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/852E1E/FFFFFF?text={{ ville['nom_ville']|urlencode }}'">
-
                 <div class="city-card-overlay"></div>
-
                 <div class="city-body">
                     <p class="city-tag">{{ ville['type_ville'] if ville['type_ville'] else 'Ville marocaine' }}</p>
                     <h2 class="city-name">{{ ville['nom_ville'] }}</h2>
                     <div class="city-rule"></div>
                     <p class="city-slogan">
                         {% if ville['slogan'] and ville['slogan']|length > 0 %}
-                            "{{ ville['slogan'] }}"
+                        "{{ ville['slogan'] }}"
                         {% else %}
-                            "Bienvenue à {{ ville['nom_ville'] }}"
+                        "Bienvenue à {{ ville['nom_ville'] }}"
                         {% endif %}
                     </p>
                     <div class="city-cta">
-                        <a href="{{ url_for('details_ville', nom=ville['nom_ville']) }}" class="cta-primary">Découvrir</a>
-                        <a href="https://www.google.com/maps/search/{{ ville['nom_ville'] }}+Maroc"
-                            target="_blank" rel="noopener noreferrer" class="cta-secondary">↗ Carte</a>
+                        <a href="{{ url_for('details_ville', nom=ville['nom_ville']) }}"
+                            class="cta-primary">Découvrir</a>
+                        <a href="https://www.google.com/maps/search/{{ ville['nom_ville'] }}+Maroc" target="_blank"
+                            rel="noopener noreferrer" class="cta-secondary">↗ Carte</a>
                     </div>
                 </div>
             </div>
@@ -1381,40 +1416,28 @@
         {% else %}
         <div class="empty-state">
             <p>🌙 Aucune ville trouvée</p>
-            <p style="font-size: 0.9rem; margin-top: 20px; color: var(--text-secondary);">
-                Vérifiez que la base de données est bien connectée
-            </p>
-            <p style="margin-top: 30px;">
-                <a href="/test-db" target="_blank" class="debug-link">🔍 Tester la connexion à la base de données</a>
+            <p style="font-size:0.9rem;margin-top:20px;color:var(--text-secondary);">Vérifiez que la base de données est
+                bien connectée</p>
+            <p style="margin-top:30px;"><a href="/test-db" target="_blank" class="debug-link">🔍 Tester la connexion</a>
             </p>
         </div>
         {% endif %}
     </section>
 
-    <!-- ORNAMENT -->
     <div class="footer-ornament">
         <span class="ornament-glyph">✦</span>
     </div>
 
     <script>
-        /* ══════════════════════════════════════════════════════════
-           FIX AUTOFILL — Force clear email/credential injections
-           Le navigateur Chrome peut injecter un email APRÈS le
-           DOMContentLoaded, d'où le double setTimeout.
-           ══════════════════════════════════════════════════════════ */
-        (function clearSearchAutofill() {
-            function wipeSearch() {
+        /* ══ Anti-autofill ══ */
+        (function () {
+            function wipe() {
                 var s = document.getElementById('citySearch');
-                if (s && s.value && s.value.indexOf('@') !== -1) {
-                    // Email detected → wipe it
-                    s.value = '';
-                }
+                if (s && s.value && s.value.indexOf('@') !== -1) s.value = '';
             }
-            // Immédiat
-            document.addEventListener('DOMContentLoaded', wipeSearch);
-            // Délayé (Chrome autofill arrive après 100–300ms)
-            setTimeout(wipeSearch, 150);
-            setTimeout(wipeSearch, 500);
+            document.addEventListener('DOMContentLoaded', wipe);
+            setTimeout(wipe, 150);
+            setTimeout(wipe, 500);
         })();
 
         /* ══ Nav scroll ══ */
@@ -1428,9 +1451,7 @@
             var o = document.getElementById('sidebarOverlay');
             var b = document.getElementById('hamburgerBtn');
             var isOpen = s.classList.contains('open');
-            s.classList.toggle('open');
-            o.classList.toggle('open');
-            b.classList.toggle('open');
+            s.classList.toggle('open'); o.classList.toggle('open'); b.classList.toggle('open');
             document.body.style.overflow = !isOpen ? 'hidden' : '';
         }
 
@@ -1441,20 +1462,13 @@
             document.body.style.overflow = '';
         }
 
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeSidebar();
-        });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSidebar(); });
 
         /* ══ Langue ══ */
         function changeLang(lang) {
             if (!lang) return;
             var sel = document.querySelector('.goog-te-combo');
-            if (sel) {
-                sel.value = lang;
-                sel.dispatchEvent(new Event('change'));
-                setTimeout(closeSidebar, 400);
-                return;
-            }
+            if (sel) { sel.value = lang; sel.dispatchEvent(new Event('change')); setTimeout(closeSidebar, 400); return; }
             var d = window.location.hostname;
             document.cookie = 'googtrans=/fr/' + lang + '; path=/; domain=' + d;
             document.cookie = 'googtrans=/fr/' + lang + '; path=/';
@@ -1473,97 +1487,72 @@
             if (window.matchMedia('(hover: none)').matches) {
                 document.querySelectorAll('.city-card').forEach(function (card) {
                     var detailUrl = card.querySelector('.cta-primary') ? card.querySelector('.cta-primary').href : null;
-
                     var img = card.querySelector('img');
                     if (img && detailUrl) {
-                        img.addEventListener('click', function (e) {
-                            e.stopPropagation();
-                            window.location.href = detailUrl;
-                        });
+                        img.addEventListener('click', function (e) { e.stopPropagation(); window.location.href = detailUrl; });
                     }
-
                     card.addEventListener('touchstart', function () {
                         if (!card.classList.contains('touched')) {
-                            document.querySelectorAll('.city-card.touched').forEach(function (c) {
-                                if (c !== card) c.classList.remove('touched');
-                            });
+                            document.querySelectorAll('.city-card.touched').forEach(function (c) { if (c !== card) c.classList.remove('touched'); });
                             card.classList.add('touched');
                         }
                     }, { passive: true });
                 });
-
                 document.addEventListener('touchstart', function (e) {
                     if (!e.target.closest('.city-card')) {
-                        document.querySelectorAll('.city-card.touched').forEach(function (c) {
-                            c.classList.remove('touched');
-                        });
+                        document.querySelectorAll('.city-card.touched').forEach(function (c) { c.classList.remove('touched'); });
                     }
                 }, { passive: true });
             }
         });
 
-        /* ══ Real-time Search ══ */
+        /* ══ Search ══ */
         document.addEventListener('DOMContentLoaded', function () {
             var searchInput = document.getElementById('citySearch');
             var cityCards = document.querySelectorAll('.city-card');
             var cityCount = document.getElementById('cityCount');
             var searchBadge = document.getElementById('searchBadge');
-            var resultsDropdown = document.getElementById('searchResultsDropdown');
+            var resultsDD = document.getElementById('searchResultsDropdown');
 
-            // Sécurité supplémentaire : vider si email détecté au chargement
-            if (searchInput && searchInput.value && searchInput.value.indexOf('@') !== -1) {
-                searchInput.value = '';
-            }
-
+            if (searchInput && searchInput.value && searchInput.value.indexOf('@') !== -1) searchInput.value = '';
             if (!searchInput) return;
 
             var debounceTimer;
 
             searchInput.addEventListener('input', function (e) {
                 var query = e.target.value.toLowerCase().trim();
-                var visibleCount = 0;
+                var count = 0;
 
-                // Filtrage local en temps réel
                 cityCards.forEach(function (card) {
-                    var cityName = (card.querySelector('.city-name') || {}).textContent || '';
-                    var citySlogan = (card.querySelector('.city-slogan') || {}).textContent || '';
-                    var cityTag = (card.querySelector('.city-tag') || {}).textContent || '';
-
-                    var matches = !query ||
-                        cityName.toLowerCase().includes(query) ||
-                        citySlogan.toLowerCase().includes(query) ||
-                        cityTag.toLowerCase().includes(query);
-
-                    card.style.display = matches ? 'block' : 'none';
-                    if (matches) visibleCount++;
+                    var name = (card.querySelector('.city-name') || {}).textContent || '';
+                    var slogan = (card.querySelector('.city-slogan') || {}).textContent || '';
+                    var tag = (card.querySelector('.city-tag') || {}).textContent || '';
+                    var ok = !query || name.toLowerCase().includes(query) || slogan.toLowerCase().includes(query) || tag.toLowerCase().includes(query);
+                    card.style.display = ok ? 'block' : 'none';
+                    if (ok) count++;
                 });
 
-                if (cityCount) {
-                    cityCount.textContent = visibleCount + ' ville' + (visibleCount > 1 ? 's' : '');
-                }
+                if (cityCount) cityCount.textContent = count + ' ville' + (count > 1 ? 's' : '');
 
                 if (query.length > 0) {
                     searchBadge.style.display = 'block';
-                    searchBadge.textContent = visibleCount + ' EN PAGE';
+                    searchBadge.textContent = count + ' EN PAGE';
                 } else {
                     searchBadge.style.display = 'none';
-                    resultsDropdown.style.display = 'none';
+                    resultsDD.style.display = 'none';
                 }
 
-                // Recherche API globale (debounced)
                 clearTimeout(debounceTimer);
                 if (query.length >= 2) {
                     debounceTimer = setTimeout(function () {
                         fetch('/api/search?q=' + encodeURIComponent(query))
-                            .then(function (res) { return res.json(); })
+                            .then(function (r) { return r.json(); })
                             .then(function (data) {
                                 if (data.results && data.results.length > 0) {
-                                    resultsDropdown.innerHTML = '';
+                                    resultsDD.innerHTML = '';
                                     data.results.forEach(function (res) {
                                         var item = document.createElement('a');
-                                        item.href = res.type === 'ville'
-                                            ? '/ville/' + encodeURIComponent(res.title)
-                                            : '/ville/' + encodeURIComponent(res.subtitle || res.title);
+                                        item.href = '/ville/' + encodeURIComponent(res.type === 'ville' ? res.title : (res.subtitle || res.title));
                                         item.className = 'search-result-item';
                                         item.innerHTML =
                                             '<img src="{{ cdn_url }}' + (res.image_path || 'villes/default.jpg') + '" class="result-img" onerror="this.src=\'/static/images/default.jpg\'">' +
@@ -1572,43 +1561,42 @@
                                             '<span class="result-title">' + res.title + '</span>' +
                                             '<span class="result-subtitle">' + (res.subtitle || '') + '</span>' +
                                             '</div>';
-                                        resultsDropdown.appendChild(item);
+                                        resultsDD.appendChild(item);
                                     });
-                                    resultsDropdown.style.display = 'block';
+                                    resultsDD.style.display = 'block';
                                 } else {
-                                    resultsDropdown.style.display = 'none';
+                                    resultsDD.style.display = 'none';
                                 }
                             })
-                            .catch(function () {
-                                resultsDropdown.style.display = 'none';
-                            });
+                            .catch(function () { resultsDD.style.display = 'none'; });
                     }, 300);
                 } else {
-                    resultsDropdown.style.display = 'none';
+                    resultsDD.style.display = 'none';
                 }
             });
 
-            // Fermer dropdown au clic extérieur
             document.addEventListener('click', function (e) {
-                if (!searchInput.contains(e.target) && !resultsDropdown.contains(e.target)) {
-                    resultsDropdown.style.display = 'none';
-                }
+                if (!searchInput.contains(e.target) && !resultsDD.contains(e.target)) resultsDD.style.display = 'none';
             });
 
-            // Debug console
             console.log('🏙️ Villes chargées :', {{ villes | length }});
-            {% if villes and villes | length > 0 %}
-            console.log('📋 Première ville :', {{ villes[0] | tojson }});
-            {% else %}
-            console.warn('⚠️ Aucune ville trouvée dans la base de données');
-            {% endif %}
+        {% if villes and villes | length > 0 %}
+        console.log('📋 Première ville :', {{ villes[0] | tojson }});
+        {% else %}
+        console.warn('⚠️ Aucune ville trouvée dans la base de données');
+        {% endif %}
         });
     </script>
 
-    <!-- CHATBOT -->
     {% include 'chatbot_carre.html' %}
-
     {% include 'manual_lang.html' %}
 
+    <!-- AMBIENT MUSIC -->
+    <script>
+        window.activeFilterType = "{{ titre_filter }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/ambient-music.js') }}"></script>
+
 </body>
+
 </html>
