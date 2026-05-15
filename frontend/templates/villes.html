@@ -1592,10 +1592,11 @@
     {% include 'manual_lang.html' %}
 
     <!-- AMBIENT MUSIC -->
+    <audio id="background-audio" loop></audio>
     <script>
         window.activeFilterType = "{{ titre_filter }}";
     </script>
-    <script src="{{ url_for('static', filename='js/ambient-music.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/audioManager.js') }}"></script>
 
 </body>
 

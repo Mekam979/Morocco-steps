@@ -1469,6 +1469,10 @@
 
     {% include 'chatbot_carre.html' %}
     {% include 'manual_lang.html' %}
+
+    <!-- AMBIENT MUSIC -->
+    <audio id="background-audio" loop></audio>
+    <script src="{{ url_for('static', filename='js/audioManager.js') }}"></script>
 </body>
 
 </html>

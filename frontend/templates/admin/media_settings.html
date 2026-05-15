@@ -1,0 +1,112 @@
+{% extends "admin/base_admin.html" %}
+{% set active_nav = 'media' %}
+{% block title %}Paramètres média — Morocco Secrets Admin{% endblock %}
+{% block heading %}Paramètres média{% endblock %}
+
+{% block head_extra %}
+<style>
+    .flash {
+        padding: 11px 16px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        font-size: 0.92rem;
+        border: 1px solid transparent;
+    }
+    .flash-success {
+        background: #ecf6ed; color: #1e6f33;
+        border-color: rgba(30, 111, 51, 0.2);
+    }
+    .flash-error {
+        background: #fdecec; color: var(--darkred);
+        border-color: rgba(139, 0, 0, 0.2);
+    }
+
+    .media-card { margin-bottom: 24px; }
+    .media-card h2 {
+        margin: 0 0 12px 0;
+        font-size: 1.05rem;
+        color: var(--darkred);
+        letter-spacing: 0.3px;
+    }
+    .media-card p.url {
+        font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 0.82rem;
+        color: var(--muted);
+        word-break: break-all;
+        margin: 0 0 14px 0;
+    }
+    .video-preview {
+        width: 100%;
+        max-width: 640px;
+        border-radius: 6px;
+        background: #000;
+        display: block;
+    }
+
+    .upload-form { display: flex; flex-direction: column; gap: 14px; max-width: 640px; }
+    .upload-form label {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+    .upload-form input[type=file] {
+        padding: 10px;
+        border: 1px dashed var(--border);
+        border-radius: 6px;
+        background: var(--beige);
+        font-size: 0.9rem;
+    }
+    .upload-form .warning {
+        margin: 0;
+        padding: 10px 14px;
+        background: #fff8e6;
+        border: 1px solid rgba(201, 168, 76, 0.4);
+        border-radius: 6px;
+        color: #7a5a14;
+        font-size: 0.88rem;
+    }
+    .upload-form button {
+        align-self: flex-start;
+        background: var(--darkred);
+        color: var(--white);
+        border: none;
+        padding: 11px 22px;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .upload-form button:hover { background: #6b0000; }
+</style>
+{% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+        <div class="flash flash-{{ category }}">{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="card media-card">
+    <h2>Vidéo d'accueil actuelle</h2>
+    <p class="url">{{ video_url }}</p>
+    <video class="video-preview" controls muted playsinline preload="metadata">
+        <source src="{{ video_url }}" type="video/mp4">
+    </video>
+</div>
+
+<div class="card media-card">
+    <h2>Remplacer la vidéo</h2>
+    <form class="upload-form" method="POST" enctype="multipart/form-data"
+          action="{{ url_for('admin.media_settings') }}">
+        <label for="video">Nouveau fichier vidéo</label>
+        <input id="video" name="video" type="file"
+               accept="video/mp4,video/webm" required>
+        <p class="warning">La vidéo doit être en format MP4 ou WebM, max 50MB.</p>
+        <button type="submit">Mettre à jour la vidéo</button>
+    </form>
+</div>
+{% endblock %}

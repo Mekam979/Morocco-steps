@@ -1344,3 +1344,52 @@ def user_delete(user_id):
         conn.close()
     flash("User and their messages deleted.", "success")
     return redirect(url_for("admin.users_list"))
+
+
+# ---------------------------------------------------------------------------
+# Settings — Media (hero video upload)
+# ---------------------------------------------------------------------------
+
+MEDIA_MAX_BYTES = 50 * 1024 * 1024
+MEDIA_ALLOWED_MIMETYPES = ("video/mp4", "video/webm")
+HERO_VIDEO_PUBLIC_ID = "morocco-secrets/maroc-hero"
+
+
+@admin_bp.route("/settings/media", methods=["GET", "POST"])
+@admin_required
+def media_settings():
+    if request.method == "POST":
+        file = request.files.get("video")
+        if not file or not file.filename:
+            flash("Aucun fichier sélectionné.", "error")
+            return redirect(url_for("admin.media_settings"))
+
+        file.stream.seek(0, 2)
+        size = file.stream.tell()
+        file.stream.seek(0)
+        if size > MEDIA_MAX_BYTES:
+            flash("Le fichier dépasse 50 Mo.", "error")
+            return redirect(url_for("admin.media_settings"))
+
+        if file.mimetype not in MEDIA_ALLOWED_MIMETYPES:
+            flash("Format non supporté (MP4 ou WebM requis).", "error")
+            return redirect(url_for("admin.media_settings"))
+
+        try:
+            cloudinary.uploader.upload(
+                file,
+                resource_type="video",
+                public_id=HERO_VIDEO_PUBLIC_ID,
+                overwrite=True,
+                invalidate=True,
+                use_filename=False,
+                unique_filename=False,
+            )
+        except cloudinary.exceptions.Error as e:
+            flash(f"Erreur Cloudinary : {e}", "error")
+            return redirect(url_for("admin.media_settings"))
+
+        flash("Vidéo mise à jour avec succès.", "success")
+        return redirect(url_for("admin.media_settings"))
+
+    return render_template("admin/media_settings.html")

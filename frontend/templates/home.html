@@ -1495,9 +1495,9 @@
     <div class="hero" id="heroSection">
         <video class="hero-video" autoplay muted loop playsinline id="heroVideo"
             onerror="document.getElementById('heroSection').classList.add('hero-video-error')">
-            <source src="{{ url_for('static', filename='videos/maroc-hero.mp4') }}" media="(max-width: 768px)"
+            <source src="{{ video_url }}" media="(max-width: 768px)"
                 type="video/mp4">
-            <source src="{{ url_for('static', filename='videos/maroc-hero.mp4') }}" type="video/mp4">
+            <source src="{{ video_url }}" type="video/mp4">
         </video>
 
         <img class="hero-fallback" src="{{ cdn_url }}villes/maroc-bg.jpg" alt="Maroc"
@@ -2007,8 +2007,9 @@
     {% include 'manual_lang.html' %}
 
     <!-- AMBIENT MUSIC -->
+    <audio id="background-audio" loop></audio>
     <script>window.activeFilterType = 'accueil';</script>
-    <script src="{{ url_for('static', filename='js/ambient-music.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/audioManager.js') }}"></script>
 </body>
 
 </html>

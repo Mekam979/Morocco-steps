@@ -72,6 +72,13 @@
             border-left-color: var(--gold);
             color: var(--gold);
         }
+        .sidebar-section {
+            padding: 14px 24px 6px;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.45);
+        }
         .sidebar-footer {
             padding: 16px 24px;
             border-top: 1px solid rgba(255,255,255,0.12);
@@ -133,6 +140,9 @@
                    class="{% if active_nav == 'villes' %}active{% endif %}">Cities</a>
                 <a href="{{ url_for('admin.users_list') }}"
                    class="{% if active_nav == 'users' %}active{% endif %}">Users</a>
+                <div class="sidebar-section">Paramètres</div>
+                <a href="{{ url_for('admin.media_settings') }}"
+                   class="{% if active_nav == 'media' %}active{% endif %}">Média</a>
             </nav>
             <div class="sidebar-footer">
                 <a href="{{ url_for('admin.logout') }}">Logout</a>
