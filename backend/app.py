@@ -33,8 +33,22 @@ frontend_dir = os.path.join(BASE_DIR, '..', 'frontend')
 template_dir = os.path.join(BASE_DIR, '..', 'frontend', 'templates')
 static_dir = os.path.join(BASE_DIR, '..', 'frontend', 'static')
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_cors import CORS
+
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+
+# Fix pour Railway (Reverse Proxy) : assure que Flask comprend que l'on est en HTTPS
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
+# Autorise les requêtes Cross-Origin et les cookies de session
+CORS(app, supports_credentials=True)
+
 app.secret_key = os.getenv('SECRET_KEY', 'trippy_maroc_secret_key_2026')
+# Configurer les sessions pour qu'elles fonctionnent derrière le proxy HTTPS de Railway
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+# En local (HTTP), SESSION_COOKIE_SECURE doit être False, sinon le navigateur rejette les cookies de session.
+app.config['SESSION_COOKIE_SECURE'] = os.getenv('FLASK_ENV') == 'production'
 
 import sys, os
 sys.path.insert(0, os.path.dirname(__file__))
@@ -425,8 +439,9 @@ Merci de votre confiance.
         mail.send(msg)
         return True
     except Exception as e:
-        print(f"Erreur envoi email : {e}")
-        traceback.print_exc()
+        print(f"Erreur envoi email : {str(e)}")
+        import logging
+        logging.error(f"Erreur SMTP détaillée : {e}", exc_info=True)
         return False
 
 # ---------- Étape 1 : Envoyer code pour inscription ----------
@@ -439,12 +454,16 @@ def send_verification():
         return jsonify({'success': False, 'message': 'Email requis.'})
     
     conn = get_db()
-    with conn.cursor() as cur:
-        cur.execute("SELECT id FROM users WHERE email = %s", (email,))
-        if cur.fetchone():
-            conn.close()
-            return jsonify({'success': False, 'message': 'Cet email est déjà utilisé.'})
-    conn.close()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Erreur de connexion à la base de données.'})
+        
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT id FROM users WHERE email = %s", (email,))
+            if cur.fetchone():
+                return jsonify({'success': False, 'message': 'Cet email est déjà utilisé.'})
+    finally:
+        if conn: conn.close()
     
     # Générer code 6 chiffres
     code = f"{random.randint(100000, 999999)}"
@@ -595,13 +614,17 @@ def forgot_password():
         return jsonify({'success': False, 'message': 'Email requis.'})
     
     conn = get_db()
-    with conn.cursor() as cur:
-        cur.execute("SELECT id FROM users WHERE email = %s", (email,))
-        user = cur.fetchone()
-        if not user:
-            conn.close()
-            return jsonify({'success': False, 'message': 'Aucun compte avec cet email.'})
-    conn.close()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Erreur de connexion à la base de données.'})
+        
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT id FROM users WHERE email = %s", (email,))
+            user = cur.fetchone()
+            if not user:
+                return jsonify({'success': False, 'message': 'Aucun compte avec cet email.'})
+    finally:
+        if conn: conn.close()
     
     code = f"{random.randint(100000, 999999)}"
     expiry = datetime.now() + timedelta(minutes=10)
@@ -641,7 +664,7 @@ def reset_password():
         print(f"Erreur reset : {e}")
         return jsonify({'success': False, 'message': 'Erreur lors de la réinitialisation.'})
     finally:
-        conn.close()
+        if conn: conn.close()
     
     session.pop('reset_email', None)
     return jsonify({'success': True, 'message': 'Mot de passe mis à jour. Connectez-vous.'})

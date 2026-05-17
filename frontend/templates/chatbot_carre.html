@@ -2408,13 +2408,12 @@
         'use strict';
 
         /* ─── CONSTANTS ─── */
+        // Configuration de l'URL Backend (Laissez vide '' si hébergé ensemble. Mettez l'URL Railway si le frontend est séparé)
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://127.0.0.1:5001' 
+            : ''; // Ex: 'https://votre-backend.up.railway.app'
+        
         const SUGG_DEFAULT = ["🏙️ Marrakech", "🍽️ Restaurants Casablanca", "🏛️ Que visiter à Fès", "🏜️ Villes du désert", "🎨 Artisanat marocain"];
-        const PACK_COLORS = { explorer: '#0668D3', standard: '#c59d5f', premium: '#D4AF37' };
-        const PACK_LABELS = { explorer: 'Explorateur', standard: 'Voyageur Pro', premium: 'Partenaire ✨' };
-        const PACK_PRICES = {
-            monthly: { explorer: 0, standard: 87, premium: 495 },
-            annual: { explorer: 0, standard: 70, premium: 396 }
-        };
         const LIMITS = { explorer: 10, standard: 50, premium: 999999 };
         const WA_NUM = '212625902686';
         const RIB = '007 640 0002962300401057 08';
@@ -2670,7 +2669,7 @@
 
         window.onPackCta = function () {
             if (selectedPack === 'explorer') {
-                fetch('/set-tier/explorer').catch(() => { });
+                fetch(API_BASE_URL + '/set-tier/explorer', { credentials: 'include' }).catch(() => { });
                 switchToView('chat');
                 addMessage('✅ Pack Explorateur actif. Bonne exploration !', 'bot');
             } else {
@@ -2800,7 +2799,7 @@
             if (!email || !pass) { showErr('loginErr', 'Email et mot de passe requis'); return; }
             setBtnLoading('loginBtn', true);
             try {
-                const res = await fetch('/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
+                const res = await fetch(API_BASE_URL + '/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ email, password: pass }) });
                 const data = await res.json();
                 setBtnLoading('loginBtn', false, 'Se connecter →');
                 if (data.success) {
@@ -2824,7 +2823,7 @@
             if (!email) { showErr('regErr', 'Email requis'); return; }
             setBtnLoading('regStep1Btn', true);
             try {
-                const res = await fetch('/send-verification', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+                const res = await fetch(API_BASE_URL + '/send-verification', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ email }) });
                 const data = await res.json();
                 setBtnLoading('regStep1Btn', false, 'Envoyer le code →');
                 if (data.success) {
@@ -2842,7 +2841,7 @@
             if (!code) { showErr('regCodeErr', 'Code requis'); return; }
             setBtnLoading('regStep2Btn', true);
             try {
-                const res = await fetch('/verify-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) });
+                const res = await fetch(API_BASE_URL + '/verify-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ code }) });
                 const data = await res.json();
                 setBtnLoading('regStep2Btn', false, 'Vérifier →');
                 if (data.success) {
@@ -2860,7 +2859,7 @@
             if (pass.length < 6) { showErr('regFinalErr', 'Mot de passe trop court (min. 6)'); return; }
             setBtnLoading('regStep3Btn', true);
             try {
-                const res = await fetch('/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nom, email, password: pass }) });
+                const res = await fetch(API_BASE_URL + '/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ nom, email, password: pass }) });
                 const data = await res.json();
                 setBtnLoading('regStep3Btn', false, '🎉 Créer mon compte');
                 if (data.success) {
@@ -2883,7 +2882,7 @@
             const email = document.getElementById('forgotEmail').value.trim();
             if (!email) { showErr('forgotErr', 'Email requis'); return; }
             try {
-                const res = await fetch('/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+                const res = await fetch(API_BASE_URL + '/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ email }) });
                 const data = await res.json();
                 if (data.success) {
                     showOk('forgotErr', data.message);
@@ -2899,7 +2898,7 @@
             const code = document.getElementById('forgotCode').value.trim();
             if (!code) { showErr('forgotCodeErr', 'Code requis'); return; }
             try {
-                const res = await fetch('/verify-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) });
+                const res = await fetch(API_BASE_URL + '/verify-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ code }) });
                 const data = await res.json();
                 if (data.success) {
                     document.getElementById('forgotStep2').style.display = 'none';
@@ -2912,7 +2911,7 @@
             const newPass = document.getElementById('newPass').value.trim();
             if (!newPass || newPass.length < 6) { showErr('newPassErr', 'Trop court (min. 6)'); return; }
             try {
-                const res = await fetch('/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: newPass }) });
+                const res = await fetch(API_BASE_URL + '/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ password: newPass }) });
                 const data = await res.json();
                 if (data.success) {
                     showOk('newPassErr', data.message);
@@ -2922,7 +2921,7 @@
         };
 
         window.doLogout = async function () {
-            await fetch('/logout', { method: 'POST' });
+            await fetch(API_BASE_URL + '/logout', { method: 'POST', credentials: 'include' });
             curUser = null;
             clearMsgStorage();
             document.getElementById('cbChatView').innerHTML = '';
@@ -2937,7 +2936,7 @@
         window.doClearChat = async function () {
             if (!confirm('Voulez-vous effacer tout l\'historique de conversation ?')) return;
             try {
-                const res = await fetch('/chat/clear', { method: 'POST' });
+                const res = await fetch(API_BASE_URL + '/chat/clear', { method: 'POST', credentials: 'include' });
                 const data = await res.json();
                 if (data.success) {
                     document.getElementById('cbChatView').innerHTML = '';
@@ -3083,7 +3082,7 @@
 
             showTyping(true);
             try {
-                const res = await fetch('/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
+                const res = await fetch(API_BASE_URL + '/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ message: msg }) });
                 const data = await res.json();
                 showTyping(false);
 
@@ -3128,7 +3127,7 @@
             setupInputKeyboard();
 
             // Fetch user session
-            fetch('/me').then(r => r.json()).then(d => {
+            fetch(API_BASE_URL + '/me', { credentials: 'include' }).then(r => r.json()).then(d => {
                 if (d.logged) {
                     curUser = { nom: d.nom, tier: d.tier, email: d.email, msg_count: d.msg_count || 0 };
                     updateHeader();
@@ -3140,7 +3139,7 @@
                         document.getElementById('cbChatView').innerHTML = '';
                         storedMsgs.forEach(m => addMessage(m.text, m.role, false, m.ville, true));
                     } else {
-                        fetch('/chat/history').then(r => r.json()).then(h => {
+                        fetch(API_BASE_URL + '/chat/history', { credentials: 'include' }).then(r => r.json()).then(h => {
                             if (h.history && h.history.length) {
                                 document.getElementById('cbChatView').innerHTML = '';
                                 h.history.forEach(m => addMessage(m.message, m.role === 'user' ? 'user' : 'bot', false));
