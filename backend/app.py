@@ -194,21 +194,9 @@ def get_chat_history(user_id, limit=30):
         conn.close()
 
 def count_today_messages(user_id):
-    """Old function using chat_messages logs (fallback or legacy)"""
-    conn = get_db()
-    if not conn: return 0
-    try:
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT COUNT(*) as cnt FROM chat_messages
-                WHERE user_id = %s AND role = 'user'
-                AND DATE(created_at) = CURDATE()
-            """, (user_id,))
-            return cur.fetchone()['cnt']
-    except:
-        return 0
-    finally:
-        conn.close()
+    """Uses get_user_limit_data to ensure frontend and backend have the exact same count"""
+    count, _ = get_user_limit_data(user_id)
+    return count
 
 def get_user_limit_data(user_id):
     """Fetch daily limit data from users table"""
