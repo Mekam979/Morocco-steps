@@ -444,15 +444,24 @@ Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.
 Merci de votre confiance.
 """
     old_timeout = socket.getdefaulttimeout()
+    old_getaddrinfo = socket.getaddrinfo
+    
+    def force_ipv4(*args, **kwargs):
+        responses = old_getaddrinfo(*args, **kwargs)
+        return [res for res in responses if res[0] == socket.AF_INET]
+        
     try:
-        socket.setdefaulttimeout(5.0)  # 5 seconds timeout to prevent 504 Gateway Timeout
+        socket.getaddrinfo = force_ipv4
+        socket.setdefaulttimeout(15.0)  # 15 seconds timeout
         msg = Message(subject, recipients=[email], body=body)
         mail.send(msg)
         socket.setdefaulttimeout(old_timeout)
+        socket.getaddrinfo = old_getaddrinfo
         print(f"[SMTP] Email sent to {email} (purpose: {purpose})")
         return True, "Code envoyé."
     except Exception as e:
         socket.setdefaulttimeout(old_timeout)
+        socket.getaddrinfo = old_getaddrinfo
         error_msg = f"Erreur SMTP: {str(e)}"
         print(f"[SMTP] {error_msg}")
         return False, error_msg
