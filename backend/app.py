@@ -440,18 +440,6 @@ def pricing():
 # AUTHENTIFICATION (avec code email)
 # ============================================================
 
-import threading
-
-def send_async_email(app_context, msg):
-    with app_context:
-        try:
-            mail.send(msg)
-            print(f"[SMTP] Email successfully sent to {msg.recipients}")
-        except Exception as e:
-            print(f"[SMTP] Async Error sending email: {str(e)}")
-            import logging
-            logging.error(f"[SMTP] Detailed SMTP error: {e}", exc_info=True)
-
 def send_code_email(email, code, purpose="inscription"):
     subject = f"🔐 Code de vérification - Morocco Secrets ({purpose})"
     body = f"""
@@ -467,15 +455,13 @@ Merci de votre confiance.
 """
     try:
         msg = Message(subject, recipients=[email], body=body)
-        thread = threading.Thread(target=send_async_email, args=(app.app_context(), msg))
-        thread.start()
-        print(f"[SMTP] Thread started for {email} (purpose: {purpose}, code: {code})")
-        return True
+        mail.send(msg)
+        print(f"[SMTP] Email sent to {email} (purpose: {purpose})")
+        return True, "Code envoyé."
     except Exception as e:
-        print(f"[SMTP] Erreur envoi email (thread start) : {str(e)}")
-        import logging
-        logging.error(f"Erreur SMTP détaillée : {e}", exc_info=True)
-        return False
+        error_msg = f"Erreur SMTP: {str(e)}"
+        print(f"[SMTP] {error_msg}")
+        return False, error_msg
 
 # ---------- Étape 1 : Envoyer code pour inscription ----------
 @app.route('/send-verification', methods=['POST'])
@@ -524,10 +510,18 @@ def send_verification():
     finally:
         if conn: conn.close()
     
-    if send_code_email(email, code, "inscription"):
+    success, err_msg = send_code_email(email, code, "inscription")
+    if success:
         return jsonify({'success': True, 'message': 'Code envoyé par email.'})
     else:
-        return jsonify({'success': False, 'message': "Erreur d'envoi d'email. Vérifiez la configuration SMTP."})
+        # Nettoyer la base de données pour permettre une nouvelle tentative
+        conn = get_db()
+        if conn:
+            with conn.cursor() as cur:
+                cur.execute("DELETE FROM verification_codes WHERE email = %s", (email,))
+                conn.commit()
+            conn.close()
+        return jsonify({'success': False, 'message': err_msg})
 
 # ---------- Étape 2 : Vérifier code (inscription ou reset) ----------
 @app.route('/verify-code', methods=['POST'])
@@ -714,10 +708,18 @@ def forgot_password():
     finally:
         if conn: conn.close()
     
-    if send_code_email(email, code, "réinitialisation du mot de passe"):
+    success, err_msg = send_code_email(email, code, "réinitialisation du mot de passe")
+    if success:
         return jsonify({'success': True, 'message': 'Code envoyé par email.'})
     else:
-        return jsonify({'success': False, 'message': "Erreur d'envoi d'email."})
+        # Nettoyer la base de données pour permettre une nouvelle tentative
+        conn = get_db()
+        if conn:
+            with conn.cursor() as cur:
+                cur.execute("DELETE FROM verification_codes WHERE email = %s AND purpose = 'reset'", (email,))
+                conn.commit()
+            conn.close()
+        return jsonify({'success': False, 'message': err_msg})
 
 # ---------- Réinitialiser mot de passe ----------
 @app.route('/reset-password', methods=['POST'])
