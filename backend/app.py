@@ -428,6 +428,8 @@ def pricing():
 # AUTHENTIFICATION (avec code email)
 # ============================================================
 
+import socket
+
 def send_code_email(email, code, purpose="inscription"):
     subject = f"🔐 Code de vérification - Morocco Secrets ({purpose})"
     body = f"""
@@ -441,12 +443,16 @@ Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.
 
 Merci de votre confiance.
 """
+    old_timeout = socket.getdefaulttimeout()
     try:
+        socket.setdefaulttimeout(5.0)  # 5 seconds timeout to prevent 504 Gateway Timeout
         msg = Message(subject, recipients=[email], body=body)
         mail.send(msg)
+        socket.setdefaulttimeout(old_timeout)
         print(f"[SMTP] Email sent to {email} (purpose: {purpose})")
         return True, "Code envoyé."
     except Exception as e:
+        socket.setdefaulttimeout(old_timeout)
         error_msg = f"Erreur SMTP: {str(e)}"
         print(f"[SMTP] {error_msg}")
         return False, error_msg
