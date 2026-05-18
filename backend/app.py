@@ -61,6 +61,25 @@ with app.app_context():
     except Exception as e:
         print(f"[startup] migration check failed: {e}")
 
+    try:
+        conn = get_db()
+        if conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    CREATE TABLE IF NOT EXISTS verification_codes (
+                        email VARCHAR(255) PRIMARY KEY,
+                        code VARCHAR(10) NOT NULL,
+                        purpose VARCHAR(50) NOT NULL,
+                        expires_at DATETIME NOT NULL,
+                        verified BOOLEAN DEFAULT FALSE,
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    )
+                """)
+                conn.commit()
+            conn.close()
+    except Exception as e:
+        print(f"[startup] verification_codes table check failed: {e}")
+
 # ============================================================
 # CONFIGURATION EMAIL
 # ============================================================
@@ -421,6 +440,18 @@ def pricing():
 # AUTHENTIFICATION (avec code email)
 # ============================================================
 
+import threading
+
+def send_async_email(app_context, msg):
+    with app_context:
+        try:
+            mail.send(msg)
+            print(f"[SMTP] Email successfully sent to {msg.recipients}")
+        except Exception as e:
+            print(f"[SMTP] Async Error sending email: {str(e)}")
+            import logging
+            logging.error(f"[SMTP] Detailed SMTP error: {e}", exc_info=True)
+
 def send_code_email(email, code, purpose="inscription"):
     subject = f"🔐 Code de vérification - Morocco Secrets ({purpose})"
     body = f"""
@@ -436,10 +467,12 @@ Merci de votre confiance.
 """
     try:
         msg = Message(subject, recipients=[email], body=body)
-        mail.send(msg)
+        thread = threading.Thread(target=send_async_email, args=(app.app_context(), msg))
+        thread.start()
+        print(f"[SMTP] Thread started for {email} (purpose: {purpose}, code: {code})")
         return True
     except Exception as e:
-        print(f"Erreur envoi email : {str(e)}")
+        print(f"[SMTP] Erreur envoi email (thread start) : {str(e)}")
         import logging
         logging.error(f"Erreur SMTP détaillée : {e}", exc_info=True)
         return False
@@ -462,18 +495,22 @@ def send_verification():
             cur.execute("SELECT id FROM users WHERE email = %s", (email,))
             if cur.fetchone():
                 return jsonify({'success': False, 'message': 'Cet email est déjà utilisé.'})
+            
+            # Générer code 6 chiffres
+            code = f"{random.randint(100000, 999999)}"
+            expiry = datetime.now() + timedelta(minutes=10)
+            
+            cur.execute("""
+                INSERT INTO verification_codes (email, code, purpose, expires_at, verified)
+                VALUES (%s, %s, %s, %s, FALSE)
+                ON DUPLICATE KEY UPDATE code=%s, purpose=%s, expires_at=%s, verified=FALSE
+            """, (email, code, 'register', expiry, code, 'register', expiry))
+            conn.commit()
+    except Exception as e:
+        print(f"Erreur DB verification_codes: {e}")
+        return jsonify({'success': False, 'message': 'Erreur interne.'})
     finally:
         if conn: conn.close()
-    
-    # Générer code 6 chiffres
-    code = f"{random.randint(100000, 999999)}"
-    expiry = datetime.now() + timedelta(minutes=10)
-    
-    # Stocker en session
-    session['temp_email'] = email
-    session['temp_code'] = code
-    session['temp_expiry'] = expiry.isoformat()
-    session['temp_purpose'] = 'register'
     
     if send_code_email(email, code, "inscription"):
         return jsonify({'success': True, 'message': 'Code envoyé par email.'})
@@ -484,37 +521,41 @@ def send_verification():
 @app.route('/verify-code', methods=['POST'])
 def verify_code():
     data = request.get_json()
+    email = data.get('email', '').strip().lower()
     user_code = data.get('code', '').strip()
     
-    temp_code = session.get('temp_code')
-    temp_expiry = session.get('temp_expiry')
-    email = session.get('temp_email')
-    purpose = session.get('temp_purpose')
-    
-    if not temp_code or not email or not temp_expiry:
-        return jsonify({'success': False, 'message': 'Aucune demande de vérification en cours.'})
-    
-    if datetime.now() > datetime.fromisoformat(temp_expiry):
-        session.pop('temp_code', None)
-        session.pop('temp_email', None)
-        session.pop('temp_expiry', None)
-        session.pop('temp_purpose', None)
-        return jsonify({'success': False, 'message': 'Code expiré. Recommencez.'})
-    
-    if user_code != temp_code:
-        return jsonify({'success': False, 'message': 'Code incorrect.'})
-    
-    # Code valide
-    if purpose == 'register':
-        session['verified_email'] = email
-    elif purpose == 'reset':
-        session['reset_email'] = email
-    
-    session.pop('temp_code', None)
-    session.pop('temp_expiry', None)
-    session.pop('temp_purpose', None)
-    
-    return jsonify({'success': True, 'message': 'Email vérifié. Vous pouvez continuer.'})
+    if not email or not user_code:
+        return jsonify({'success': False, 'message': 'Email et code requis.'})
+        
+    conn = get_db()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Erreur serveur.'})
+        
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT code, expires_at, purpose FROM verification_codes WHERE email = %s", (email,))
+            row = cur.fetchone()
+            
+            if not row:
+                return jsonify({'success': False, 'message': 'Aucune demande de vérification en cours.'})
+                
+            if datetime.now() > row['expires_at']:
+                cur.execute("DELETE FROM verification_codes WHERE email = %s", (email,))
+                conn.commit()
+                return jsonify({'success': False, 'message': 'Code expiré. Recommencez.'})
+                
+            if user_code != row['code']:
+                return jsonify({'success': False, 'message': 'Code incorrect.'})
+                
+            # Code valide
+            cur.execute("UPDATE verification_codes SET verified = TRUE WHERE email = %s", (email,))
+            conn.commit()
+            return jsonify({'success': True, 'message': 'Email vérifié. Vous pouvez continuer.'})
+    except Exception as e:
+        print(f"Erreur verify-code: {e}")
+        return jsonify({'success': False, 'message': 'Erreur serveur.'})
+    finally:
+        if conn: conn.close()
 
 # ---------- Étape 3 : Finaliser inscription ----------
 @app.route('/register', methods=['POST'])
@@ -522,32 +563,42 @@ def register():
     data = request.get_json()
     nom = data.get('nom', '').strip()
     password = data.get('password', '').strip()
+    email = data.get('email', '').strip().lower()
     
-    email = session.get('verified_email')
     if not email:
-        return jsonify({'success': False, 'message': 'Veuillez d abord vérifier votre email.'})
-    
+        return jsonify({'success': False, 'message': 'Email requis.'})
+        
     if not nom or not password:
         return jsonify({'success': False, 'message': 'Nom et mot de passe requis.'})
     if len(password) < 6:
         return jsonify({'success': False, 'message': 'Mot de passe trop court.'})
     
     conn = get_db()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Erreur serveur.'})
+        
     try:
         with conn.cursor() as cur:
+            cur.execute("SELECT verified, purpose FROM verification_codes WHERE email = %s", (email,))
+            row = cur.fetchone()
+            if not row or not row['verified'] or row['purpose'] != 'register':
+                return jsonify({'success': False, 'message': "Veuillez d'abord vérifier votre email."})
+                
             cur.execute(
                 "INSERT INTO users (nom, email, password_hash, tier, msg_count, email_verified) VALUES (%s,%s,%s,'explorer',0,TRUE)",
                 (nom, email, hash_password(password))
             )
             conn.commit()
             user_id = cur.lastrowid
+            
+            cur.execute("DELETE FROM verification_codes WHERE email = %s", (email,))
+            conn.commit()
     except Exception as e:
         print(f"Erreur inscription : {e}")
         return jsonify({'success': False, 'message': 'Erreur lors de l\'inscription.'})
     finally:
         conn.close()
     
-    session.pop('verified_email', None)
     session.clear()  # Nettoyer toute session existante
     session['user_id'] = user_id
     session['user_nom'] = nom
@@ -623,16 +674,21 @@ def forgot_password():
             user = cur.fetchone()
             if not user:
                 return jsonify({'success': False, 'message': 'Aucun compte avec cet email.'})
+                
+            code = f"{random.randint(100000, 999999)}"
+            expiry = datetime.now() + timedelta(minutes=10)
+            
+            cur.execute("""
+                INSERT INTO verification_codes (email, code, purpose, expires_at, verified)
+                VALUES (%s, %s, %s, %s, FALSE)
+                ON DUPLICATE KEY UPDATE code=%s, purpose=%s, expires_at=%s, verified=FALSE
+            """, (email, code, 'reset', expiry, code, 'reset', expiry))
+            conn.commit()
+    except Exception as e:
+        print(f"Erreur DB forgot_password: {e}")
+        return jsonify({'success': False, 'message': 'Erreur interne.'})
     finally:
         if conn: conn.close()
-    
-    code = f"{random.randint(100000, 999999)}"
-    expiry = datetime.now() + timedelta(minutes=10)
-    
-    session['temp_email'] = email
-    session['temp_code'] = code
-    session['temp_expiry'] = expiry.isoformat()
-    session['temp_purpose'] = 'reset'
     
     if send_code_email(email, code, "réinitialisation du mot de passe"):
         return jsonify({'success': True, 'message': 'Code envoyé par email.'})
@@ -643,22 +699,32 @@ def forgot_password():
 @app.route('/reset-password', methods=['POST'])
 def reset_password():
     data = request.get_json()
+    email = data.get('email', '').strip().lower()
     new_password = data.get('password', '').strip()
     
-    email = session.get('reset_email')
     if not email:
-        return jsonify({'success': False, 'message': 'Aucune demande de réinitialisation.'})
+        return jsonify({'success': False, 'message': 'Email requis.'})
     
     if len(new_password) < 6:
         return jsonify({'success': False, 'message': 'Mot de passe trop court.'})
     
     conn = get_db()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Erreur serveur.'})
+        
     try:
         with conn.cursor() as cur:
+            cur.execute("SELECT verified, purpose FROM verification_codes WHERE email = %s", (email,))
+            row = cur.fetchone()
+            if not row or not row['verified'] or row['purpose'] != 'reset':
+                return jsonify({'success': False, 'message': "Aucune demande de réinitialisation vérifiée."})
+                
             cur.execute(
                 "UPDATE users SET password_hash = %s WHERE email = %s",
                 (hash_password(new_password), email)
             )
+            
+            cur.execute("DELETE FROM verification_codes WHERE email = %s", (email,))
             conn.commit()
     except Exception as e:
         print(f"Erreur reset : {e}")
@@ -666,7 +732,6 @@ def reset_password():
     finally:
         if conn: conn.close()
     
-    session.pop('reset_email', None)
     return jsonify({'success': True, 'message': 'Mot de passe mis à jour. Connectez-vous.'})
 
 # ---------- Déconnexion ----------

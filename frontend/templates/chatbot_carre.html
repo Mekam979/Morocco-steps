@@ -2837,11 +2837,12 @@
         };
 
         window.verifyRegCode = async function () {
+            const email = document.getElementById('regEmail').value.trim();
             const code = document.getElementById('regCode').value.trim();
             if (!code) { showErr('regCodeErr', 'Code requis'); return; }
             setBtnLoading('regStep2Btn', true);
             try {
-                const res = await fetch(API_BASE_URL + '/verify-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ code }) });
+                const res = await fetch(API_BASE_URL + '/verify-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ email, code }) });
                 const data = await res.json();
                 setBtnLoading('regStep2Btn', false, 'Vérifier →');
                 if (data.success) {
@@ -2895,10 +2896,11 @@
         };
 
         window.verifyForgotCode = async function () {
+            const email = document.getElementById('forgotEmail').value.trim();
             const code = document.getElementById('forgotCode').value.trim();
             if (!code) { showErr('forgotCodeErr', 'Code requis'); return; }
             try {
-                const res = await fetch(API_BASE_URL + '/verify-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ code }) });
+                const res = await fetch(API_BASE_URL + '/verify-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ email, code }) });
                 const data = await res.json();
                 if (data.success) {
                     document.getElementById('forgotStep2').style.display = 'none';
@@ -2908,10 +2910,11 @@
         };
 
         window.resetPassword = async function () {
+            const email = document.getElementById('forgotEmail').value.trim();
             const newPass = document.getElementById('newPass').value.trim();
             if (!newPass || newPass.length < 6) { showErr('newPassErr', 'Trop court (min. 6)'); return; }
             try {
-                const res = await fetch(API_BASE_URL + '/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ password: newPass }) });
+                const res = await fetch(API_BASE_URL + '/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ email, password: newPass }) });
                 const data = await res.json();
                 if (data.success) {
                     showOk('newPassErr', data.message);
