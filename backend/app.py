@@ -500,6 +500,18 @@ def send_verification():
             code = f"{random.randint(100000, 999999)}"
             expiry = datetime.now() + timedelta(minutes=10)
             
+            # Ensure table exists
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS verification_codes (
+                    email VARCHAR(255) PRIMARY KEY,
+                    code VARCHAR(10) NOT NULL,
+                    purpose VARCHAR(50) NOT NULL,
+                    expires_at DATETIME NOT NULL,
+                    verified BOOLEAN DEFAULT FALSE,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+            
             cur.execute("""
                 INSERT INTO verification_codes (email, code, purpose, expires_at, verified)
                 VALUES (%s, %s, %s, %s, FALSE)
@@ -508,7 +520,7 @@ def send_verification():
             conn.commit()
     except Exception as e:
         print(f"Erreur DB verification_codes: {e}")
-        return jsonify({'success': False, 'message': 'Erreur interne.'})
+        return jsonify({'success': False, 'message': f'Erreur interne DB: {str(e)}'})
     finally:
         if conn: conn.close()
     
@@ -678,6 +690,18 @@ def forgot_password():
             code = f"{random.randint(100000, 999999)}"
             expiry = datetime.now() + timedelta(minutes=10)
             
+            # Ensure table exists
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS verification_codes (
+                    email VARCHAR(255) PRIMARY KEY,
+                    code VARCHAR(10) NOT NULL,
+                    purpose VARCHAR(50) NOT NULL,
+                    expires_at DATETIME NOT NULL,
+                    verified BOOLEAN DEFAULT FALSE,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+            
             cur.execute("""
                 INSERT INTO verification_codes (email, code, purpose, expires_at, verified)
                 VALUES (%s, %s, %s, %s, FALSE)
@@ -686,7 +710,7 @@ def forgot_password():
             conn.commit()
     except Exception as e:
         print(f"Erreur DB forgot_password: {e}")
-        return jsonify({'success': False, 'message': 'Erreur interne.'})
+        return jsonify({'success': False, 'message': f'Erreur interne DB: {str(e)}'})
     finally:
         if conn: conn.close()
     
