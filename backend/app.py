@@ -430,10 +430,12 @@ def pricing():
 
 import socket
 
+import urllib.request
+import json
+
 def send_code_email(email, code, purpose="inscription"):
     subject = f"🔐 Code de vérification - Morocco Secrets ({purpose})"
-    body = f"""
-Bonjour,
+    body = f"""Bonjour,
 
 Votre code de vérification pour {purpose} est : {code}
 
@@ -441,29 +443,38 @@ Ce code expirera dans 10 minutes.
 
 Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.
 
-Merci de votre confiance.
-"""
-    old_timeout = socket.getdefaulttimeout()
-    old_getaddrinfo = socket.getaddrinfo
+Merci de votre confiance."""
+
+    brevo_api_key = os.getenv('BREVO_API_KEY')
+    if not brevo_api_key:
+        print("[BREVO] Clé API manquante.")
+        return False, "Configuration Email manquante sur le serveur."
+
+    sender_email = os.getenv('MAIL_USERNAME', 'moroccosecrets201@gmail.com')
+
+    payload = {
+        "sender": {"name": "Morocco Secrets", "email": sender_email},
+        "to": [{"email": email}],
+        "subject": subject,
+        "textContent": body
+    }
+
+    req = urllib.request.Request(
+        'https://api.brevo.com/v3/smtp/email',
+        data=json.dumps(payload).encode('utf-8'),
+        headers={'api-key': brevo_api_key, 'Content-Type': 'application/json', 'Accept': 'application/json'},
+        method='POST'
+    )
     
-    def force_ipv4(*args, **kwargs):
-        responses = old_getaddrinfo(*args, **kwargs)
-        return [res for res in responses if res[0] == socket.AF_INET]
-        
     try:
-        socket.getaddrinfo = force_ipv4
-        socket.setdefaulttimeout(15.0)  # 15 seconds timeout
-        msg = Message(subject, recipients=[email], body=body)
-        mail.send(msg)
-        socket.setdefaulttimeout(old_timeout)
-        socket.getaddrinfo = old_getaddrinfo
-        print(f"[SMTP] Email sent to {email} (purpose: {purpose})")
-        return True, "Code envoyé."
+        with urllib.request.urlopen(req, timeout=10) as response:
+            print(f"[BREVO] Email envoyé à {email} (purpose: {purpose})")
+            return True, "Code envoyé."
     except Exception as e:
-        socket.setdefaulttimeout(old_timeout)
-        socket.getaddrinfo = old_getaddrinfo
-        error_msg = f"Erreur SMTP: {str(e)}"
-        print(f"[SMTP] {error_msg}")
+        error_msg = f"Erreur Brevo API: {str(e)}"
+        if hasattr(e, 'read'):
+            error_msg += f" - {e.read().decode('utf-8')}"
+        print(f"[BREVO] {error_msg}")
         return False, error_msg
 
 # ---------- Étape 1 : Envoyer code pour inscription ----------
